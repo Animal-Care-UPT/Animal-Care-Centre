@@ -1,0 +1,245 @@
+\documentclass[a4paper,11pt]{article}  
+
+% ------------------ ENCODING & LANGUAGE ------------------
+\usepackage[utf8]{inputenc} % UTF-8 encoding
+\usepackage[T1]{fontenc}    % Proper font encoding for special characters
+\usepackage[portuguese]{babel} % Portuguese hyphenation & translations
+
+% ------------------ PAGE LAYOUT ------------------
+\usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry} % Custom margins
+\usepackage{setspace}   % Control line spacing
+\onehalfspacing         % 1.5 line spacing for better readability
+\usepackage{parskip}    % Adds space between paragraphs instead of indentation
+
+% ------------------ MATH & SYMBOLS ------------------
+\usepackage{amsmath, amssymb, amsthm} % Core math packages
+\usepackage{mathtools} % Extends amsmath (e.g., better equation numbering)
+\usepackage{bm} % Bold symbols in math mode
+\usepackage{siunitx} % SI units, e.g., \SI{9.8}{m/s^2}
+
+% ------------------ GRAPHICS & FIGURES ------------------
+\usepackage{graphicx} % Include images
+\usepackage{float} % Allow pictures to stay where I put them
+\usepackage{xcolor} % Colors for text and diagrams
+\usepackage{tikz} % Drawing graphs and diagrams
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+\usepackage{pgfplots} % Plot functions and data
+\pgfplotsset{compat=1.18}
+
+% ------------------ FONT & TEXT IMPROVEMENTS ------------------
+\usepackage{lmodern} % Improved font rendering
+\usepackage{microtype} % Better spacing and justification
+
+% ------------------ HYPERLINKS ------------------
+% \usepackage[colorlinks=true, linkcolor=blue, citecolor=red, urlcolor=blue]{hyperref} 
+% Internal links in blue, citations in red, URLs in blue
+
+% ------------------ HEADINGS & CUSTOM STYLES ------------------
+\usepackage{titlesec} % Custom section formatting
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% ------------------ TITLE ------------------
+\title{Documentação Animal Care Centre}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\vspace{-67pt}
+
+\section{Product Backlog}
+\subsection{User Story 1}
+Como user quero criar uma conta de modo a aceder à plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item O user deve selecionar o tipo de conta que está a criar.
+  \item O cliente tem de introduzir o seu nome, e-mail, palavra-passe, data de nascimento, localização e pergunta secreta.
+  \item A palavra-passe deverá ter entre 8 e 16 caracteres e conter, pelo menos, um caracter especial ou um número.
+  \item Caso a palavra-passe não esteja de acordo com os critérios estabelecidos, aparece uma mensagem de erro.
+  \item Caso a data de nascimento seja no futuro, aparece uma mensagem de erro.
+  \item Caso o e-mail já se encontre registado, aparece uma mensagem de erro.
+\end{itemize}
+
+\subsection{User Story 2}
+Como admin quero criar uma conta de modo a aceder à plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item O admin deve selecionar o tipo de conta que está a criar.
+  \item O cliente tem de introduzir o seu nome, e-mail, palavra-passe, data de nascimento, localização, pergunta secreta e código especial para admin.
+  \item A palavra-passe deverá ter entre 8 e 16 caracteres e conter, pelo menos, um caracter especial ou um número.
+  \item Caso a palavra-passe não esteja de acordo com os critérios estabelecidos, aparece uma mensagem de erro.
+  \item Caso a data de nascimento seja no futuro, aparece uma mensagem de erro.
+  \item Caso o e-mail já se encontre registado, aparece uma mensagem de erro.
+  \item Caso o código especial esteja errado, aparece uma mensagem de erro.
+\end{itemize}
+
+\subsection{User Story 3}
+Como associação quero criar uma conta de modo a aceder à plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item A associação deve selecionar o tipo de conta que está a criar.
+  \item A associação tem de introduzir o seu nome, e-mail, palavra-passe, data de nascimento, localização e pergunta secreta.
+  \item A palavra-passe deverá ter entre 8 e 16 caracteres e conter, pelo menos, um caracter especial ou um número.
+  \item Caso a palavra-passe não esteja de acordo com os critérios estabelecidos, aparece uma mensagem de erro.
+  \item Caso a data de nascimento seja no futuro, aparece uma mensagem de erro.
+  \item Caso o e-mail já se encontre registado, aparece uma mensagem de erro.
+  \item A conta fica pendente de verificação de um admin.
+\end{itemize}
+
+\subsection{User Story 4}
+Como admin quero responder aos pedidos de adesão das associações de modo a permitir o seu acesso à plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Deve existir uma opção no menu do administrador que permita aceder aos pedidos de adesão das associações.
+  \item Ao aceitar ou rejeitar o pedido, deve aparecer uma mensagem de confirmação.
+  \item Caso seja aceite, a conta da associação fica imediatamente disponível.
+\end{itemize}
+
+\subsection{User Story 5}
+Como admin quero remover uma associação de modo a manter a confiabilidade da plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Deve existir uma opção no menu do administrador que mostre todas as associações registadas.
+  \item Deve existir um botão para remover a organização da plataforma.
+  \item Ao clicar no botão de remoção, o administrador deve introduzir novamente a sua palavra-passe.
+  \item Após a remoção, caso a organização faça login na plataforma deve aparecer uma mensagem que informe a mesma de que foi removida.
+\end{itemize}
+
+\subsection{User Story 6}
+Como user quero recuperar a palavra-passe, de modo a manter o acesso à plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe um botão no menu de login para recuperar a palavra-passe.
+  \item O user deve introduzir o seu e-mail e a resposta da pergunta secreta.
+  \item O user recebe um e-mail com uma hiperligação para alterar a palavra-passe.
+  \item A nova palavra-passe deverá ter entre 8 e 16 caracteres e conter, pelo menos, um caracter especial ou um número.
+  \item Caso o e-mail não se encontre registado aparece uma mensagem de erro.
+  \item Caso a resposta da pergunta secreta esteja errada aparece uma mensagem de erro.
+  \item Caso a palavra-passe não esteja de acordo com os critérios estabelecidos aparece uma mensagem de erro.
+  \item Após trocar a palavra-passe aparece uma mensagem de sucesso.
+\end{itemize}
+
+\subsection{User Story 7}
+Como admin quero recuperar a palavra-passe, de modo a manter o acesso à plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe um botão no menu de login para recuperar a palavra-passe.
+  \item O admin deve introduzir o seu e-mail e a resposta da pergunta secreta.
+  \item O admin recebe um e-mail com uma hiperligação para alterar a palavra-passe.
+  \item A nova palavra-passe deverá ter entre 8 e 16 caracteres e conter, pelo menos, um caracter especial ou um número.
+  \item Caso o e-mail não se encontre registado aparece uma mensagem de erro.
+  \item Caso a resposta da pergunta secreta esteja errada aparece uma mensagem de erro.
+  \item Caso a palavra-passe não esteja de acordo com os critérios estabelecidos aparece uma mensagem de erro.
+  \item Após trocar a palavra-passe aparece uma mensagem de sucesso.
+\end{itemize}
+
+\subsection{User Story 8}
+Como associação quero recuperar a palavra-passe, de modo a manter o acesso à plataforma.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe um botão no menu de login para recuperar a palavra-passe.
+  \item A associação deve introduzir o seu e-mail e a resposta da pergunta secreta.
+  \item A associação recebe um e-mail com uma hiperligação para alterar a palavra-passe.
+  \item A nova palavra-passe deverá ter entre 8 e 16 caracteres e conter, pelo menos, um caracter especial ou um número.
+  \item Caso o e-mail não se encontre registado aparece uma mensagem de erro.
+  \item Caso a resposta da pergunta secreta esteja errada aparece uma mensagem de erro.
+  \item Caso a palavra-passe não esteja de acordo com os critérios estabelecidos aparece uma mensagem de erro.
+  \item Após trocar a palavra-passe aparece uma mensagem de sucesso.
+\end{itemize}
+
+\subsection{User Story 9}
+Como user quero mudar a minha questão secreta a qualquer momento de modo a garantir que sei a resposta à pergunta.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Esta opção deverá aparecer no menu do user após o login.
+  \item De modo a validar esta alteração, o user deve introduzir novamente a sua palavra-pass.
+  \item Caso a palavra-passe esteja errada aparece uma mensagem de erro.
+  \item Após alterar a questão secreta aparece uma mensagem de sucesso.
+\end{itemize}
+
+\subsection{User Story 10}
+Como admin quero mudar a minha questão secreta a qualquer momento de modo a garantir que sei a resposta à pergunta.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Esta opção deverá aparecer no menu do admin após o login.
+  \item De modo a validar esta alteração, o admin deve introduzir novamente a sua palavra-pass.
+  \item Caso a palavra-passe esteja errada aparece uma mensagem de erro.
+  \item Após alterar a questão secreta aparece uma mensagem de sucesso.
+\end{itemize}
+
+\subsection{User Story 11}
+Como associação quero mudar a minha questão secreta a qualquer momento de modo a garantir que sei a resposta à pergunta.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Esta opção deverá aparecer no menu da associação após o login.
+  \item De modo a validar esta alteração, a associação deve introduzir novamente a sua palavra-pass.
+  \item Caso a palavra-passe esteja errada aparece uma mensagem de erro.
+  \item Após alterar a questão secreta aparece uma mensagem de sucesso.
+\end{itemize}
+
+\subsection{User Story 12}
+Como user quero fazer login na plataforma, de modo a ter acesso às minhas funcionalidades.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe um botão no canto direito do cabeçalho para fazer login.
+  \item O user deve inserir o seu e-mail e palavra-passe.
+  \item O sistema deve mostrar uma mensagem de erro caso a palavra-passe esteja errada.
+  \item O sistema deve mostrar uma mensagem de erro caso o e-mail não esteja associado a nenhuma conta.
+\end{itemize}
+
+\subsection{User Story 13}
+Como admin quero fazer login na plataforma, de modo a ter acesso às minhas funcionalidades.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe um botão no canto direito do cabeçalho para fazer login.
+  \item O admin deve inserir o seu e-mail e palavra-passe.
+  \item O sistema deve mostrar uma mensagem de erro caso a palavra-passe esteja errada.
+  \item O sistema deve mostrar uma mensagem de erro caso o e-mail não esteja associado a nenhuma conta.
+\end{itemize}
+
+\subsection{User Story 14}
+Como associação quero fazer login na plataforma, de modo a ter acesso às minhas funcionalidades.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe um botão no canto direito do cabeçalho para fazer login.
+  \item A associação deve inserir o seu e-mail e palavra-passe.
+  \item O sistema deve mostrar uma mensagem de erro caso a palavra-passe esteja errada.
+  \item O sistema deve mostrar uma mensagem de erro caso o e-mail não esteja associado a nenhuma conta.
+\end{itemize}
+
+\subsection{User Story 15}
+Como user quero fazer logout da minha conta de modo a garantir a segurança dos meus dados.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item No menu do user deve existir um botão para fazer logout.
+\end{itemize}
+
+\subsection{User Story 16}
+Como admin quero fazer logout da minha conta de modo a garantir a segurança dos meus dados.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item No menu do admin deve existir um botão para fazer logout.
+\end{itemize}
+
+\subsection{User Story 17}
+Como associação quero fazer logout da minha conta de modo a garantir a segurança dos meus dados.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item No menu da associação deve existir um botão para fazer logout.
+\end{itemize}
+
+\subsection{User Story 18}
+Como associação quero responder a pedidos de entrega de animais, de modo a colocá-los para adoção.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe uma opção no menu da associção para visualizar os pedidos de entrega de animais.
+  \item A associação deve escolher se o animal fica para adoção ou acolhimento.
+  \item Caso o pedido seja aceite, o animal deverá ficar imediatamente disponível na página da associação.
+\end{itemize}
+\end{document}
+
+
