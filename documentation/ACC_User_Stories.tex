@@ -82,7 +82,7 @@ Como associação quero criar uma conta de modo a aceder à plataforma.\\\\
 \textbf{Critérios de Aceitação}:
 \begin{itemize}
   \item A associação deve selecionar o tipo de conta que está a criar.
-  \item A associação tem de introduzir o seu nome, e-mail, palavra-passe, data de nascimento, localização e pergunta secreta.
+  \item A associação tem de introduzir o seu nome, e-mail, palavra-passe, ano de fundação, localização e pergunta secreta.
   \item A palavra-passe deverá ter entre 8 e 16 caracteres e conter, pelo menos, um caracter especial ou um número.
   \item Caso a palavra-passe não esteja de acordo com os critérios estabelecidos, aparece uma mensagem de erro.
   \item Caso a data de nascimento seja no futuro, aparece uma mensagem de erro.
@@ -104,9 +104,9 @@ Como admin quero remover uma associação de modo a manter a confiabilidade da p
 \textbf{Critérios de Aceitação}:
 \begin{itemize}
   \item Deve existir uma opção no menu do administrador que mostre todas as associações registadas.
-  \item Deve existir um botão para remover a organização da plataforma.
+  \item Deve existir um botão para remover a associação da plataforma.
   \item Ao clicar no botão de remoção, o administrador deve introduzir novamente a sua palavra-passe.
-  \item Após a remoção, caso a organização faça login na plataforma deve aparecer uma mensagem que informe a mesma de que foi removida.
+  \item Após a remoção, caso a associação faça login na plataforma deve aparecer uma mensagem que informe a mesma de que foi removida da plataforma.
 \end{itemize}
 
 \subsection{User Story 6}
@@ -239,6 +239,51 @@ Como associação quero responder a pedidos de entrega de animais, de modo a col
   \item Existe uma opção no menu da associção para visualizar os pedidos de entrega de animais.
   \item A associação deve escolher se o animal fica para adoção ou acolhimento.
   \item Caso o pedido seja aceite, o animal deverá ficar imediatamente disponível na página da associação.
+\end{itemize}
+
+\subsection{User Story 19}
+Como associação quero visualizar a lista de espera para adoção, de modo a informar os users que o animal já se encontra disponível.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe uma opção no menu da associção para visualizar a lista de espera para um determinado tipo de animal.
+  \item A lista de espera está organizada por tipo de animal e dentro de cada tipo está organizada por raça (se aplicável). Dentro de cada raça estará organizada pela data do pedido.
+  \item Existe um botão que permite à associação avisar o user que o animal já se encontra disponível.
+\end{itemize}
+
+\subsection{User Story 20}
+Como associação quero registar animais de modo a colocá-los para adoção.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe uma opção no menu da associção para registar um animal para adoção.
+  \item O animal deve ser registado com [[atributos?]]
+  \item Após o registo, o animal fica imediatamente disponível na página da associação.
+\end{itemize}
+
+\subsection{User Story 21}
+Como associação quero visualizar os animais que tenho para adoção, de modo alterar os seus dados.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe uma opção no menu da associção para visualizar um animal para adoção.
+  \item Os animais são dispostos por ordem alfabética de tipo de animal e dentro de cada tipo são organizados por ordem alfabética de raça.
+  \item Existe um botão para organizar os animais por idade (crescente e decrescente dentro de cada tipo) ou ordem alfabética de tipo (crescente ou decrescente).
+  \item Cada animal deve mostrar os seguintes atributos [[atributos? (incluindo padrinhos, valores doados ao animal, etc)]].
+  \item A associação pode alterar os seguintes atributos [[atributos?]]
+\end{itemize}
+
+\subsection{User Story 22}
+Como associação quero remover um animal que tenho para adoção, de modo a mostrar na minha página apenas animais disponíveis.\\\\
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe um botão para remover um animal da associação no menu de visualização de animais da associação.
+  \item A associação deve introduzir novamente a sua palavra-passe para confirmar a operação.
+\end{itemize}
+
+\subsection{User Story 23}
+Como associação quero visualizar as doações feitas à associação, de modo a gerir os meus fundos.
+\textbf{Critérios de Aceitação}:
+\begin{itemize}
+  \item Existe uma opção no menu da associação para ver todas as doações feitas à associação.
+  \item Cada doação deve mostrar o doador, a data e o montante.
 \end{itemize}
 \end{document}
 
