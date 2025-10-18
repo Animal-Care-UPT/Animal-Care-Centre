@@ -3,7 +3,7 @@ package AnimalCareCentre;
 /**
  * @author 51084 - Diogo Ferreira
  * @author
- * @author
+ * @author 51297 - Sara Canelas
  * @author
  */
 public class App {
