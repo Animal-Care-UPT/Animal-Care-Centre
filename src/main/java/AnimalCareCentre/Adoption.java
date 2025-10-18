@@ -1,7 +1,10 @@
 package AnimalCareCentre;
 
 import java.time.LocalDate;
-//This class describes the different atributes from the Adoption and how it works.
+/**
+ * This class describes the different atributes from the Adoption and how it works.
+ *
+ */
 public class Adoption {
 
     private User user;

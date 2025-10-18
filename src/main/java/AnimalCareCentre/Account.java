@@ -1,6 +1,8 @@
 package AnimalCareCentre;
-
-// This class describes the common attributes and methods between all accounts
+/**
+ * This class describes the common attributes and methods between all accounts.
+ *
+ */
 public class Account {
 
     private String name;

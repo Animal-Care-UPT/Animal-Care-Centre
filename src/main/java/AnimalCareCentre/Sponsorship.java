@@ -1,5 +1,8 @@
 package AnimalCareCentre;
-
+/**
+ * This class describes the sponsorhips to the animals and how it works.
+ *
+ */
 public class Sponsorship {
 
     private User user;

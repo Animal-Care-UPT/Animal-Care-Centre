@@ -1,5 +1,8 @@
 package AnimalCareCentre;
-
+/**
+ * This class describes an Animal from a Shelter.
+ *
+ */
 import java.util.ArrayList;
 
 public class Animal {

@@ -1,8 +1,10 @@
 package AnimalCareCentre;
 
 import java.time.LocalDate;
-
-//This class describes the different attributes from Donation and how it works.
+/**
+ * This class describes the different attributes from Donation and how it works.
+ *
+ */
 public class Donation {
 
     private Shelter receiver;

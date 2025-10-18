@@ -1,8 +1,10 @@
 package AnimalCareCentre;
 
 import java.time.LocalDate;
-
-//This class describes the common aspects of different classes of people's accounts.
+/**
+ * This class describes the common aspects of different classes of people's accounts.
+ *
+ */
 public class Person extends Account{
 
     private LocalDate birthDate;

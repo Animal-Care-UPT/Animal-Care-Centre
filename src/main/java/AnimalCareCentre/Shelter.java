@@ -1,7 +1,6 @@
 package AnimalCareCentre;
 
 import java.util.ArrayList;
-
 /**
  * This class describes all the atribbutes and methods from Shelters.
  *
