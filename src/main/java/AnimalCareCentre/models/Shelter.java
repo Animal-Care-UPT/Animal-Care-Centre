@@ -1,4 +1,4 @@
-package AnimalCareCentre;
+package AnimalCareCentre.models;
 
 import java.util.ArrayList;
 

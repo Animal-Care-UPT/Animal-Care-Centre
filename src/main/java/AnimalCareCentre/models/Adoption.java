@@ -1,6 +1,7 @@
-package AnimalCareCentre;
+package AnimalCareCentre.models;
 
 import java.time.LocalDate;
+import AnimalCareCentre.enums.*;
 
 /**
  * This class describes the model of an Adoption.

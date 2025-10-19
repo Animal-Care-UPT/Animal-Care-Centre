@@ -1,4 +1,6 @@
-package AnimalCareCentre;
+package AnimalCareCentre.models;
+
+import AnimalCareCentre.enums.*;
 
 /**
  * This class describes the model of an Account.

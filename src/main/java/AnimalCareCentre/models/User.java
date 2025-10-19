@@ -1,7 +1,8 @@
-package AnimalCareCentre;
+package AnimalCareCentre.models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import AnimalCareCentre.enums.*;
 
 /**
  * This class describes the model of a User from the system, its attributes and

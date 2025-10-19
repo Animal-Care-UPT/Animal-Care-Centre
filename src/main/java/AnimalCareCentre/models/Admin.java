@@ -1,5 +1,6 @@
-package AnimalCareCentre;
+package AnimalCareCentre.models;
 
+import AnimalCareCentre.enums.*;
 import java.time.LocalDate;
 
 /**
@@ -14,12 +15,12 @@ public class Admin extends Person {
   /**
    * Constructor for the class Admin.
    *
-   * @param name 
-   * @param email 
-   * @param password 
-   * @param location 
-   * @param securityQuestion 
-   * @param birthDate 
+   * @param name
+   * @param email
+   * @param password
+   * @param location
+   * @param securityQuestion
+   * @param birthDate
    */
   public Admin(String name, String email, String password, String location, SecurityQuestion securityQuestion,
       LocalDate birthDate) {

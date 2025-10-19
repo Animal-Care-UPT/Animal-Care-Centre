@@ -1,11 +1,13 @@
-package AnimalCareCentre;
+package AnimalCareCentre.models;
+
+import java.util.ArrayList;
+import AnimalCareCentre.enums.*;
+import javafx.scene.image.Image;
 
 /**
  * This class describes the model of an Animal.
  *
  */
-import java.util.ArrayList;
-
 public class Animal {
 
   private String name;

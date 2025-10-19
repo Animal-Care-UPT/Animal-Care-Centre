@@ -1,4 +1,4 @@
-package AnimalCareCentre;
+package AnimalCareCentre.enums;
 
 /**
  * This enum lists all the possible types of ways an animal can be rescued.
@@ -13,7 +13,7 @@ public enum AdoptionType {
   private final String adoptionType;
 
   /**
-   * Constructor from the security question
+   * Constructor from the AdoptionType
    *
    */
   AdoptionType(String adoptionType) {
@@ -29,7 +29,7 @@ public enum AdoptionType {
   }
 
   /**
-   * This method reads a string and returns the respective SecurityQuestion object
+   * This method reads a string and returns the respective AdoptionType object
    *
    * @param text
    * @return

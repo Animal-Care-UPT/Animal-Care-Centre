@@ -1,4 +1,4 @@
-package AnimalCareCentre;
+package AnimalCareCentre.models;
 
 /**
  * This class describes the model of a sponsorhip to the animals and how it

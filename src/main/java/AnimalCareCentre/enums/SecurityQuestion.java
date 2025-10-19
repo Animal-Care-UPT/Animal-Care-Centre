@@ -1,4 +1,4 @@
-package AnimalCareCentre;
+package AnimalCareCentre.enums;
 
 /**
  * This enum lists all the possible security questions
