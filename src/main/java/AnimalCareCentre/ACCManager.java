@@ -15,7 +15,7 @@ public class ACCManager {
 
   public SessionFactory sessionFactory;
 
-  public void createUserAccount(String type, String name, String email, String password, String location,
+  public void createUserAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer, LocalDate birthDate, int contact) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
@@ -24,7 +24,7 @@ public class ACCManager {
     session.getTransaction().commit();
   }
 
-  public void createAdminAccount(String type, String name, String email, String password, String location,
+  public void createAdminAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer, LocalDate birthDate) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
@@ -33,7 +33,7 @@ public class ACCManager {
     session.getTransaction().commit();
   }
 
-  public void createShelterAccount(String type, String name, String email, String password, String location,
+  public void createShelterAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer, LocalDate birthDate, int foundationYear, int contact) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();

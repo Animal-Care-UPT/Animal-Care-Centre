@@ -20,14 +20,17 @@ import AnimalCareCentre.views.*;
  */
 public class Navigator {
 
-  Stage stage;
+  private Stage stage;
+  private ACCManager manager;
 
   /**
    * Constructor for Navigator class.
    *
    */
-  public Navigator(Stage stage) {
+  public Navigator(Stage stage, ACCManager manager) {
+
     this.stage = stage;
+    this.manager = manager;
     stage.setTitle("AnimalCareCentre");
     stage.setMaximized(true);
     stage.show();
@@ -75,6 +78,9 @@ public class Navigator {
     Label passLabel = new Label("Password:");
     PasswordField password = new PasswordField();
     password.setMaxWidth(150);
+    Label locationLabel = new Label("Location:");
+    TextField location = new TextField();
+    location.setMaxWidth(150);
     Label secLabel = new Label("Security Question:");
     ComboBox<SecurityQuestion> sec = new ComboBox<>();
     sec.getItems().addAll(SecurityQuestion.values());
@@ -85,7 +91,8 @@ public class Navigator {
     VBox vbox = new VBox();
     vbox.setAlignment(Pos.CENTER_LEFT);
     vbox.setSpacing(10);
-    vbox.getChildren().addAll(type, accType, nameLabel, name, emailLabel, email, passLabel, password, secLabel, sec,
+    vbox.getChildren().addAll(type, accType, nameLabel, name, emailLabel, email, passLabel, password, locationLabel,
+        location, secLabel, sec,
         answerLabel, answer);
     vbox.setMaxWidth(250);
     scene.addItems(vbox);
@@ -99,10 +106,14 @@ public class Navigator {
     TextField year = new TextField();
     year.setMaxWidth(30);
 
+    Button create = new Button("Create");
+    Button back = new Button("Back");
+
     accType.valueProperty().addListener((obs, old, selected) -> {
       vbox.getChildren().clear();
 
-      vbox.getChildren().addAll(type, accType, nameLabel, name, emailLabel, email, passLabel, password, secLabel, sec,
+      vbox.getChildren().addAll(type, accType, nameLabel, name, emailLabel, email, passLabel, password, locationLabel,
+          location, secLabel, sec,
           answerLabel, answer);
 
       if (selected == "User") {
@@ -112,6 +123,23 @@ public class Navigator {
       } else if (selected == "Shelter") {
         vbox.getChildren().addAll(contactLabel, contactLabel, foundYear, year);
       }
+    });
+
+    create.setOnAction(e -> {
+      if (accType.getValue().equals("User")) {
+        manager.createUserAccount(
+            name.getText(),
+            email.getText(),
+            password.getText(),
+            location.getText(),
+            sec.getValue(),
+            answer.getText(), birthDate.getValue(),
+            Integer.parseInt(contact.getText()));
+      }
+    });
+
+    back.setOnAction(e -> {
+      showMainMenu();
     });
 
   }
