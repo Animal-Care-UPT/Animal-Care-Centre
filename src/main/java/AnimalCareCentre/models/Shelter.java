@@ -2,12 +2,26 @@ package AnimalCareCentre.models;
 
 import java.util.ArrayList;
 
+import AnimalCareCentre.enums.SecurityQuestion;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
 /**
  * This class describes the model of a Shelter.
  *
  */
-public class Shelter {
+@Entity
+@Table(name = "shelter")
+public class Shelter extends Account {
 
+  @Id
+  @Column(name = "shelter_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
   private int foundationYear;
   private int contact;
   private boolean isVerified;
@@ -20,12 +34,15 @@ public class Shelter {
    * @param contact
    * @param isVerified
    */
-  public Shelter(int foundationYear, int contact, boolean isVerified) {
+  public Shelter(String name, String email, String password, String location, SecurityQuestion securityQuestion,
+      String answer, int foundationYear, int contact) {
+    super(name, email, password, location, securityQuestion, answer);
     this.foundationYear = foundationYear;
     this.contact = contact;
-    this.isVerified = isVerified;
-    this.animals = new ArrayList<>();
+    isVerified = true;
   }
+
+
 
   // Getters
   public int getFoundationYear() {
@@ -36,7 +53,7 @@ public class Shelter {
     return contact;
   }
 
-  public boolean isVerified() {
+  public boolean getVerification() {
     return isVerified;
   }
 

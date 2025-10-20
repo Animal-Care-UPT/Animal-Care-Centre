@@ -21,9 +21,9 @@ public class Person extends Account {
    * @param securityQuestion
    * @param birthDate
    */
-  public Person(String name, String email, String password, String location, SecurityQuestion securityQuestion,
+  public Person(String name, String email, String password, String location, SecurityQuestion securityQuestion, String answer,
       LocalDate birthDate) {
-    super(name, email, password, location, securityQuestion);
+    super(name, email, password, location, securityQuestion, answer);
     this.birthDate = birthDate;
   }
 

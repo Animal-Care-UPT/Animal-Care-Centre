@@ -25,4 +25,8 @@ public class ACCVBox extends VBox {
   public void addItems(Node... items) {
     getChildren().addAll(items);
   }
+
+  public void clear() {
+    getChildren().clear();
+  }
 }

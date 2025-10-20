@@ -2,10 +2,13 @@ package AnimalCareCentre.views;
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -53,11 +56,20 @@ public class ACCScene extends Scene {
     ACCHBox footer = new ACCHBox();
 
     header.setStyle("-fx-background-color: #69462B;");
-    header.setMinHeight(50);
+    header.setMinHeight(60);
+    header.setMaxHeight(60);
+
+    Label footerLabel = new Label("Animal Care Centre - UPT");
+    footerLabel.setTextFill(Color.WHITE);
+    footer.setStyle("-fx-background-color: #69462B;");
+    footer.setMinHeight(30);
+    footer.setMaxHeight(30);
+    footer.addItems(footerLabel);
 
     content.setMaxWidth(Double.MAX_VALUE);
+    content.setMaxHeight(Double.MAX_VALUE);
     HBox.setHgrow(content, Priority.ALWAYS);
-    body.setFillHeight(true);
+    VBox.setVgrow(body, Priority.ALWAYS);
 
     logo.setPreserveRatio(true);
     logo.fitWidthProperty().bind(stage.widthProperty().multiply(0.6));
@@ -70,10 +82,12 @@ public class ACCScene extends Scene {
     left.fitWidthProperty().bind(stage.widthProperty().multiply(0.15));
     right.fitWidthProperty().bind(stage.widthProperty().multiply(0.15));
 
+    body.setAlignment(javafx.geometry.Pos.CENTER);
+    body.setFillHeight(true);
     body.addItems(left, content, right);
-    ACCVBox.setVgrow(body, javafx.scene.layout.Priority.ALWAYS);
 
     mainVbox.addItems(logo, header, body, footer);
+    VBox.setVgrow(body, Priority.ALWAYS);
   }
 
   /**
@@ -87,7 +101,7 @@ public class ACCScene extends Scene {
    * This method adds items to the main body portion of the page.
    */
   public void addItems(Node... items) {
-    mainVbox.addItems(items);
+    content.addItems(items);
   }
 
   /**
@@ -115,6 +129,13 @@ public class ACCScene extends Scene {
   private ImageView createRightBorder() {
     Image img = new Image(getClass().getResourceAsStream("/right.png"));
     return new ImageView(img);
+  }
+
+  /**
+   * Clears the main content vbox
+   */
+  public void clearContent() {
+    content.clear();
   }
 
 }
