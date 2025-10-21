@@ -1,18 +1,34 @@
 package AnimalCareCentre.models;
 
 import AnimalCareCentre.enums.*;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 
 /**
  * This class describes the model of an Account.
  *
  */
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
 public class Account {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
   private String name;
   private String email;
   private String password;
   private String location;
   private SecurityQuestion securityQuestion;
+  private String answer;
+
 
   /**
    * Constructor for class Account.
@@ -23,13 +39,16 @@ public class Account {
    * @param location
    * @param securityQuestion
    */
-  public Account(String name, String email, String password, String location, SecurityQuestion securityQuestion) {
+  public Account(String name, String email, String password, String location, SecurityQuestion securityQuestion, String answer) {
     this.name = name;
     this.email = email;
     this.password = password;
     this.location = location;
     this.securityQuestion = securityQuestion;
+    this.answer = answer;
   }
+
+  protected Account() {}
 
   // getters area
   public String getName() {

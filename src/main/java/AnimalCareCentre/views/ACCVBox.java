@@ -15,7 +15,7 @@ public class ACCVBox extends VBox {
    */
   public ACCVBox() {
     super();
-    setSpacing(5);
+    setSpacing(15);
     setAlignment(Pos.CENTER);
   }
 
@@ -24,5 +24,9 @@ public class ACCVBox extends VBox {
    */
   public void addItems(Node... items) {
     getChildren().addAll(items);
+  }
+
+  public void clear() {
+    getChildren().clear();
   }
 }

@@ -41,6 +41,9 @@ bin/
 *.tar.gz
 *.rar
 
+# Hibernate
+hibernate.cfg.xml
+
 # OS files
 .DS_Store
 

@@ -2,16 +2,23 @@ package AnimalCareCentre.models;
 
 import java.util.ArrayList;
 
+import AnimalCareCentre.enums.SecurityQuestion;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
 /**
  * This class describes the model of a Shelter.
  *
  */
-public class Shelter {
+@Entity
+@DiscriminatorValue("Shelter")
+public class Shelter extends Account {
 
   private int foundationYear;
   private int contact;
   private boolean isVerified;
-  private ArrayList<Animal> animals;
+  // private ArrayList<Animal> animals; commented for now
+
 
   /**
    * Constructor for the class Shelter
@@ -20,12 +27,16 @@ public class Shelter {
    * @param contact
    * @param isVerified
    */
-  public Shelter(int foundationYear, int contact, boolean isVerified) {
+  public Shelter(String name, String email, String password, String location, SecurityQuestion securityQuestion,
+      String answer, int foundationYear, int contact) {
+    super(name, email, password, location, securityQuestion, answer);
     this.foundationYear = foundationYear;
     this.contact = contact;
-    this.isVerified = isVerified;
-    this.animals = new ArrayList<>();
+    isVerified = true;
   }
+
+  protected Shelter() {}
+
 
   // Getters
   public int getFoundationYear() {
@@ -36,13 +47,10 @@ public class Shelter {
     return contact;
   }
 
-  public boolean isVerified() {
+  public boolean getVerification() {
     return isVerified;
   }
 
-  public ArrayList<Animal> getAnimals() {
-    return animals;
-  }
 
   @Override
   public String toString() {
@@ -50,7 +58,7 @@ public class Shelter {
         "foundationYear=" + foundationYear +
         ", contact=" + contact +
         ", isVerified=" + isVerified +
-        ", animals=" + animals + // uses the toString from the class Animal
+        // ", animals=" + animals + // uses the toString from the class Animal
         '}';
   }
 }

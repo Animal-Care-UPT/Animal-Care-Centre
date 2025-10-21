@@ -13,10 +13,11 @@ public class App extends Application {
 
   private static Stage stage;
   private static Navigator nav;
+  private static final ACCManager manager = new ACCManager();
 
   public void start(Stage stage) {
     App.stage = stage;
-    nav = new Navigator(stage);
+    nav = new Navigator(stage, manager);
   }
 
   public static void main(String[] args) {

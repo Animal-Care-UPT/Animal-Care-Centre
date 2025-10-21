@@ -2,14 +2,17 @@ package AnimalCareCentre.models;
 
 import java.time.LocalDate;
 import AnimalCareCentre.enums.*;
+import jakarta.persistence.Entity;
 
 /**
  * This class describes the model a Person.
  *
  */
+@Entity
 public class Person extends Account {
 
   private LocalDate birthDate;
+
 
   /**
    * Constructor for the class Person
@@ -21,11 +24,13 @@ public class Person extends Account {
    * @param securityQuestion
    * @param birthDate
    */
-  public Person(String name, String email, String password, String location, SecurityQuestion securityQuestion,
+  public Person(String name, String email, String password, String location, SecurityQuestion securityQuestion, String answer,
       LocalDate birthDate) {
-    super(name, email, password, location, securityQuestion);
+    super(name, email, password, location, securityQuestion, answer);
     this.birthDate = birthDate;
   }
+
+  protected Person() {}
 
   // Getter from birthDate
   public LocalDate getBirthDate() {
