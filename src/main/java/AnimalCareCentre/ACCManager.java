@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.Query;
 
 import AnimalCareCentre.enums.*;
 import AnimalCareCentre.models.*;
@@ -18,6 +19,28 @@ public class ACCManager {
   }
 
   public SessionFactory sessionFactory;
+
+  public Account login(String email, String password) {
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    Query<Account> query = session.createQuery("FROM Account WHERE email = :email", Account.class);
+    query.setParameter("email", email);
+    Account acc = query.uniqueResult();
+    session.getTransaction().commit();
+
+    if (acc == null) {
+      return null;
+    }
+
+    if (acc.getPassword().equals(password)) {
+      return acc;
+    } else {
+      return null;
+    }
+
+
+
+  }
 
   public void createUserAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer, LocalDate birthDate, int contact) {

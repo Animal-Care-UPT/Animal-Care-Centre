@@ -1,7 +1,6 @@
 package AnimalCareCentre;
 
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -12,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import AnimalCareCentre.enums.*;
 import AnimalCareCentre.views.*;
+import AnimalCareCentre.models.*;
 
 /**
  * This class handles all of the navigation through the different pages of
@@ -20,6 +20,7 @@ import AnimalCareCentre.views.*;
  */
 public class Navigator {
 
+  private Account loggedAcc;
   private Stage stage;
   private ACCManager manager;
 
@@ -62,7 +63,28 @@ public class Navigator {
   }
 
   public void login() {
-    System.out.println("Testtttttt");
+    ACCScene scene = new ACCScene(stage, new ACCVBox());
+    Label emailLabel = new Label("Email:");
+    TextField email = new TextField();
+    Label passLabel = new Label("Password:");
+    PasswordField password = new PasswordField();
+    Button enter = new Button("Enter");
+    Button back = new Button("Back");
+    scene.addItems(emailLabel, email, passLabel, password, enter, back);
+
+    enter.setOnAction(e -> {
+      Account acc = manager.login(email.getText(), password.getText());
+      if (acc != null) {
+        loggedAcc = acc;
+        System.out.println("Logged in!");
+      } else {
+        System.out.println("Wrong credentials!");
+      }
+    });
+
+    back.setOnAction(e -> {
+      showMainMenu();
+    });
   }
 
   public void createAccount() {
