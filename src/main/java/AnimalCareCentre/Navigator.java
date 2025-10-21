@@ -53,6 +53,7 @@ public class Navigator {
     });
 
     exit.setOnAction(e -> {
+      manager.exit();
       System.exit(0);
     });
 
@@ -90,11 +91,11 @@ public class Navigator {
 
     VBox vbox = new VBox();
     vbox.setAlignment(Pos.CENTER_LEFT);
-    vbox.setSpacing(10);
     vbox.getChildren().addAll(type, accType, nameLabel, name, emailLabel, email, passLabel, password, locationLabel,
         location, secLabel, sec,
         answerLabel, answer);
     vbox.setMaxWidth(250);
+    vbox.setSpacing(10);
     scene.addItems(vbox);
 
     Label birthLabel = new Label("Birthdate:");
@@ -108,6 +109,30 @@ public class Navigator {
 
     Button create = new Button("Create");
     Button back = new Button("Back");
+
+    create.setOnAction(e -> {
+      if (accType.getValue().equals("User")) {
+        manager.createUserAccount(name.getText(), email.getText(), password.getText(), location.getText(),
+            sec.getValue(), answer.getText(), birthDate.getValue(), Integer.parseInt(contact.getText()));
+        showMainMenu();
+
+      } else if (accType.getValue().equals("Admin")) {
+        manager.createAdminAccount(name.getText(), email.getText(), password.getText(), location.getText(),
+            sec.getValue(), answer.getText(), birthDate.getValue());
+        showMainMenu();
+
+      } else if (accType.getValue().equals("Shelter")) {
+        manager.createShelterAccount(name.getText(), email.getText(), password.getText(), location.getText(),
+            sec.getValue(), answer.getText(), birthDate.getValue(), Integer.parseInt(year.getText()),
+            Integer.parseInt(contact.getText()));
+        showMainMenu();
+      }
+
+    });
+
+    back.setOnAction(e -> {
+      showMainMenu();
+    });
 
     accType.valueProperty().addListener((obs, old, selected) -> {
       vbox.getChildren().clear();
@@ -125,22 +150,7 @@ public class Navigator {
       }
     });
 
-    create.setOnAction(e -> {
-      if (accType.getValue().equals("User")) {
-        manager.createUserAccount(
-            name.getText(),
-            email.getText(),
-            password.getText(),
-            location.getText(),
-            sec.getValue(),
-            answer.getText(), birthDate.getValue(),
-            Integer.parseInt(contact.getText()));
-      }
-    });
-
-    back.setOnAction(e -> {
-      showMainMenu();
-    });
+    scene.addItems(create, back);
 
   }
 }

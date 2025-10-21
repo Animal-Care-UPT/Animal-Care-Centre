@@ -3,29 +3,22 @@ package AnimalCareCentre.models;
 import java.util.ArrayList;
 
 import AnimalCareCentre.enums.SecurityQuestion;
-import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 /**
  * This class describes the model of a Shelter.
  *
  */
 @Entity
-@Table(name = "shelter")
+@DiscriminatorValue("Shelter")
 public class Shelter extends Account {
 
-  @Id
-  @Column(name = "shelter_id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
   private int foundationYear;
   private int contact;
   private boolean isVerified;
-  private ArrayList<Animal> animals;
+  // private ArrayList<Animal> animals; commented for now
+
 
   /**
    * Constructor for the class Shelter
@@ -42,6 +35,7 @@ public class Shelter extends Account {
     isVerified = true;
   }
 
+  protected Shelter() {}
 
 
   // Getters
@@ -57,9 +51,6 @@ public class Shelter extends Account {
     return isVerified;
   }
 
-  public ArrayList<Animal> getAnimals() {
-    return animals;
-  }
 
   @Override
   public String toString() {
@@ -67,7 +58,7 @@ public class Shelter extends Account {
         "foundationYear=" + foundationYear +
         ", contact=" + contact +
         ", isVerified=" + isVerified +
-        ", animals=" + animals + // uses the toString from the class Animal
+        // ", animals=" + animals + // uses the toString from the class Animal
         '}';
   }
 }

@@ -15,7 +15,7 @@ public class ACCVBox extends VBox {
    */
   public ACCVBox() {
     super();
-    setSpacing(5);
+    setSpacing(15);
     setAlignment(Pos.CENTER);
   }
 

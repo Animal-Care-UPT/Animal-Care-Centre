@@ -13,6 +13,10 @@ import AnimalCareCentre.models.*;
 
 public class ACCManager {
 
+  public ACCManager() {
+    setup();
+  }
+
   public SessionFactory sessionFactory;
 
   public void createUserAccount(String name, String email, String password, String location,

@@ -3,12 +3,8 @@ package AnimalCareCentre.models;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import AnimalCareCentre.enums.*;
-import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 /**
  * This class describes the model of a User from the system, its attributes and
@@ -16,17 +12,14 @@ import jakarta.persistence.Table;
  *
  */
 @Entity
-@Table(name = "user")
+@DiscriminatorValue("User")
 public class User extends Person {
 
-  @Id
-  @Column(name = "user_id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
   private int contact;
-  private ArrayList<Adoption> adoptions;
-  private ArrayList<Sponsorship> sponsorships;
-  private ArrayList<Donation> donations;
+  // private ArrayList<Adoption> adoptions;
+  // private ArrayList<Sponsorship> sponsorships;
+  // private ArrayList<Donation> donations; commented for now
+
 
   /**
    * Constructor for the class User
@@ -44,10 +37,9 @@ public class User extends Person {
       LocalDate birthDate, int contact) {
     super(name, email, password, location, securityQuestion, answer, birthDate);
     this.contact = contact;
-    this.adoptions = new ArrayList<>();
-    this.sponsorships = new ArrayList<>();
-    this.donations = new ArrayList<>();
   }
+
+  protected User() {}
 
   // Getter from the contact of the user
   public int getContact() {

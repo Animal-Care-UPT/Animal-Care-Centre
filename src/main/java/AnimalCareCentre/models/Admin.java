@@ -1,12 +1,8 @@
 package AnimalCareCentre.models;
 
 import AnimalCareCentre.enums.*;
-import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 import java.time.LocalDate;
 
@@ -16,13 +12,11 @@ import java.time.LocalDate;
  *
  */
 @Entity
-@Table(name = "admin")
+@DiscriminatorValue("Admin")
 public class Admin extends Person {
 
-  @Id
-  @Column(name = "admin_id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+
+  // This class has no atributes of its own
 
   /**
    * Constructor for the class Admin.
@@ -39,6 +33,8 @@ public class Admin extends Person {
       LocalDate birthDate) {
     super(name, email, password, location, securityQuestion, answer, birthDate);
   }
+
+  protected Admin() {}
 
   // toString from the class
   @Override
