@@ -39,6 +39,11 @@ public class Navigator {
 
   }
 
+  public void changePassword() {
+	  
+  }
+  
+  
   public void showMainMenu() {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Button login = new Button("Login");
