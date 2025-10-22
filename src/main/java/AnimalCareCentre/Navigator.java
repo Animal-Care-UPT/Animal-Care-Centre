@@ -21,12 +21,14 @@ import AnimalCareCentre.enums.*;
 import AnimalCareCentre.views.*;
 import AnimalCareCentre.models.*;
 
+import java.util.Scanner;
+
 /**
  * This class handles all of the navigation through the different pages of
  * the app.
  *
  */
-public class Navigator {
+public class Navigator{
 
   private Account loggedAcc;
   private Stage stage;
@@ -47,6 +49,11 @@ public class Navigator {
 
   }
 
+  public void changePassword() {
+	  
+  }
+  
+  
   public void showMainMenu() {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Button login = new Button("Login");
@@ -259,4 +266,91 @@ public class Navigator {
     alert.setContentText(text);
     alert.showAndWait();
   }
+
+  //To use when we transfer to the terminal
+    private void showTerminalScreen() {
+        ACCVBox vbox = new ACCVBox();
+        vbox.setStyle("-fx-background-color: black;");
+
+        Button logout = new Button("Logout");
+        logout.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 16px;");
+
+        logout.setOnAction(e -> {
+            System.out.println("\n Logout efetuado!");
+            loggedAcc = null;
+            showMainMenu();
+        });
+
+        vbox.getChildren().add(logout);
+        ACCScene scene = new ACCScene(stage, vbox);
+        stage.setScene(scene);
+    }
+
+    //Terminal menu from the shelters
+    private void ShelterHomepage(){
+      //To show the window with only the loggout button
+        showTerminalScreen();
+
+        //Shelter Menu
+        new Thread(() -> {
+            Scanner sc = new Scanner(System.in);
+            int option;
+
+            do{
+                System.out.println("=== SHELTER MENU ===");
+                System.out.println("1. Register Animal");
+                System.out.println("0. Loggout");
+                System.out.print("Option: ");
+                option = sc.nextInt();
+                sc.nextLine();
+
+                switch (option) {
+                    //To allow shelters to register animals
+                    case 1 -> {
+                        System.out.println("\n=== REGISTER ANIMAL ===");
+                        System.out.print("Name: ");
+                        String name = sc.nextLine();
+
+                        System.out.print("Type (DOG, CAT or RABBIT): ");
+                        AnimalType type = AnimalType.valueOf(sc.nextLine().toUpperCase());
+
+                        System.out.print("Race: ");
+                        AnimalRace race = AnimalRace.valueOf(sc.nextLine().toUpperCase());
+
+                        System.out.print("Size (SMALL, MEDIUM, LARGE): ");
+                        AnimalSize size = AnimalSize.valueOf(sc.nextLine().toUpperCase());
+
+                        System.out.print("Age: ");
+                        int age = sc.nextInt();
+                        sc.nextLine();
+
+                        System.out.print("Color: ");
+                        AnimalColor color = AnimalColor.valueOf(sc.nextLine().toUpperCase());
+
+                        System.out.print("Description: ");
+                        String description = sc.nextLine();
+
+                        System.out.print("Adoption type: ");
+                        AdoptionType adoptionType = AdoptionType.valueOf(sc.nextLine().toUpperCase());
+
+                        Image image = null; // no image in terminal
+
+                        manager.registerAnimal(name, type, race, size, age, color, description, image, adoptionType);
+                        System.out.println("✅ Animal registered successfully!");
+
+                    }
+
+                    case 0 -> {
+                        System.out.println("Exiting terminal menu...");
+                        javafx.application.Platform.runLater(() -> showMainMenu());
+                    }
+                    default -> System.out.println("Invalid option!");
+            }
+        }while (option != 0);
+    }).start();
+
+    }
+
+
+
 }
