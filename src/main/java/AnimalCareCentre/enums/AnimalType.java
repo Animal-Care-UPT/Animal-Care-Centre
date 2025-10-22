@@ -7,8 +7,8 @@ package AnimalCareCentre.enums;
 public enum AnimalType {
 
   DOG("Dog"),
-  CAT("Cat");
-  // many more to come i guess
+  CAT("Cat"),
+  RABBIT("Rabbit");
 
   private final String animalType;
 

@@ -2,6 +2,7 @@ package AnimalCareCentre;
 
 import java.time.LocalDate;
 
+import javafx.scene.image.Image;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
@@ -88,6 +89,16 @@ public class ACCManager {
     } catch (Exception e) {
       StandardServiceRegistryBuilder.destroy(registry);
     }
+  }
+
+    //Method to register animals as a Shelter
+  public void registerAnimal(String name, AnimalType type, AnimalRace race, AnimalSize size, int age, AnimalColor color,
+                             String description, Image image, AdoptionType adoptionType){
+      Session session = sessionFactory.openSession();
+      session.beginTransaction();
+      Animal animal = new Animal(name, type, race, color, false, size, adoptionType, description, image);
+      session.persist(animal);
+      session.getTransaction().commit();
   }
 
   public void exit() {
