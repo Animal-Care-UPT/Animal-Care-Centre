@@ -20,6 +20,18 @@ public class ACCManager {
 
   public SessionFactory sessionFactory;
 
+  public void changePassword(String Password, Account loggedUser) {
+	  
+	  loggedUser.setPassword(Password);
+	  
+	  Session session = sessionFactory.openSession();
+	  session.beginTransaction();
+	  session.merge(loggedUser);
+	  session.getTransaction().commit();
+	  session.close();
+  }
+  
+  
   public Account login(String email, String password) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
