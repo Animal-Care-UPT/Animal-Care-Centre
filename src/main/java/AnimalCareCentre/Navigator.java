@@ -1,15 +1,22 @@
 package AnimalCareCentre;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.LengthRule;
+import org.passay.PasswordData;
+import org.passay.PasswordValidator;
+import org.passay.RuleResult;
+import org.passay.WhitespaceRule;
+
 import AnimalCareCentre.enums.*;
 import AnimalCareCentre.views.*;
 import AnimalCareCentre.models.*;
@@ -135,25 +142,94 @@ public class Navigator{
     contact.setMaxWidth(150);
     Label foundYear = new Label("Foundation year:");
     TextField year = new TextField();
-    year.setMaxWidth(30);
+    year.setMaxWidth(80);
+
+    year.setTextFormatter(new TextFormatter<>(change -> {
+      String num = change.getControlNewText();
+      if (num.matches("\\d{0,4}")) {
+        return change;
+      }
+      return null;
+    }));
+
+    contact.setTextFormatter(new TextFormatter<>(change -> {
+      String num = change.getControlNewText();
+      if (num.matches("\\d{0,9}")) {
+        return change;
+      }
+      return null;
+    }));
 
     Button create = new Button("Create");
     Button back = new Button("Back");
 
     create.setOnAction(e -> {
+
+      if (accType.getValue() == null) {
+        showAlert(AlertType.ERROR, "Missing Account Type!", "Please select an account type!");
+        return;
+      }
+
+      if (!manager.validateEmail(email.getText())) {
+        showAlert(AlertType.ERROR, "Invalid Email!", "Please enter a valid email address!");
+        return;
+      }
+
+      if (!manager.validatePassword(password.getText())) {
+        showAlert(AlertType.ERROR, "Invalid Password!",
+            "Password must have between 8 and 16 characters, as well as 1 special character and 1 number!");
+        return;
+      }
+
       if (accType.getValue().equals("User")) {
+
+        if (sec.getValue() == null || !manager.validateFields(name.getText(), email.getText(), password.getText(), location.getText(),
+            sec.getValue().toString(), answer.getText(), birthDate.getValue().toString(), contact.getText())) {
+          showAlert(AlertType.ERROR, "Empty Fields!", "All fields are required!");
+          return;
+        }
+
+        if (birthDate.getValue() != null && birthDate.getValue().isAfter(LocalDate.now())) {
+          showAlert(AlertType.ERROR, "Invalid Date!", "The birth date cannot be in the future");
+          return;
+        }
+
         manager.createUserAccount(name.getText(), email.getText(), password.getText(), location.getText(),
             sec.getValue(), answer.getText(), birthDate.getValue(), Integer.parseInt(contact.getText()));
         showMainMenu();
 
       } else if (accType.getValue().equals("Admin")) {
+
+        if (sec.getValue() == null || !manager.validateFields(name.getText(), email.getText(), password.getText(), location.getText(),
+            sec.getValue().toString(), answer.getText(), birthDate.getValue().toString())) {
+          showAlert(AlertType.ERROR, "Empty Fields!", "All fields are required!");
+          return;
+        }
+
+        if (birthDate.getValue() != null && birthDate.getValue().isAfter(LocalDate.now())) {
+          showAlert(AlertType.ERROR, "Invalid Date!", "The birth date cannot be in the future");
+          return;
+        }
+
         manager.createAdminAccount(name.getText(), email.getText(), password.getText(), location.getText(),
             sec.getValue(), answer.getText(), birthDate.getValue());
         showMainMenu();
 
       } else if (accType.getValue().equals("Shelter")) {
+
+        if (sec.getValue() == null || !manager.validateFields(name.getText(), email.getText(), password.getText(), location.getText(),
+            sec.getValue().toString(), answer.getText(), year.getText(), contact.getText())) {
+          showAlert(AlertType.ERROR, "Empty Fields!", "All fields are required!");
+          return;
+        }
+
+        if (Integer.parseInt(year.getText()) > LocalDate.now().getYear()) {
+          showAlert(AlertType.ERROR, "Invalid Foundation year!", "The foundation year cannot be in the future");
+          return;
+        }
+
         manager.createShelterAccount(name.getText(), email.getText(), password.getText(), location.getText(),
-            sec.getValue(), answer.getText(), birthDate.getValue(), Integer.parseInt(year.getText()),
+            sec.getValue(), answer.getText(), Integer.parseInt(year.getText()),
             Integer.parseInt(contact.getText()));
         showMainMenu();
       }
@@ -171,17 +247,24 @@ public class Navigator{
           location, secLabel, sec,
           answerLabel, answer);
 
-      if (selected == "User") {
+      if (selected.equals("User")) {
         vbox.getChildren().addAll(birthLabel, birthDate, contactLabel, contact);
-      } else if (selected == "Admin") {
+      } else if (selected.equals("Admin")) {
         vbox.getChildren().addAll(birthLabel, birthDate);
-      } else if (selected == "Shelter") {
-        vbox.getChildren().addAll(contactLabel, contactLabel, foundYear, year);
+      } else if (selected.equals("Shelter")) {
+        vbox.getChildren().addAll(contactLabel, contact, foundYear, year);
       }
     });
 
     scene.addItems(create, back);
+  }
 
+  public void showAlert(AlertType type, String title, String text) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(text);
+    alert.showAndWait();
   }
 
   //To use when we transfer to the terminal

@@ -1,14 +1,22 @@
 package AnimalCareCentre;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
-import javafx.scene.image.Image;
+import org.apache.commons.validator.routines.EmailValidator;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.query.Query;
+import org.passay.CharacterRule;
+import org.passay.EnglishCharacterData;
+import org.passay.LengthRule;
+import org.passay.PasswordData;
+import org.passay.PasswordValidator;
+import org.passay.RuleResult;
+import org.passay.WhitespaceRule;
 
 import AnimalCareCentre.enums.*;
 import AnimalCareCentre.models.*;
@@ -50,9 +58,6 @@ public class ACCManager {
     } else {
       return null;
     }
-
-
-
   }
 
   public void createUserAccount(String name, String email, String password, String location,
@@ -74,7 +79,7 @@ public class ACCManager {
   }
 
   public void createShelterAccount(String name, String email, String password, String location,
-      SecurityQuestion securityQuestion, String answer, LocalDate birthDate, int foundationYear, int contact) {
+      SecurityQuestion securityQuestion, String answer, int foundationYear, int contact) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
     Shelter shelter = new Shelter(name, email, password, location, securityQuestion, answer, foundationYear, contact);
@@ -105,4 +110,25 @@ public class ACCManager {
     sessionFactory.close();
   }
 
+  public boolean validatePassword(String password) {
+    PasswordValidator validator = new PasswordValidator(Arrays.asList(new LengthRule(8, 16),
+        new CharacterRule(EnglishCharacterData.UpperCase, 1), new CharacterRule(EnglishCharacterData.Digit, 1),
+        new CharacterRule(EnglishCharacterData.Special, 1), new WhitespaceRule()));
+    RuleResult result = validator.validate(new PasswordData(password));
+    return result.isValid();
+  }
+
+  public boolean validateEmail(String email) {
+    EmailValidator validator = EmailValidator.getInstance();
+    return validator.isValid(email);
+  }
+
+  public boolean validateFields(String... strings) {
+    for (String string : strings) {
+      if (string.isBlank() || string == null) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
