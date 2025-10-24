@@ -10,9 +10,9 @@ import javafx.scene.image.Image;
  */
 public class Animal {
 
-  private String name;
+    private String name;
   private AnimalType type;
-  private AnimalRace race;
+  private String race;
   private AnimalColor color;
   private boolean isVacinated;
   private AnimalSize size;
@@ -35,7 +35,7 @@ public class Animal {
    * @param description
    * @param image
    */
-  public Animal(String name, AnimalType type, AnimalRace race, AnimalColor color, boolean isVacinated, AnimalSize size,
+  public Animal(String name, AnimalType type, String race, AnimalColor color, boolean isVacinated, AnimalSize size,
       AdoptionType listetFor, String description, Image image) {
     this.name = name;
     this.type = type;
@@ -59,7 +59,7 @@ public class Animal {
     return type;
   }
 
-  public AnimalRace getRace() {
+  public String getRace() {
     return race;
   }
 
