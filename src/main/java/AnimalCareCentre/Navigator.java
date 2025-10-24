@@ -346,10 +346,24 @@ public class Navigator{
                         String name = sc.nextLine();
 
                         System.out.print("Type (DOG, CAT or RABBIT): ");
-                        AnimalType type = AnimalType.valueOf(sc.nextLine().toUpperCase());
+                        String typeInput =  sc.nextLine();
+                        AnimalType type = AnimalType.fromString(typeInput);
+                        if(type == null) {
+                            System.out.println("Invalid type");
+                            return;
+                        }
+
+                        System.out.print("Available races for : " + type + ": ");
+                        for(String race : type.getBreeds()){
+                            System.out.println(race);
+                        }
 
                         System.out.print("Race: ");
-                        AnimalRace race = AnimalRace.valueOf(sc.nextLine().toUpperCase());
+                        String race = sc.nextLine();
+
+                        if(!type.getBreeds().contains(race)) {
+                            System.out.println("Invalid race");
+                        }
 
                         System.out.print("Size (SMALL, MEDIUM, LARGE): ");
                         AnimalSize size = AnimalSize.valueOf(sc.nextLine().toUpperCase());

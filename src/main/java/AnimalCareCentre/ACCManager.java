@@ -100,7 +100,7 @@ public class ACCManager {
   }
 
     //Method to register animals as a Shelter
-  public void registerAnimal(String name, AnimalType type, AnimalRace race, AnimalSize size, int age, AnimalColor color,
+  public void registerAnimal(String name, AnimalType type, String race, AnimalSize size, int age, AnimalColor color,
                              String description, Image image, AdoptionType adoptionType){
       Session session = sessionFactory.openSession();
       session.beginTransaction();
