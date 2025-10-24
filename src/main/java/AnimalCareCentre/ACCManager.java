@@ -29,13 +29,13 @@ public class ACCManager {
 
   public SessionFactory sessionFactory;
 
-  public void changePassword(String Password, Account loggedUser) {
+  public void changePassword(String Password, String email) {
 	  
-	  loggedUser.setPassword(Password);
+	  
 	  
 	  Session session = sessionFactory.openSession();
 	  session.beginTransaction();
-	  session.merge(loggedUser);
+	  session.merge();
 	  session.getTransaction().commit();
 	  session.close();
   }

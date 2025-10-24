@@ -49,11 +49,6 @@ public class Navigator{
 
   }
 
-  public void changePassword() {
-	  
-  }
-  
-  
   public void showMainMenu() {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Button login = new Button("Login");
@@ -85,7 +80,8 @@ public class Navigator{
     PasswordField password = new PasswordField();
     Button enter = new Button("Enter");
     Button back = new Button("Back");
-    scene.addItems(emailLabel, email, passLabel, password, enter, back);
+    Button changePassword = new Button("Forgot Password");
+    scene.addItems(emailLabel, email, passLabel, password, enter, back,changePassword);
 
     enter.setOnAction(e -> {
       Account acc = manager.login(email.getText(), password.getText());
@@ -99,6 +95,10 @@ public class Navigator{
 
     back.setOnAction(e -> {
       showMainMenu();
+    });
+    
+    changePassword.setOnAction(e -> {
+    	changePassword();
     });
   }
 
