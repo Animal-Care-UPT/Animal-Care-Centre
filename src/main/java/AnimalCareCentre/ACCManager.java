@@ -1,5 +1,7 @@
 package AnimalCareCentre;
 
+import javafx.scene.image.Image;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -29,13 +31,14 @@ public class ACCManager {
 
   public SessionFactory sessionFactory;
 
-  public void changePassword(String Password, Account loggedUser) {
-	  
-	  loggedUser.setPassword(Password);
+  public void changePassword(String email, String password) {
 	  
 	  Session session = sessionFactory.openSession();
 	  session.beginTransaction();
-	  session.merge(loggedUser);
+	  Query <Account> query = session.createQuery("FROM Account WHERE email =:email",Account.class);
+	  query.setParameter("email",email);
+	  Account account = query.uniqueResult();
+	  session.merge(account);
 	  session.getTransaction().commit();
 	  session.close();
   }
@@ -120,9 +123,29 @@ public class ACCManager {
 
   public boolean validateEmail(String email) {
     EmailValidator validator = EmailValidator.getInstance();
-    return validator.isValid(email);
+    if(!validator.isValid(email)) {
+    	return false;
+    }
+    else {
+    	return true;
+    }
   }
 
+  public boolean doesEmailExist(String email) {
+	  Session session = sessionFactory.openSession();
+	    session.beginTransaction();
+	    Query<Account> query = session.createQuery("FROM Account WHERE email = :email",Account.class);
+	    query.setParameter("email",email);
+	    Account acc = query.uniqueResult();
+	    session.getTransaction().commit();
+	    if (acc == null) {
+	    	return false;
+	    }
+	    else {
+	    	return true;
+	    }
+  }
+  
   public boolean validateFields(String... strings) {
     for (String string : strings) {
       if (string.isBlank() || string == null) {

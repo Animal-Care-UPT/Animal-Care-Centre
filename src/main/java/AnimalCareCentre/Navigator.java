@@ -6,6 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import javafx.scene.image.Image;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -49,11 +50,6 @@ public class Navigator{
 
   }
 
-  public void changePassword() {
-	  
-  }
-  
-  
   public void showMainMenu() {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Button login = new Button("Login");
@@ -85,7 +81,8 @@ public class Navigator{
     PasswordField password = new PasswordField();
     Button enter = new Button("Enter");
     Button back = new Button("Back");
-    scene.addItems(emailLabel, email, passLabel, password, enter, back);
+    Button changePassword = new Button("Forgot Password");
+    scene.addItems(emailLabel, email, passLabel, password, enter, back,changePassword);
 
     enter.setOnAction(e -> {
       Account acc = manager.login(email.getText(), password.getText());
@@ -100,8 +97,45 @@ public class Navigator{
     back.setOnAction(e -> {
       showMainMenu();
     });
+    
+    changePassword.setOnAction(e -> {
+    	changePassword();
+    });
   }
 
+  public void changePassword() {
+	  ACCScene scene = new ACCScene(stage, new ACCVBox());
+	  Label emailLabel = new Label("Email:");
+	  TextField email = new TextField();
+	  Button enter = new Button("Enter");
+	  Label passwordLabel = new Label("New password:");
+	  PasswordField password = new PasswordField();
+	  Button comfirm = new Button ("Comfirm");
+	  Button back = new Button ("Back");
+	  scene.addItems(emailLabel,email,enter,back);
+	  enter.setOnAction(e -> {
+		  if(manager.doesEmailExist(email.getText())) {
+			 scene.clearContent();
+			 scene.addItems(passwordLabel,password,comfirm,back);
+		  }
+		  else {
+			  showAlert(AlertType.ERROR,"Invalid Email","The email is not yet registed");
+		  }
+	  });
+	  comfirm.setOnAction(e ->{
+		  if(!manager.validatePassword(password.getText())) {
+			  showAlert(AlertType.ERROR,"Invalid Password","Password must have between 8 and 16 characters, as well as 1 special character and 1 number!");
+			  return;
+		  }
+		  manager.changePassword(email.getText(), password.getText());
+		  login();
+	  });
+	  back.setOnAction(e ->{
+		  login();
+	  });
+  }
+  
+  
   public void createAccount() {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Label type = new Label("Account type:");
