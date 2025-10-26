@@ -250,18 +250,13 @@ public class App extends Application {
 
         if (sec.getValue() == null
             || !manager.validateFields(name.getText(), email.getText(), password.getText(), location.getText(),
-                sec.getValue().toString(), answer.getText(), birthDate.getValue().toString())) {
+                sec.getValue().toString(), answer.getText())) {
           showAlert(AlertType.ERROR, "Empty Fields!", "All fields are required!");
           return;
         }
 
-        if (birthDate.getValue() != null && birthDate.getValue().isAfter(LocalDate.now())) {
-          showAlert(AlertType.ERROR, "Invalid Date!", "The birth date cannot be in the future");
-          return;
-        }
-
         manager.createAdminAccount(name.getText(), email.getText(), password.getText(), location.getText(),
-            sec.getValue(), answer.getText(), birthDate.getValue());
+            sec.getValue(), answer.getText());
         showMainMenu();
 
       } else if (accType.getValue().equals("Shelter")) {
@@ -299,8 +294,6 @@ public class App extends Application {
 
       if (selected.equals("User")) {
         vbox.getChildren().addAll(birthLabel, birthDate, contactLabel, contact);
-      } else if (selected.equals("Admin")) {
-        vbox.getChildren().addAll(birthLabel, birthDate);
       } else if (selected.equals("Shelter")) {
         vbox.getChildren().addAll(contactLabel, contact, foundYear, year);
       }
@@ -324,11 +317,10 @@ public class App extends Application {
    * This method is used temporarily to change to the terminal screen
    */
   private void showTerminalScreen() {
-    ACCVBox vbox = new ACCVBox();
-    vbox.setStyle("-fx-background-color: black;");
-
+    ACCScene scene = new ACCScene(stage, new ACCVBox());
     Button logout = new Button("Logout");
     logout.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 16px;");
+    scene.addItems(logout);
 
     logout.setOnAction(e -> {
       System.out.println("\n Logout efetuado!");
@@ -336,9 +328,6 @@ public class App extends Application {
       showMainMenu();
     });
 
-    vbox.getChildren().add(logout);
-    ACCScene scene = new ACCScene(stage, vbox);
-    stage.setScene(scene);
   }
 
   /**
@@ -356,7 +345,7 @@ public class App extends Application {
       do {
         System.out.println("=== SHELTER MENU ===");
         System.out.println("1. Register Animal");
-        System.out.println("0. Loggout");
+        System.out.println("0. Logout");
         System.out.print("Option: ");
         option = sc.nextInt();
         sc.nextLine();
