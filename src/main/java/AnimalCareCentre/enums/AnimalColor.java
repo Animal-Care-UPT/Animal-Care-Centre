@@ -7,7 +7,14 @@ package AnimalCareCentre.enums;
 public enum AnimalColor {
 
   BROWN("Brown"),
-  BLACK("Black");
+  BLACK("Black"),
+  GRAY("Gray"),
+  WHITE("White"),
+  BEIGE("Beige"),
+  GOLDEN("Golden"),
+  SPOTTED("Spoted"),
+  ALBINO("Albino");
+
   // many more to come i guess
 
   private final String animalColor;
