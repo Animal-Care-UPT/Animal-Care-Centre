@@ -38,6 +38,7 @@ public class ACCManager {
 	  Query <Account> query = session.createQuery("FROM Account WHERE email =:email",Account.class);
 	  query.setParameter("email",email);
 	  Account account = query.uniqueResult();
+    account.setPassword(password);
 	  session.merge(account);
 	  session.getTransaction().commit();
 	  session.close();
