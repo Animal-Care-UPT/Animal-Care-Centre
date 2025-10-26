@@ -7,7 +7,8 @@ package AnimalCareCentre.enums;
 public enum AnimalSize {
 
   SMALL("Small"),
-  MEDIUM("Medium");
+  MEDIUM("Medium"),
+  LARGE("Large");
   // many more to come i guess
 
   private final String animalSize;
