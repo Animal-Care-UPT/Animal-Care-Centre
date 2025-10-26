@@ -28,7 +28,7 @@ public enum AnimalType {
   AnimalType(String animalType,  List<String> breeds) {
 
       this.animalType = animalType;
-      this.breeds = new ArrayList<>();
+      this.breeds = new ArrayList<>(breeds);
   }
 
   /**
@@ -55,8 +55,8 @@ public enum AnimalType {
    * @return
    */
   public static AnimalType fromString(String text) {
-    for (AnimalType a : AnimalType.values()) {
-      if (a.animalType.equalsIgnoreCase(text)) {
+    for (AnimalType a : values()) {
+      if (a.name().equalsIgnoreCase(text) || a.animalType.equalsIgnoreCase(text)) {
         return a;
       }
     }
