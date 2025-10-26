@@ -89,7 +89,11 @@ public class Navigator{
       if (acc != null) {
         loggedAcc = acc;
         System.out.println("Logged in!");
-      } else {
+      }
+      if(acc instanceof Shelter){
+          ShelterHomepage();
+      }
+      else {
         System.out.println("Wrong credentials!");
       }
     });
@@ -353,7 +357,7 @@ public class Navigator{
                             return;
                         }
 
-                        System.out.print("Available races for : " + type + ": ");
+                        System.out.println("Available races for : " + type + ": ");
                         for(String race : type.getBreeds()){
                             System.out.println(race);
                         }
@@ -361,7 +365,10 @@ public class Navigator{
                         System.out.print("Race: ");
                         String race = sc.nextLine();
 
-                        if(!type.getBreeds().contains(race)) {
+                        boolean validRace = type.getBreeds().stream()
+                                .anyMatch(r -> r.equalsIgnoreCase(race.trim()));
+
+                        if(!validRace) {
                             System.out.println("Invalid race");
                         }
 
@@ -379,7 +386,13 @@ public class Navigator{
                         String description = sc.nextLine();
 
                         System.out.print("Adoption type: ");
-                        AdoptionType adoptionType = AdoptionType.valueOf(sc.nextLine().toUpperCase());
+                        String adoptionInput = sc.nextLine();
+                        AdoptionType adoptionType = AdoptionType.fromString(adoptionInput);
+
+                        if (adoptionType == null) {
+                            System.out.println("Invalid adoption type");
+                            return;
+                        }
 
                         Image image = null; // no image in terminal
 
