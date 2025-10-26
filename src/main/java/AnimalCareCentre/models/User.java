@@ -1,10 +1,9 @@
 package AnimalCareCentre.models;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import AnimalCareCentre.enums.*;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 /**
  * This class describes the model of a User from the system, its attributes and
@@ -12,10 +11,11 @@ import jakarta.persistence.Entity;
  *
  */
 @Entity
-@DiscriminatorValue("User")
-public class User extends Person {
+@Table(name ="Users")
+public class User extends Account {
 
   private int contact;
+  private LocalDate birthDate;
   // private ArrayList<Adoption> adoptions;
   // private ArrayList<Sponsorship> sponsorships;
   // private ArrayList<Donation> donations; commented for now
@@ -35,7 +35,8 @@ public class User extends Person {
   public User(String name, String email, String password, String location, SecurityQuestion securityQuestion,
       String answer,
       LocalDate birthDate, int contact) {
-    super(name, email, password, location, securityQuestion, answer, birthDate);
+    super(name, email, password, location, securityQuestion, answer);
+    this.birthDate = birthDate;
     this.contact = contact;
   }
 
