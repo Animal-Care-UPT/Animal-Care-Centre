@@ -35,9 +35,10 @@ public class ACCManager {
 	  
 	  Session session = sessionFactory.openSession();
 	  session.beginTransaction();
-	  Query <Account> query = session.createQuery("FROM Account WHERE email =:email",Account.class);
+	  Query <Account> query = session.createQuery("FROM Accounts WHERE email =:email",Account.class);
 	  query.setParameter("email",email);
 	  Account account = query.uniqueResult();
+    account.setPassword(password);
 	  session.merge(account);
 	  session.getTransaction().commit();
 	  session.close();
@@ -73,10 +74,10 @@ public class ACCManager {
   }
 
   public void createAdminAccount(String name, String email, String password, String location,
-      SecurityQuestion securityQuestion, String answer, LocalDate birthDate) {
+                                 SecurityQuestion securityQuestion, String answer, LocalDate value) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    Admin admin = new Admin(name, email, password, location, securityQuestion, answer, birthDate);
+    Account admin = new Account(name, email, password, location, securityQuestion, answer);
     session.persist(admin);
     session.getTransaction().commit();
   }
@@ -133,11 +134,9 @@ public class ACCManager {
 
   public boolean doesEmailExist(String email) {
 	  Session session = sessionFactory.openSession();
-	    session.beginTransaction();
-	    Query<Account> query = session.createQuery("FROM Account WHERE email = :email",Account.class);
+	    Query<Account> query = session.createQuery("FROM Accounts WHERE email = :email",Account.class);
 	    query.setParameter("email",email);
 	    Account acc = query.uniqueResult();
-	    session.getTransaction().commit();
 	    if (acc == null) {
 	    	return false;
 	    }
@@ -148,7 +147,7 @@ public class ACCManager {
   
   public boolean validateFields(String... strings) {
     for (String string : strings) {
-      if (string.isBlank() || string == null) {
+      if (string == null || string.isBlank()) {
         return false;
       }
     }

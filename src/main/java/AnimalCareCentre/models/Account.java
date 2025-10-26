@@ -1,22 +1,21 @@
 package AnimalCareCentre.models;
 
 import AnimalCareCentre.enums.*;
-import jakarta.persistence.DiscriminatorColumn;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
+import jakarta.persistence.Table;
 
 /**
  * This class describes the model of an Account.
  *
  */
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "Accounts")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Account {
 
   @Id
@@ -69,6 +68,10 @@ public class Account {
 
   public SecurityQuestion getSecurityQuestion() {
     return securityQuestion;
+  }
+
+  public String getAnswer() {
+    return answer;
   }
 
   // setters area
