@@ -35,7 +35,7 @@ public class ACCManager {
 	  
 	  Session session = sessionFactory.openSession();
 	  session.beginTransaction();
-	  Query <Account> query = session.createQuery("FROM Accounts WHERE email =:email",Account.class);
+	  Query <Account> query = session.createQuery("FROM Account WHERE email =:email",Account.class);
 	  query.setParameter("email",email);
 	  Account account = query.uniqueResult();
     account.setPassword(password);
@@ -134,7 +134,7 @@ public class ACCManager {
 
   public boolean doesEmailExist(String email) {
 	  Session session = sessionFactory.openSession();
-	    Query<Account> query = session.createQuery("FROM Accounts WHERE email = :email",Account.class);
+	    Query<Account> query = session.createQuery("FROM Account WHERE email = :email",Account.class);
 	    query.setParameter("email",email);
 	    Account acc = query.uniqueResult();
 	    if (acc == null) {
