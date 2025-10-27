@@ -180,7 +180,7 @@ public class App extends Application {
     Label birthLabel = new Label("Birthdate:");
     DatePicker birthDate = new DatePicker();
     Label contactLabel = new Label("Contact:");
-    TextField contact = new TextField();
+    TextField contact = new TextField();sec.getValue(), answer.getText(), 
     contact.setMaxWidth(150);
     Label foundYear = new Label("Foundation year:");
     TextField year = new TextField();
@@ -256,7 +256,7 @@ public class App extends Application {
         }
 
         manager.createAdminAccount(name.getText(), email.getText(), password.getText(), location.getText(),
-            sec.getValue(), answer.getText(), birthDate.getValue());
+            sec.getValue(), answer.getText());
         showMainMenu();
 
       } else if (accType.getValue().equals("Shelter")) {
