@@ -73,14 +73,15 @@ public class ACCManager {
     session.getTransaction().commit();
   }
 
-  public void createAdminAccount(String name, String email, String password, String location,
-                                 SecurityQuestion securityQuestion, String answer) {
+	public void createAdminAccount(String name, String email, String password, String location,
+    	SecurityQuestion securityQuestion, String answer) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
     Account admin = new Account(name, email, password, location, securityQuestion, answer);
     session.persist(admin);
     session.getTransaction().commit();
   }
+
 
   public void createShelterAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer, int foundationYear, int contact) {
