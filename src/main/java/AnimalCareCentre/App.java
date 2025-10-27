@@ -144,6 +144,9 @@ public class App extends Application {
   /**
    * This method shows the create account screen
    */
+    /**
+   * This method shows the create account screen
+   */
   public void createAccount() {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Label type = new Label("Account type:");
@@ -180,7 +183,7 @@ public class App extends Application {
     Label birthLabel = new Label("Birthdate:");
     DatePicker birthDate = new DatePicker();
     Label contactLabel = new Label("Contact:");
-    TextField contact = new TextField();sec.getValue(), answer.getText(), 
+    TextField contact = new TextField();
     contact.setMaxWidth(150);
     Label foundYear = new Label("Foundation year:");
     TextField year = new TextField();
