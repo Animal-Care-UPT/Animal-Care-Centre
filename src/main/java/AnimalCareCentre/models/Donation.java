@@ -2,49 +2,47 @@ package AnimalCareCentre.models;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 /**
  * This class describes the model of a Donation with its attributes and how it
  * works.
  *
  */
+@Entity
+@Table (name = "Donations")
 public class Donation {
-
-  private Shelter receiver;
-  private Animal animal;
-  private User donator;
+  
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
   private float amount;
   private LocalDate donationDate;
+  @ManyToOne
+  @JoinColumn(name = "Sponsorship_id")
+  private Sponsorship sponsorship;
 
   /**
    * Constructor for the class Donation.
    *
-   * @param receiver
-   * @param animal
-   * @param donator
    * @param amount
    * @param donationDate
    */
-  public Donation(Shelter receiver, Animal animal, User donator, float amount, LocalDate donationDate) {
-    this.receiver = receiver;
-    this.animal = animal;
-    this.donator = donator;
+  
+  public Donation(float amount) {
     this.amount = amount;
-    this.donationDate = donationDate;
+    donationDate = LocalDate.now();
   }
 
-  // Getters area
-  public Shelter getReceiver() {
-    return receiver;
+  public Donation() {  
   }
-
-  public Animal getAnimal() {
-    return animal;
-  }
-
-  public User getDonator() {
-    return donator;
-  }
-
+  
   public float getAmount() {
     return amount;
   }
@@ -52,14 +50,16 @@ public class Donation {
   public LocalDate getDonationDate() {
     return donationDate;
   }
+  
+  
+  public void setSponsorship(Sponsorship sponsorship) {
+	this.sponsorship = sponsorship;
+}
 
-  // ToString from the class
+// ToString from the class
   @Override
   public String toString() {
     return "Donation{" +
-        "receiver=" + receiver +
-        ", animal=" + animal +
-        ", donator=" + donator +
         ", amount=" + amount +
         ", donationDate=" + donationDate +
         '}';
