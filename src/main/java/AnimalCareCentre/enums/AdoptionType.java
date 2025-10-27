@@ -36,7 +36,7 @@ public enum AdoptionType {
    */
   public static AdoptionType fromString(String text) {
     for (AdoptionType a : AdoptionType.values()) {
-      if (a.adoptionType.equals(text)) {
+      if (a.name().equalsIgnoreCase(text) || a.adoptionType.equalsIgnoreCase(text)) {
         return a;
       }
     }

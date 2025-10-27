@@ -144,6 +144,9 @@ public class App extends Application {
   /**
    * This method shows the create account screen
    */
+    /**
+   * This method shows the create account screen
+   */
   public void createAccount() {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Label type = new Label("Account type:");
