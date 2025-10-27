@@ -18,7 +18,6 @@ import javafx.scene.image.Image;
  * This class describes the model of an Animal.
  *
  */
-
 @Entity
 @Table(name = "Animals")
 public class Animal {
@@ -26,7 +25,7 @@ public class Animal {
   @Id
   @Column(name = "animal_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id; 
+  private long id;
   private String name;
   private AnimalType type;
   private String race;
@@ -65,10 +64,10 @@ public class Animal {
     this.description = description;
     this.image = image;
   }
-  
+
   public Animal() {
   }
-  
+
   // The different getter from the class
   public String getName() {
     return name;
@@ -106,11 +105,11 @@ public class Animal {
     return image;
   }
 
-  public ArrayList<Adoption> getAdoptions() {
+  public List<Adoption> getAdoptions() {
     return adoptions;
   }
 
-  public ArrayList<Sponsorship> getSponsors() {
+  public List<Sponsorship> getSponsors() {
     return sponsors;
   }
 

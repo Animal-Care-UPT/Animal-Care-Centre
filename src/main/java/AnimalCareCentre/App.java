@@ -28,6 +28,7 @@ public class App extends Application {
   private static Account loggedAcc;
   private static Stage stage;
   private static final ACCManager manager = new ACCManager();
+  private static Scanner sc = new Scanner(System.in);
   // private static Navigator nav; commenting navigator for now
 
   public void start(Stage stage) {
@@ -90,7 +91,7 @@ public class App extends Application {
       if (acc != null) {
         loggedAcc = acc;
         if (loggedAcc instanceof Shelter) {
-          ShelterHomepage();
+          shelterHomepage();
         }
       } else {
         System.out.println("Wrong credentials!");
@@ -144,7 +145,7 @@ public class App extends Application {
   /**
    * This method shows the create account screen
    */
-    /**
+  /**
    * This method shows the create account screen
    */
   public void createAccount() {
@@ -333,16 +334,81 @@ public class App extends Application {
 
   }
 
+  public void searchAnimalMenu() {
+    while (true) {
+
+      int opt;
+      opt = sc.nextInt();
+      sc.nextLine();
+      System.out.println("\n=== SEARCH ANIMAL ===");
+      System.out.println("1 - Search by Keyword");
+      System.out.println("2 - Search by Type");
+      System.out.println("3 - Search by Color");
+      System.out.println("4 - Return");
+
+      switch (opt) {
+        case 1 -> {
+          System.out.println("What would you like to search?");
+          String search = sc.nextLine();
+          System.out.println(manager.searchAnimalByKeyword(search));
+        }
+
+        case 2 -> {
+          // didn't have to finish
+        }
+          
+
+        default -> {
+
+        }
+      }
+    }
+
+  }
+
+  /**
+   * This method shows user's homepage
+   */
+  private void userHomepage() {
+    showTerminalScreen();
+
+    new Thread(() -> {
+      int option;
+
+      do {
+        System.out.println("=== USER MENU ===");
+        System.out.println("1. Search Animal");
+        System.out.println("0. Logout");
+        System.out.print("Option: ");
+        option = sc.nextInt();
+        sc.nextLine();
+
+        switch (option) {
+          case 1 -> {
+            searchAnimalMenu();
+          }
+
+          case 0 -> {
+            sc.close();
+            System.out.println("Exiting terminal menu...");
+            javafx.application.Platform.runLater(() -> showMainMenu());
+          }
+          default -> System.out.println("Invalid option!");
+        }
+      } while (option != 0);
+    }).start();
+
+  }
+
   /**
    * This method shows shelter's homepage
    */
-  private void ShelterHomepage() {
+  private void shelterHomepage() {
     // To show the window with only the logout button
     showTerminalScreen();
 
     // Shelter Menu
     new Thread(() -> {
-      Scanner sc = new Scanner(System.in);
       int option;
 
       do {
