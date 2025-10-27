@@ -1,8 +1,16 @@
 package AnimalCareCentre.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import AnimalCareCentre.enums.*;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 /**
@@ -14,11 +22,14 @@ import jakarta.persistence.Table;
 @Table(name ="Users")
 public class User extends Account {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
   private int contact;
   private LocalDate birthDate;
   // private ArrayList<Adoption> adoptions;
-  // private ArrayList<Sponsorship> sponsorships;
-  // private ArrayList<Donation> donations; commented for now
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Sponsorship> sponsorships = new ArrayList<>();
 
 
   /**

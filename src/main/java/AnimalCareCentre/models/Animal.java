@@ -1,16 +1,33 @@
 package AnimalCareCentre.models;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import AnimalCareCentre.enums.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import javafx.scene.image.Image;
 
 /**
  * This class describes the model of an Animal.
  *
  */
+
+@Entity
+@Table(name = "Animals")
 public class Animal {
 
-    private String name;
+  @Id
+  @Column(name = "animal_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id; 
+  private String name;
   private AnimalType type;
   private String race;
   private AnimalColor color;
@@ -19,8 +36,9 @@ public class Animal {
   private AdoptionType listetFor;
   private String description;
   private Image image;
-  ArrayList<Adoption> adoptions;
-  ArrayList<Sponsorship> sponsors;
+  List<Adoption> adoptions = new ArrayList<>();
+  @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<Sponsorship> sponsors = new ArrayList<>();
 
   /**
    * Constructor for the class Animal.
@@ -46,10 +64,11 @@ public class Animal {
     this.listetFor = listetFor;
     this.description = description;
     this.image = image;
-    this.adoptions = new ArrayList<>();
-    this.sponsors = new ArrayList<>();
   }
-
+  
+  public Animal() {
+  }
+  
   // The different getter from the class
   public String getName() {
     return name;
