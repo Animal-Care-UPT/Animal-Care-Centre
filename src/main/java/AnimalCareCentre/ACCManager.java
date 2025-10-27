@@ -35,7 +35,7 @@ public class ACCManager {
 	  
 	  Session session = sessionFactory.openSession();
 	  session.beginTransaction();
-	  Query <Account> query = session.createQuery("FROM Account WHERE email =:email",Account.class);
+	  Query <Account> query = session.createQuery("FROM Accounts WHERE email =:email",Account.class);
 	  query.setParameter("email",email);
 	  Account account = query.uniqueResult();
     account.setPassword(password);
@@ -48,7 +48,7 @@ public class ACCManager {
   public Account login(String email, String password) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    Query<Account> query = session.createQuery("FROM Account WHERE email = :email", Account.class);
+    Query<Account> query = session.createQuery("FROM Accounts WHERE email = :email", Account.class);
     query.setParameter("email", email);
     Account acc = query.uniqueResult();
     session.getTransaction().commit();
@@ -74,7 +74,7 @@ public class ACCManager {
   }
 
   public void createAdminAccount(String name, String email, String password, String location,
-                                 SecurityQuestion securityQuestion, String answer, LocalDate value) {
+                                 SecurityQuestion securityQuestion, String answer) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
     Account admin = new Account(name, email, password, location, securityQuestion, answer);
@@ -134,7 +134,7 @@ public class ACCManager {
 
   public boolean doesEmailExist(String email) {
 	  Session session = sessionFactory.openSession();
-	    Query<Account> query = session.createQuery("FROM Account WHERE email = :email",Account.class);
+	    Query<Account> query = session.createQuery("FROM Accounts WHERE email = :email",Account.class);
 	    query.setParameter("email",email);
 	    Account acc = query.uniqueResult();
 	    if (acc == null) {
