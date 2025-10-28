@@ -406,7 +406,7 @@ public class App extends Application {
         }
     }
 
-  /**
+    /**
    * This method shows user's homepage
    */
   private void userHomepage() {
@@ -477,10 +477,10 @@ public class App extends Application {
     private void shelterHomepage() {
         showTerminalScreen();
 
-        new Thread(() -> {
             try {
                 System.out.println("=== SHELTER MENU ===");
                 System.out.println("1. Register Animal");
+                System.out.println("2. View My Animals");
                 System.out.println("0. Logout");
                 System.out.print("Option: ");
                 int option = sc.nextInt();
@@ -535,15 +535,39 @@ public class App extends Application {
                         // Adoption Type
                         AdoptionType adoptionType = (AdoptionType) chooseOption(AdoptionType.values(), "Adoption Type");
 
-                        manager.registerAnimal(name, chosenType, race, size, age, color, description, adoptionType);
+                        manager.registerAnimal((Shelter) loggedAcc, name, chosenType, race, size, age, color, description, adoptionType);
                         System.out.println("\nAnimal registered successfully!\n");
 
-                        javafx.application.Platform.runLater(this::showMainMenu);
+                        shelterHomepage();
                     }
+
+                    case 2 -> {
+                        List<ShelterAnimal> animals = manager.getAnimalsByShelter((Shelter) loggedAcc);
+
+                        if (animals.isEmpty()) {
+                            System.out.println("You have no registered animals.");
+                        } else {
+                            for (ShelterAnimal a : animals) {
+                                System.out.println("\n" + a.toString());
+                                System.out.println("Sponsors:");
+                                if (a.getSponsors().isEmpty()) {
+                                    System.out.println("  No sponsors yet.");
+                                } else {
+                                    for (Sponsorship s : a.getSponsors()) {
+                                        System.out.println("  - " + s.getUser().getName() + " donated " + s.getAmount() + "€");
+                                    }
+                                }
+
+                            }
+                        }
+
+                        shelterHomepage();
+                    }
+
 
                     case 0 -> {
                         System.out.println("Exiting terminal menu...");
-                        javafx.application.Platform.runLater(this::showMainMenu);
+                        loggedAcc = null;
                     }
 
                     default -> {
@@ -556,7 +580,6 @@ public class App extends Application {
                 sc.nextLine();
                 shelterHomepage();
             }
-        }).start();
     }
 
 }

@@ -15,6 +15,10 @@ import jakarta.persistence.*;
 
 public class ShelterAnimal extends Animal {
 
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private Shelter shelter;
+
   private boolean isVacinated;
 
   @Enumerated(EnumType.STRING)
@@ -38,10 +42,11 @@ public class ShelterAnimal extends Animal {
    * @param description
    */
   public ShelterAnimal(String name, AnimalType type, String race, AnimalColor color, boolean isVacinated, AnimalSize size,
-                       AdoptionType listedFor, String description) {
+                       AdoptionType listedFor, String description, Shelter shelter) {
       super(name,type,race,size,color,description);
     this.isVacinated = isVacinated;
     this.listedFor = listedFor;
+    this.shelter = shelter;
   }
 
   public ShelterAnimal() {
@@ -84,6 +89,8 @@ public class ShelterAnimal extends Animal {
   public String getDescription() {
     return super.getDescription();
   }
+
+  public Shelter getShelter() { return shelter; }
 
   // public List<Adoption> getAdoptions() {
   //   return adoptions;
