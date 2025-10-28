@@ -31,7 +31,7 @@ public class User extends Account {
   private List<Adoption> adoptions;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Sponsorship> sponsorships = new ArrayList<>();
-
+  
 
   /**
    * Constructor for the class User
@@ -71,4 +71,10 @@ public class User extends Account {
         "contact=" + contact +
         '}';
   }
+
+public long getId() {
+	return id;
+}
+  
+  
 }

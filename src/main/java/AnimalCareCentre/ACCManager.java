@@ -197,4 +197,24 @@ public class ACCManager {
     }
     return true;
   }
+  
+  public void showLostAnimals() {
+      Session session = sessionFactory.openSession();
+      Query<LostAnimal> query = session.createQuery("FROM LostAnimals",LostAnimal.class);
+      query.setParameter("true",true);
+      List<LostAnimal> lostAnimals = query.getResultList();
+      for (LostAnimal animal : lostAnimals){
+          System.out.println(animal);
+      }
+  }
+  
+  public void showMyLostAnimals(Account user) {
+	  Session session = sessionFactory.openSession();
+	  Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE user_id =:user_id",LostAnimal.class);
+      query.setParameter("user_id",user.getId());
+      List<LostAnimal> lostAnimals = query.getResultList();
+      for (LostAnimal animal : lostAnimals){
+          System.out.println(animal);
+      }
+  }
 }

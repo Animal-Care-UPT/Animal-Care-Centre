@@ -419,6 +419,8 @@ public class App extends Application {
 
         System.out.println("=== USER MENU ===");
         System.out.println("1. Search Animal");
+        System.out.println("2. Show Lost Aniamls");
+        System.out.println("3. Show my Lost Animals");
         System.out.println("0. Logout");
         System.out.print("Option: ");
         option = sc.nextInt();
@@ -428,7 +430,14 @@ public class App extends Application {
           case 1 -> {
             searchAnimalMenu();
           }
-
+          case 2 ->{
+        	  manager.showLostAnimals();
+        	  userHomepage();
+          }
+          case 3 ->{
+        	  manager.showMyLostAnimals(loggedAcc);
+        	  userHomepage();
+          }
           case 0 -> {
             sc.close();
             System.out.println("Exiting terminal menu...");
@@ -481,6 +490,8 @@ public class App extends Application {
             try {
                 System.out.println("=== SHELTER MENU ===");
                 System.out.println("1. Register Animal");
+                System.out.println("2. See Lost Animals");
+                System.out.println("3. Show my Lost Animals");
                 System.out.println("0. Logout");
                 System.out.print("Option: ");
                 int option = sc.nextInt();
@@ -540,7 +551,17 @@ public class App extends Application {
 
                         javafx.application.Platform.runLater(this::showMainMenu);
                     }
-
+                    
+                    case 2 ->{
+                    	manager.showLostAnimals();
+                    	shelterHomepage();
+                    }
+                    
+                    case 3 ->{
+                  	  manager.showMyLostAnimals(loggedAcc);
+                  	  userHomepage();
+                    }
+                    
                     case 0 -> {
                         System.out.println("Exiting terminal menu...");
                         javafx.application.Platform.runLater(this::showMainMenu);
