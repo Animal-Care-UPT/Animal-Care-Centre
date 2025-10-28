@@ -70,7 +70,10 @@ public class Animal {
   public Animal() {
   }
 
-  // The different getter from the class
+    public Animal(String name, AnimalType type, String race, AnimalColor color, AnimalSize size, String description) {
+    }
+
+    // The different getter from the class
   public String getName() {
     return name;
   }

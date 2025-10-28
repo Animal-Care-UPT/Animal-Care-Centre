@@ -33,7 +33,13 @@
         <version>3.1.0</version>
     </dependency>
 
-    <dependency>
+      <dependency>
+          <groupId>org.mariadb.jdbc</groupId>
+          <artifactId>mariadb-java-client</artifactId>
+          <version>3.4.0</version> <!-- or the latest -->
+      </dependency>
+
+      <dependency>
         <groupId>commons-validator</groupId>
         <artifactId>commons-validator</artifactId>
         <version>1.10.0</version>
