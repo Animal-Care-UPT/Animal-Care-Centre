@@ -625,16 +625,118 @@ public class App extends Application {
 
           }
 
-          case 0 -> {
-            sc.close();
-            System.out.println("Exiting terminal menu...");
-            javafx.application.Platform.runLater(() -> showMainMenu());
-          }
-          default -> System.out.println("Invalid option!");
-        }
-      } while (option != 0);
-    }).start();
+    /**
+     * Method to choose an option from the enum classes
+     */
+    private Object chooseOption(Object[] values, String title) {
+        while (true) {
+            System.out.println("Select " + title + ":");
 
-  }
+            //Show the options with numbers
+            for (int i = 0; i < values.length; i++) {
+                System.out.println((i + 1) + ". " + values[i]);
+            }
+
+            System.out.print("Option: ");
+            String input = sc.nextLine();
+
+            try {
+                int option = Integer.parseInt(input);
+                if (option >= 1 && option <= values.length) {
+                    return values[option - 1];
+                }
+            } catch (NumberFormatException ignored) {}
+
+            System.out.println("Invalid option, please try again.");
+        }
+    }
+
+    /**
+     * This method shows shelter's homepage
+     */
+    private void shelterHomepage() {
+        showTerminalScreen();
+
+        new Thread(() -> {
+            try {
+                System.out.println("=== SHELTER MENU ===");
+                System.out.println("1. Register Animal");
+                System.out.println("0. Logout");
+                System.out.print("Option: ");
+                int option = sc.nextInt();
+                sc.nextLine();
+
+                switch (option) {
+                    case 1 -> {
+                        System.out.println("\n=== REGISTER ANIMAL ===");
+                        System.out.print("Name: ");
+                        String name = sc.nextLine();
+
+                        // Type
+                        AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
+
+                        // Breed
+                        List<String> breeds = chosenType.getBreeds();
+                        String race = null;
+
+                        while (true) {
+                            System.out.println("Select Breed:");
+                            for (int i = 0; i < breeds.size(); i++) {
+                                System.out.println((i + 1) + ". " + breeds.get(i));
+                            }
+
+                            System.out.print("Option: ");
+                            String input = sc.nextLine();
+
+                            try {
+                                int breedOption = Integer.parseInt(input);
+                                if (breedOption >= 1 && breedOption <= breeds.size()) {
+                                    race = breeds.get(breedOption - 1);
+                                    break;
+                                }
+                            } catch (NumberFormatException ignored) {}
+
+                            System.out.println("Invalid option, please try again.");
+                        }
+
+                        // Size
+                        AnimalSize size = (AnimalSize) chooseOption(AnimalSize.values(), "Size");
+
+                        System.out.print("Age: ");
+                        int age = sc.nextInt();
+                        sc.nextLine();
+
+                        // Color
+                        AnimalColor color = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
+
+                        System.out.print("Description: ");
+                        String description = sc.nextLine();
+
+                        // Adoption Type
+                        AdoptionType adoptionType = (AdoptionType) chooseOption(AdoptionType.values(), "Adoption Type");
+
+                        manager.registerAnimal(name, chosenType, race, size, age, color, description, adoptionType);
+                        System.out.println("\nAnimal registered successfully!\n");
+
+                        javafx.application.Platform.runLater(this::showMainMenu);
+                    }
+
+                    case 0 -> {
+                        System.out.println("Exiting terminal menu...");
+                        javafx.application.Platform.runLater(this::showMainMenu);
+                    }
+
+                    default -> {
+                        System.out.println("Invalid option!");
+                        shelterHomepage();
+                    }
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please pick a valid option!");
+                sc.nextLine();
+                shelterHomepage();
+            }
+        }).start();
+    }
 
 }
