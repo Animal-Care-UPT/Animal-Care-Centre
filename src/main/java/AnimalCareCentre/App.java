@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 
-import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 import AnimalCareCentre.enums.*;
@@ -335,7 +334,7 @@ public class App extends Application {
   }
 
   public void showAnimal(ShelterAnimal animal) {
-    System.out.println(animal.toString());
+    System.out.println(animal);
     System.out.println("Menu: ");
     System.out.println("1 - Sponsor Animal");
     int opc = sc.nextInt();
@@ -345,66 +344,105 @@ public class App extends Application {
         float amount = sc.nextFloat();
         sc.nextLine();
         User user = (User) loggedAcc;
-      manager.createSponsorship(user, animal, amount);
+        manager.createSponsorship(user, animal, amount);
     }
   }
 
+  /**
+   * This method allows to search for animals
+   */
+  public void searchAnimalMenu() {
+    System.out.println("\n=== SEARCH ANIMAL ===");
 
-    /**
-     * This method allows to search for animals
-     */
-    public void searchAnimalMenu() {
-        System.out.println("\n=== SEARCH ANIMAL ===");
-
-        String[] options = { "Search by Keyword", "Search by Type", "Search by Color", "Return" };
-        int opt = (int) chooseOption(options, "Search Option");
-
-        switch (opt) {
-            case 1 -> { // Search by Keyword
-                System.out.println("What would you like to search?");
-                String search = sc.nextLine();
-                List<ShelterAnimal> animals = manager.searchAnimalByKeyword(search);
-
-                if (animals == null || animals.isEmpty()) {
-                    System.out.println("\nNo matches! Returning...");
-                } else {
-                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
-                    showAnimal(choice);
-                }
-                searchAnimalMenu();
-            }
-
-            case 2 -> { // Search by Type
-                AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
-                List<ShelterAnimal> animals = manager.searchAnimalByParameter("type", chosenType.toString());
-
-                if (animals == null || animals.isEmpty()) {
-                    System.out.println("\nNo matches! Returning...");
-                } else {
-                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
-                    showAnimal(choice);
-                }
-                searchAnimalMenu();
-            }
-
-            case 3 -> { // Search by Color
-                AnimalColor chosenColor = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
-                List<ShelterAnimal> animals = manager.searchAnimalByParameter("color", chosenColor.toString());
-
-                if (animals == null || animals.isEmpty()) {
-                    System.out.println("\nNo matches! Returning...");
-                } else {
-                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
-                    showAnimal(choice);
-                }
-                searchAnimalMenu();
-            }
-
-            case 4 -> { // Return
-                userHomepage();
-            }
-        }
+    String[] options = { "Search by Keyword", "Search by Type", "Search by Color" };
+    String opt = (String) chooseOption(options, "Search Option");
+    if (opt == null) {
+      userHomepage();
     }
+
+    switch (opt) {
+      case "Search by Keyword" -> {
+        System.out.println("What would you like to search?");
+        String search = sc.nextLine();
+        List<ShelterAnimal> animals = manager.searchAnimalByKeyword(search);
+
+        if (animals == null || animals.isEmpty()) {
+          System.out.println("\nNo matches! Returning...");
+        } else {
+          ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+          if (choice == null) {
+            javafx.application.Platform.runLater(this::userHomepage);
+            return;
+          }
+          showAnimal(choice);
+        }
+        searchAnimalMenu();
+      }
+
+      case "Search by Type" -> {
+        AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
+        if (chosenType == null) {
+          javafx.application.Platform.runLater(this::userHomepage);
+          return;
+        }
+        List<ShelterAnimal> animals = manager.searchAnimalByParameter("type", chosenType);
+
+        if (animals == null || animals.isEmpty()) {
+          System.out.println("\nNo matches! Returning...");
+        } else {
+          ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+          if (choice == null) {
+            javafx.application.Platform.runLater(this::userHomepage);
+            return;
+          }
+          showAnimal(choice);
+        }
+        searchAnimalMenu();
+      }
+
+      case "Search by Color" -> {
+        AnimalColor chosenColor = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
+        if (chosenColor == null) {
+          javafx.application.Platform.runLater(this::userHomepage);
+        }
+        List<ShelterAnimal> animals = manager.searchAnimalByParameter("color", chosenColor);
+
+        if (animals == null || animals.isEmpty()) {
+          System.out.println("\nNo matches! Returning...");
+        } else {
+          ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+          if (choice == null) {
+            javafx.application.Platform.runLater(this::userHomepage);
+            return;
+          }
+          showAnimal(choice);
+        }
+        searchAnimalMenu();
+      }
+    }
+  }
+
+  public void showShelter(Shelter shelter) {
+    System.out.println(shelter);
+    System.out.println("Animals: ");
+    List<ShelterAnimal> animals = manager.searchShelterAnimal(shelter);
+    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+    if (choice == null) {
+      javafx.application.Platform.runLater(this::userHomepage);
+      return;
+    }
+    showAnimal(choice);
+  }
+
+  public void searchShelter() {
+    List<Shelter> shelters = manager.searchShelters();
+    Shelter choice = (Shelter) chooseOption(shelters.toArray(), "Shelter");
+    if (choice == null) {
+      javafx.application.Platform.runLater(this::userHomepage);
+      return;
+    }
+    showShelter(choice);
+  }
 
     /**
    * This method shows user's homepage
@@ -419,6 +457,7 @@ public class App extends Application {
 
         System.out.println("=== USER MENU ===");
         System.out.println("1. Search Animal");
+        System.out.println("2. Search Shelter");
         System.out.println("0. Logout");
         System.out.print("Option: ");
         option = sc.nextInt();
@@ -427,6 +466,10 @@ public class App extends Application {
         switch (option) {
           case 1 -> {
             searchAnimalMenu();
+          }
+
+          case 2 -> {
+            searchShelter();
           }
 
           case 0 -> {
@@ -445,33 +488,37 @@ public class App extends Application {
     }
   }
 
-    /**
-     * Method to choose an option from the enum classes
-     */
-    private Object chooseOption(Object[] values, String title) {
-        while (true) {
-            System.out.println("Select " + title + ":");
+  /**
+   * Method to choose an option from the enum classes
+   */
+  private Object chooseOption(Object[] values, String title) {
+    while (true) {
+      System.out.println("\n\n\n");
+      System.out.println("Select " + title + ":");
+      System.out.println("\n");
 
-            //Show the options with numbers
-            for (int i = 0; i < values.length; i++) {
-                System.out.println((i + 1) + ". " + values[i]);
-            }
+      for (int i = 0; i < values.length; i++) {
+        System.out.println((i + 1) + ". " + values[i]+ "\n");
+      }
 
-            System.out.print("Option: ");
-            String input = sc.nextLine();
+      System.out.println("0. Back");
+      String input = sc.nextLine();
 
-            try {
-                int option = Integer.parseInt(input);
-                if (option >= 1 && option <= values.length) {
-                    return values[option - 1];
-                }
-            } catch (NumberFormatException ignored) {}
-
-            System.out.println("Invalid option, please try again.");
+      try {
+        int option = Integer.parseInt(input);
+        if (option == 0)
+          return null;
+        if (option >= 1 && option <= values.length) {
+          return values[option - 1];
         }
-    }
+      } catch (NumberFormatException ignored) {
+      }
 
-    /**
+      System.out.println("Invalid option, please try again.");
+    }
+  }
+
+  /**
      * This method shows shelter's homepage
      */
     private void shelterHomepage() {
@@ -492,56 +539,78 @@ public class App extends Application {
                         System.out.print("Name: ");
                         String name = sc.nextLine();
 
-                        // Type
-                        AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
+       
 
-                        // Breed
-                        List<String> breeds = chosenType.getBreeds();
-                        String race = null;
-
-                        while (true) {
-                            System.out.println("Select Breed:");
-                            for (int i = 0; i < breeds.size(); i++) {
-                                System.out.println((i + 1) + ". " + breeds.get(i));
-                            }
-
-                            System.out.print("Option: ");
-                            String input = sc.nextLine();
-
-                            try {
-                                int breedOption = Integer.parseInt(input);
-                                if (breedOption >= 1 && breedOption <= breeds.size()) {
-                                    race = breeds.get(breedOption - 1);
-                                    break;
-                                }
-                            } catch (NumberFormatException ignored) {}
-
-                            System.out.println("Invalid option, please try again.");
-                        }
-
-                        // Size
-                        AnimalSize size = (AnimalSize) chooseOption(AnimalSize.values(), "Size");
-
-                        System.out.print("Age: ");
-                        int age = sc.nextInt();
-                        sc.nextLine();
-
-                        // Color
-                        AnimalColor color = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
-
-                        System.out.print("Description: ");
-                        String description = sc.nextLine();
-
-                        // Adoption Type
-                        AdoptionType adoptionType = (AdoptionType) chooseOption(AdoptionType.values(), "Adoption Type");
-
-                        manager.registerAnimal((Shelter) loggedAcc, name, chosenType, race, size, age, color, description, adoptionType);
-                        System.out.println("\nAnimal registered successfully!\n");
-
-                        shelterHomepage();
+                      // Type
+                       AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
+                        if (chosenType == null) {
+                        javafx.application.Platform.runLater(this::shelterHomepage);
+                        return;
                     }
 
-                    case 2 -> {
+            // Breed
+            List<String> breeds = chosenType.getBreeds();
+            if (breeds == null) {
+              shelterHomepage();
+            }
+            String race = null;
+
+            while (true) {
+              System.out.println("Select Breed:");
+              for (int i = 0; i < breeds.size(); i++) {
+                System.out.println((i + 1) + ". " + breeds.get(i));
+              }
+
+              System.out.print("Option: ");
+              String input = sc.nextLine();
+
+              try {
+                int breedOption = Integer.parseInt(input);
+                if (breedOption >= 1 && breedOption <= breeds.size()) {
+                  race = breeds.get(breedOption - 1);
+                  break;
+                }
+              } catch (NumberFormatException ignored) {
+              }
+
+              System.out.println("Invalid option, please try again.");
+            }
+
+            // Size
+            AnimalSize size = (AnimalSize) chooseOption(AnimalSize.values(), "Size");
+            if (size == null) {
+              javafx.application.Platform.runLater(this::shelterHomepage);
+              return;
+            }
+
+            System.out.print("Age: ");
+            int age = sc.nextInt();
+            sc.nextLine();
+
+            // Color
+            AnimalColor color = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
+            if (color == null) {
+              javafx.application.Platform.runLater(this::shelterHomepage);
+              return;
+            }
+
+            System.out.print("Description: ");
+            String description = sc.nextLine();
+
+            // Adoption Type
+            AdoptionType adoptionType = (AdoptionType) chooseOption(AdoptionType.values(), "Adoption Type");
+            if (adoptionType == null) {
+              javafx.application.Platform.runLater(this::shelterHomepage);
+              return;
+            }
+
+            manager.registerAnimal((Shelter) loggedAcc, name, chosenType, race, size, age, color, description, adoptionType);
+                        System.out.println("\nAnimal registered successfully!\n");
+
+            javafx.application.Platform.runLater(this::shelterHomepage);
+          }
+      
+      case 2 -> {
                         List<ShelterAnimal> animals = manager.getAnimalsByShelter((Shelter) loggedAcc);
 
                         if (animals.isEmpty()) {
@@ -565,21 +634,21 @@ public class App extends Application {
                     }
 
 
-                    case 0 -> {
-                        System.out.println("Exiting terminal menu...");
-                        loggedAcc = null;
-                    }
+          case 0 -> {
+            System.out.println("Exiting terminal menu...");
+            javafx.application.Platform.runLater(this::showMainMenu);
+          }
 
-                    default -> {
-                        System.out.println("Invalid option!");
-                        shelterHomepage();
-                    }
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Please pick a valid option!");
-                sc.nextLine();
-                shelterHomepage();
-            }
-    }
+          default -> {
+            System.out.println("Invalid option!");
+            shelterHomepage();
+          }
+        }
+      } catch (InputMismatchException e) {
+        System.out.println("Please pick a valid option!");
+        sc.nextLine();
+        shelterHomepage();
+      }
+  }
 
 }

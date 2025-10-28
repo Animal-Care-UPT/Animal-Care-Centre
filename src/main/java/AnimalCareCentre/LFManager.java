@@ -46,7 +46,7 @@ public class LFManager {
 
     private static void showLostAnimals() {
         Session session = sessionFactory.openSession();
-        Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE isLost = :true",LostAnimal.class);
+        Query<LostAnimal> query = session.createQuery("FROM LostAnimals",LostAnimal.class);
         query.setParameter("true",true);
         List<LostAnimal> lostAnimals = query.getResultList();
         for (LostAnimal animal : lostAnimals){

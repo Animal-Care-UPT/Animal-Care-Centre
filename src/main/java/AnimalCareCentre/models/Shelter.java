@@ -39,6 +39,10 @@ public class Shelter extends Account {
     return foundationYear;
   }
 
+  public long getId() {
+    return id;
+  }
+
   public int getContact() {
     return contact;
   }
@@ -49,12 +53,7 @@ public class Shelter extends Account {
 
   @Override
   public String toString() {
-    return "Shelter{" +
-        "foundationYear=" + foundationYear +
-        ", contact=" + contact +
-        ", isVerified=" + isVerified +
-        // ", animals=" + animals + // uses the toString from the class Animal
-        '}';
+    return super.toString() + "\nFoundation Year: " + foundationYear + "\nContact: " + contact;
   }
 
 }
