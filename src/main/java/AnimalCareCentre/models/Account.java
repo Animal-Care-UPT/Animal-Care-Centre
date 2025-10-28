@@ -28,7 +28,7 @@ public class Account {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  protected long id;
   private String name;
   private String email;
   private String password;
@@ -101,12 +101,6 @@ public long getId() {
 // toString from the class Account
   @Override
   public String toString() {
-    return "Account{" +
-        "name='" + name + '\'' +
-        ", email='" + email + '\'' +
-        ", password='" + password + '\'' +
-        ", location='" + location + '\'' +
-        ", securityQuestion=" + securityQuestion +
-        '}';
+    return "Name: " + name + "\nLocation: " + location;
   }
 }
