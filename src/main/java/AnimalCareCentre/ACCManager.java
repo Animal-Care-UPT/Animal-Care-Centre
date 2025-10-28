@@ -41,10 +41,15 @@ public class ACCManager {
   public List<Animal> searchAnimalByKeyword(String search) {
     Session session = sessionFactory.openSession();
     Query<Animal> query = session.createQuery(
-        "From Animal WHERE race LIKE :search OR type LIKE :search OR size LIKE :search OR color LIKE :search",
+        "FROM Animal WHERE race LIKE :search " +
+            "OR CAST(type AS string) LIKE :search " +
+            "OR CAST(size AS string) LIKE :search " +
+            "OR CAST(color AS string) LIKE :search",
         Animal.class);
     query.setParameter("search", "%" + search + "%");
-    return query.getResultList();
+    List<Animal> results = query.getResultList();
+    session.close(); // Don't forget to close the session!
+    return results;
   }
 
   /**
