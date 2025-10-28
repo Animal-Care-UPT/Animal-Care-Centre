@@ -1,5 +1,8 @@
 package AnimalCareCentre.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import AnimalCareCentre.enums.AnimalColor;
 import AnimalCareCentre.enums.AnimalSize;
 import AnimalCareCentre.enums.AnimalType;
@@ -18,6 +21,9 @@ public class LostAnimal extends Animal{
     boolean isLost;
 
     int contacto;
+    
+    @ManyToOne
+    private List <Account> accs = new ArrayList <>();
 
     @Override
     public String toString() {
@@ -54,6 +60,14 @@ public class LostAnimal extends Animal{
 
     public void setLost(boolean lost) {
         isLost = lost;
+    }
+
+	public List<Account> getAccs() {
+		return accs;
+	}
+    
+    public void addAccs(Account acc) {
+    	accs.add(acc);
     }
 }
 
