@@ -28,7 +28,7 @@ public class User extends Account {
   private int contact;
   private LocalDate birthDate;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private ArrayList<Adoption> adoptions;
+  private List<Adoption> adoptions;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Sponsorship> sponsorships = new ArrayList<>();
 
@@ -61,6 +61,7 @@ public class User extends Account {
   
   public void addSponsor(Sponsorship sponsor) {
 	sponsorships.add(sponsor);
+    sponsor.setUser(this);
   }
   
   @Override

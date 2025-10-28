@@ -33,6 +33,17 @@ public class ACCManager {
   private static SessionFactory sessionFactory;
   private static Session session;
 
+  public void createSponsorship(User user, Animal animal, float amount) {
+    session.beginTransaction();
+    Sponsorship sponsor = new Sponsorship(user, animal, amount);
+    user.addSponsor(sponsor);
+    animal.addSponsor(sponsor);
+    session.persist(sponsor);
+    session.merge(user);
+    session.merge(animal);
+    session.getTransaction().commit();
+  }
+
   /**
    * This method searches animals by a keyword
    *
@@ -58,7 +69,7 @@ public class ACCManager {
    * @param search
    * @return
    */
-  public List<Animal> searchAnimalByParameter(String parameter, String search) {
+  public List<Animal> searchAnimalByParameter(String parameter, Object search) {
     Query<Animal> query = session.createQuery(
         "From Animal WHERE " + parameter + " =:search", Animal.class);
     query.setParameter("search", search);

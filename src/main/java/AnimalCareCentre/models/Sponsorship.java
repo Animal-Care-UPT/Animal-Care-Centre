@@ -24,7 +24,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "Sponsorships")
 public class Sponsorship {
-	
+
   @Id
   @Column(name = "Sponsorship_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class Sponsorship {
   private LocalDate startDate;
   private float amount;
   @OneToMany(mappedBy = "sponsorship", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List <Donation> donations = new ArrayList<>();
+  private List<Donation> donations = new ArrayList<>();
 
   /**
    * Constructor for the class Sponsorship
@@ -46,17 +46,17 @@ public class Sponsorship {
    * @param user
    * @param animal
    */
-  
-  public Sponsorship(User user, Animal animal,float amount) {
+
+  public Sponsorship(User user, Animal animal, float amount) {
     this.user = user;
     this.animal = animal;
     this.amount = amount;
     startDate = LocalDate.now();
   }
-  
+
   public Sponsorship() {
   }
-  
+
   // Getters area
   public User getUser() {
     return user;
@@ -65,14 +65,13 @@ public class Sponsorship {
   public Animal getAnimal() {
     return animal;
   }
-  
+
   public void addDonation() {
-	  Donation donation = new Donation(amount);
-	  donations.add(donation);
-	  donation.setSponsorship(this);
+    Donation donation = new Donation(amount);
+    donations.add(donation);
+    donation.setSponsorship(this);
   }
-  
-  
+
   @Override
   public String toString() {
     return "Sponsorship{" +
@@ -80,4 +79,29 @@ public class Sponsorship {
         ", animal=" + animal +
         '}';
   }
+
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public void setAnimal(Animal animal) {
+    this.animal = animal;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public void setAmount(float amount) {
+    this.amount = amount;
+  }
+
+  public void setDonations(List<Donation> donations) {
+    this.donations = donations;
+  }
+
 }

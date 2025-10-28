@@ -343,17 +343,16 @@ public class App extends Application {
       case 1:
         System.out.println("Insert the amount of money u wish to give as a sponsorship");
         float amount = sc.nextFloat();
+        sc.nextLine();
         User user = (User) loggedAcc;
-        Sponsorship sponsor = new Sponsorship(user, animal, amount);
-        user.addSponsor(sponsor);
-        animal.addSponsor(sponsor);
+      manager.createSponsorship(user, animal, amount);
     }
   }
 
   public void interactList(List<Animal> animals) {
     int i = 1;
     for (Animal a : animals) {
-      System.out.print(i + ":" + a.toString());
+      System.out.print(i + ":" + a);
       i++;
     }
   }
@@ -361,7 +360,6 @@ public class App extends Application {
   public void searchAnimalMenu() {
 
     try {
-
       int opt;
       System.out.println("\n=== SEARCH ANIMAL ===");
       System.out.println("1 - Search by Keyword");
@@ -391,22 +389,26 @@ public class App extends Application {
 
         case 2 -> {
           AnimalType[] types = AnimalType.values();
-          AnimalType chosenType;
+          int typeOption;
           while (true) {
-            System.out.println("Select Type: ");
-            for (int i = 0; i < types.length; i++) {
-              System.out.println((i + 1) + "- " + types[i]);
+            try {
+              System.out.println("Select Type: ");
+              for (int i = 0; i < types.length; i++) {
+                System.out.println((i + 1) + "- " + types[i]);
+              }
+              typeOption = sc.nextInt();
+              sc.nextLine();
+              if (typeOption <= 0 || typeOption > types.length) {
+                System.out.println("Invalid Option! Please Try again!");
+              } else {
+                break;
+              }
+            } catch (Exception e) {
+              System.out.println("Please enter a valid option!");
             }
-            int typeOption = sc.nextInt();
-            sc.nextLine();
-            if (typeOption >= 1 && typeOption <= types.length) {
-              chosenType = types[typeOption - 1];
-              break;
-            }
-            System.out.println("Invalid Option! Please Try again!");
           }
 
-          List<Animal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(), chosenType.toString());
+          List<Animal> animals = manager.searchAnimalByParameter("type", types[typeOption - 1]);
           if (animals == null || animals.isEmpty()) {
             System.out.println("\n\n\nNo matches! Returning...");
             searchAnimalMenu();
@@ -419,6 +421,7 @@ public class App extends Application {
             searchAnimalMenu();
           }
         }
+
         case 3 -> {
           AnimalColor[] colors = AnimalColor.values();
           AnimalColor color;
@@ -448,6 +451,11 @@ public class App extends Application {
             searchAnimalMenu();
           }
 
+        }
+
+        case 0 -> {
+          System.out.println("Returning...");
+          userHomepage();
         }
       }
     } catch (InputMismatchException e) {

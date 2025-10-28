@@ -114,6 +114,7 @@ public class Animal {
   
   public void addSponsor(Sponsorship sponsor) {
 		sponsors.add(sponsor);
+    sponsor.setAnimal(this);
 	  }
 
 
