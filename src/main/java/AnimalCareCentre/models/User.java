@@ -27,7 +27,8 @@ public class User extends Account {
   private long id;
   private int contact;
   private LocalDate birthDate;
-  // private ArrayList<Adoption> adoptions;
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private ArrayList<Adoption> adoptions;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Sponsorship> sponsorships = new ArrayList<>();
 

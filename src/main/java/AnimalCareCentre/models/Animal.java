@@ -39,7 +39,8 @@ public class Animal {
   @Enumerated(EnumType.STRING)
   private AdoptionType listedFor;
   private String description;
-  // List<Adoption> adoptions = new ArrayList<>();
+  @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<Adoption> adoptions = new ArrayList<>();
   @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
   List<Sponsorship> sponsors = new ArrayList<>();
 
