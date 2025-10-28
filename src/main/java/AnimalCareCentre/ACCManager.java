@@ -150,6 +150,13 @@ public class ACCManager {
     session.getTransaction().commit();
   }
 
+  //Method to see the animals in each shelter
+    public List<Animal> getAnimalsByShelter(Shelter shelter){
+      Query<Animal> query = session.createQuery("FROM Animal WHERE shelter = :shelter", Animal.class);
+      query.setParameter("shelter", shelter);
+      return query.getResultList();
+    }
+
   public void exit() {
     session.close();
     sessionFactory.close();
