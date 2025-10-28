@@ -57,7 +57,11 @@ public class User extends Account {
   public int getContact() {
     return contact;
   }
-
+  
+  public void addSponsor(Sponsorship sponsor) {
+	sponsorships.add(sponsor);
+  }
+  
   @Override
   public String toString() {
     return "User{" +

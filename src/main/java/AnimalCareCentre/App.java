@@ -334,6 +334,30 @@ public class App extends Application {
     });
 
   }
+  
+  public void showAnimal(Animal animal) {
+	  System.out.println(animal.toString());
+	  System.out.println("Menu: ");
+	  System.out.println("1 - Sponsor Animal");
+	  int opc = sc.nextInt();
+	  switch(opc) {
+	  case 1:
+		System.out.println("Insert the amount of money u wish to give as a sponsorship");
+		float amount = sc.nextFloat();
+		User user = (User) loggedAcc;
+		Sponsorship sponsor = new Sponsorship(user,animal,amount);
+		user.addSponsor(sponsor);
+		animal.addSponsor(sponsor);
+	  }
+  }
+  
+  public void interactList(List <Animal> animals) {
+	  int i = 1;
+	  for(Animal a : animals) {
+		  System.out.print(i + ":" + a.toString());
+		  i++;
+	  }
+  }
 
   public void searchAnimalMenu() {
 
@@ -357,14 +381,73 @@ public class App extends Application {
             System.out.println("\n\n\nNo matches! Returning...");
             searchAnimalMenu();
           } else {
-          System.out.println(manager.searchAnimalByKeyword(search));
+        	interactList(animals);
+        	int ani = sc.nextInt();
+        	sc.nextLine();
+        	Animal choice = animals.get(ani-1);
+        	showAnimal(choice);
             searchAnimalMenu();
-          // later it's not going to be just a print, should have options
           }
         }
 
         case 2 -> {
-
+        	AnimalType[] types  = AnimalType.values();
+            AnimalType chosenType;
+            while (true) {
+                System.out.println("Select Type: ");
+                for(int i = 0; i < types.length; i++) {
+                    System.out.println((i+1) + "- " + types[i]);
+                }
+                int typeOption = sc.nextInt();
+                sc.nextLine();
+                if (typeOption >= 1 && typeOption <= types.length) {
+                    chosenType = types[typeOption -1];
+                    break;
+                }
+                System.out.println("Invalid Option! Please Try again!");
+            }
+            
+        	List<Animal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(), chosenType.toString());
+        	if (animals == null || animals.isEmpty()) {
+                System.out.println("\n\n\nNo matches! Returning...");
+                searchAnimalMenu();
+              } else {
+            	interactList(animals);
+            	int ani = sc.nextInt();
+            	sc.nextLine();
+            	Animal choice = animals.get(ani-1);
+            	showAnimal(choice);
+                searchAnimalMenu();
+              }
+        }
+        case 3 ->{
+        	AnimalColor[] colors = AnimalColor.values();
+            AnimalColor color;
+            while (true) {
+                System.out.println("Select Color:");
+                for (int i = 0; i < colors.length; i++) {
+                    System.out.println((i + 1) + ". " + colors[i]);
+                }
+                int colorOption = sc.nextInt();
+                sc.nextLine();
+                if (colorOption >= 1 && colorOption <= colors.length) {
+                    color = colors[colorOption - 1];
+                    break;
+                }
+                System.out.println("Invalid option, please try again.");
+            }
+            List<Animal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(),color.toString());
+        	if (animals == null || animals.isEmpty()) {
+                System.out.println("\n\n\nNo matches! Returning...");
+                searchAnimalMenu();
+              } else {
+            	interactList(animals);
+            	int ani = sc.nextInt();
+            	sc.nextLine();
+            	Animal choice = animals.get(ani-1);
+            	showAnimal(choice);
+                searchAnimalMenu();
+              }
         }
 
         case 0 -> {
