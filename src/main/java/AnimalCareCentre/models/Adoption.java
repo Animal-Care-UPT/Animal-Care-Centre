@@ -40,7 +40,9 @@ public class Adoption {
    * @param animal
    * @param type
    */
-  public Adoption(User user, Animal animal, AdoptionType type) {
+
+  public Adoption(User user, ShelterAnimal animal, AdoptionType type) {
+
     this.user = user;
     this.animal = animal;
     this.type = type;
@@ -52,7 +54,11 @@ public class Adoption {
     return user;
   }
 
-  public Animal getAnimal() {
+  public Shelter getShelter() {
+    return shelter;
+  }
+
+  public ShelterAnimal getAnimal() {
     return animal;
   }
 

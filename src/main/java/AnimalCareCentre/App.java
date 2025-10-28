@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 
-import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 import AnimalCareCentre.enums.*;
@@ -468,6 +467,7 @@ public class App extends Application {
    */
   private void userHomepage() {
     showTerminalScreen();
+
 
     try {
 

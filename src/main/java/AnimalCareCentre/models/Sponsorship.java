@@ -34,7 +34,7 @@ public class Sponsorship {
   private User user;
   @ManyToOne
   @JoinColumn(name = "animal_id")
-  private Animal animal;
+  private ShelterAnimal animal;
   private LocalDate startDate;
   private float amount;
   @OneToMany(mappedBy = "sponsorship", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,8 +46,8 @@ public class Sponsorship {
    * @param user
    * @param animal
    */
-
-  public Sponsorship(User user, Animal animal, float amount) {
+  
+  public Sponsorship(User user, ShelterAnimal animal, float amount) {
     this.user = user;
     this.animal = animal;
     this.amount = amount;
@@ -62,7 +62,7 @@ public class Sponsorship {
     return user;
   }
 
-  public Animal getAnimal() {
+  public ShelterAnimal getAnimal() {
     return animal;
   }
 
