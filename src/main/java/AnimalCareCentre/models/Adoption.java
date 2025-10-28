@@ -2,16 +2,33 @@ package AnimalCareCentre.models;
 
 import java.time.LocalDate;
 import AnimalCareCentre.enums.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 /**
  * This class describes the model of an Adoption.
  *
  */
+@Entity
+@Table(name = "Adoptions")
 public class Adoption {
 
+  @Id
+  @Column(name = "adoption_id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
+  @ManyToOne
+  @JoinColumn(name = "user_id")
   private User user;
-  private Shelter shelter;
-  private ShelterAnimal animal;
+  @ManyToOne
+  @JoinColumn(name = "animal_id")
+  private Animal animal;
   private LocalDate date;
   private AdoptionType type;
 
@@ -21,15 +38,15 @@ public class Adoption {
    * @param user
    * @param shelter
    * @param animal
-   * @param date
    * @param type
    */
-  public Adoption(User user, Shelter shelter, ShelterAnimal animal, LocalDate date, AdoptionType type) {
+
+  public Adoption(User user, ShelterAnimal animal, AdoptionType type) {
+
     this.user = user;
-    this.shelter = shelter;
     this.animal = animal;
-    this.date = date;
     this.type = type;
+    date = LocalDate.now();
   }
 
   // Getters area
@@ -58,7 +75,6 @@ public class Adoption {
   public String toString() {
     return "Adoption{" +
         "user=" + user +
-        ", shelter=" + shelter +
         ", animal=" + animal +
         ", date=" + date +
         ", type=" + type +
