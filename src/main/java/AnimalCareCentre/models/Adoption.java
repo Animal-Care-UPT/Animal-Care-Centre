@@ -11,7 +11,7 @@ public class Adoption {
 
   private User user;
   private Shelter shelter;
-  private Animal animal;
+  private ShelterAnimal animal;
   private LocalDate date;
   private AdoptionType type;
 
@@ -24,7 +24,7 @@ public class Adoption {
    * @param date
    * @param type
    */
-  public Adoption(User user, Shelter shelter, Animal animal, LocalDate date, AdoptionType type) {
+  public Adoption(User user, Shelter shelter, ShelterAnimal animal, LocalDate date, AdoptionType type) {
     this.user = user;
     this.shelter = shelter;
     this.animal = animal;
@@ -41,7 +41,7 @@ public class Adoption {
     return shelter;
   }
 
-  public Animal getAnimal() {
+  public ShelterAnimal getAnimal() {
     return animal;
   }
 

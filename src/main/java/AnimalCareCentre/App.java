@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 
-import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 import AnimalCareCentre.enums.*;
@@ -352,7 +351,7 @@ public class App extends Application {
                 case 1 -> {
                     System.out.println("What would you like to search?");
                     String search = sc.nextLine();
-                    List<Animal> animals = manager.searchAnimalByKeyword(search);
+                    List<ShelterAnimal> animals = manager.searchAnimalByKeyword(search);
                     if (animals == null || animals.isEmpty()) {
                         System.out.println("\n\n\nNo matches! Returning...");
                         searchAnimalMenu();

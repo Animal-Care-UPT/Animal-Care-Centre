@@ -22,7 +22,6 @@ public class Shelter extends Account {
    *
    * @param foundationYear
    * @param contact
-   * @param isVerified
    */
   public Shelter(String name, String email, String password, String location, SecurityQuestion securityQuestion,
       String answer, int foundationYear, int contact) {

@@ -1,14 +1,11 @@
 package AnimalCareCentre.models;
 
-import AnimalCareCentre.enums.AdoptionType;
 import AnimalCareCentre.enums.AnimalColor;
 import AnimalCareCentre.enums.AnimalSize;
 import AnimalCareCentre.enums.AnimalType;
 import jakarta.persistence.*;
 
-import java.awt.*;
 @Entity
-@Table(name ="LostAnimals")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class LostAnimal extends Animal{
 
@@ -19,6 +16,8 @@ public class LostAnimal extends Animal{
     String location;
 
     boolean isLost;
+
+    int contacto;
 
     @Override
     public String toString() {
@@ -32,9 +31,13 @@ public class LostAnimal extends Animal{
                 "description " + super.getDescription() + '\n';
     }
 
-    public LostAnimal(String name, AnimalType type, String race, AnimalColor color,AnimalSize size, String description, String location ) {
-        super(name, type, race, color,  size,  description );
+    public LostAnimal() {
+    }
+
+    public LostAnimal(String name, AnimalType type, String race, AnimalColor color, AnimalSize size, String description, String location) {
+        super(name, type, race, size,  color,  description );
         this.location = location;
+        this.contacto = contacto;
     }
 
     public String getLocation() {

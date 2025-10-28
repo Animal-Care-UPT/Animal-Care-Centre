@@ -1,144 +1,84 @@
 package AnimalCareCentre.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import AnimalCareCentre.enums.AnimalColor;
+import AnimalCareCentre.enums.AnimalSize;
+import AnimalCareCentre.enums.AnimalType;
 
-import AnimalCareCentre.enums.*;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-/**
- * This class describes the model of an Animal.
- *
- */
-@Entity
-@Table(name = "Animals")
-public class Animal {
+@MappedSuperclass
+abstract class Animal {
 
-  @Id
-  @Column(name = "animal_id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-  private String name;
-  @Enumerated(EnumType.STRING)
-  private AnimalType type;
-  private String race;
-  @Enumerated(EnumType.STRING)
-  private AnimalColor color;
-  private boolean isVacinated;
-  @Enumerated(EnumType.STRING)
-  private AnimalSize size;
-  @Enumerated(EnumType.STRING)
-  private AdoptionType listedFor;
-  private String description;
-  // List<Adoption> adoptions = new ArrayList<>();
-  @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
-  List<Sponsorship> sponsors = new ArrayList<>();
 
-  /**
-   * Constructor for the class Animal.
-   *
-   * @param name
-   * @param type
-   * @param race
-   * @param color
-   * @param isVacinated
-   * @param size
-   * @param listedFor
-   * @param description
-   */
-  public Animal(String name, AnimalType type, String race, AnimalColor color, boolean isVacinated, AnimalSize size,
-      AdoptionType listedFor, String description) {
-    this.name = name;
-    this.type = type;
-    this.race = race;
-    this.color = color;
-    this.isVacinated = isVacinated;
-    this.size = size;
-    this.listedFor = listedFor;
-    this.description = description;
-  }
+    @Id
+    @Column(name = "animal_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    private String name;
+    @Enumerated(EnumType.STRING)
+    private AnimalType type;
 
-  public Animal() {
-  }
+    private String race;
 
-    public Animal(String name, AnimalType type, String race, AnimalColor color, AnimalSize size, String description) {
+    @Enumerated(EnumType.STRING)
+    private AnimalSize size;
+
+
+    @Enumerated(EnumType.STRING)
+    private AnimalColor color;
+
+    private String description;
+    public Animal() {
     }
 
-    // The different getter from the class
-  public String getName() {
-    return name;
-  }
+    public long getId() {
+        return id;
+    }
 
-  public AnimalType getType() {
-    return type;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public String getRace() {
-    return race;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public AnimalColor getColor() {
-    return color;
-  }
+    public AnimalType getType() {
+        return type;
+    }
 
-  public boolean isVacinated() {
-    return isVacinated;
-  }
+    public void setType(AnimalType type) {
+        this.type = type;
+    }
 
-  public AnimalSize getSize() {
-    return size;
-  }
+    public String getRace() {
+        return race;
+    }
 
-  public AdoptionType getListetFor() {
-    return listedFor;
-  }
+    public void setRace(String race) {
+        this.race = race;
+    }
 
-  public String getDescription() {
-    return description;
-  }
 
-  // public List<Adoption> getAdoptions() {
-  //   return adoptions;
-  // }
+    public AnimalSize getSize() {
+        return size;
+    }
 
-  public List<Sponsorship> getSponsors() {
-    return sponsors;
-  }
+    public Animal(String name, AnimalType type, String race, AnimalSize animalSize,AnimalColor animalColor,String description) {
+            this.name = name;
+            this.type = type;
+            this.race = race;
+            this.size = animalSize;
+            this.color = animalColor;
+            this.description = description;
+        }
 
-  // The different setters from the class
-  public void setVacinated(boolean vacinated) {
-    isVacinated = vacinated;
-  }
+    public AnimalColor getColor() {
+        return color;
+    }
 
-  public void setListetFor(AdoptionType listedFor) {
-    this.listedFor = listedFor;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  // toString from the class
-  @Override
-  public String toString() {
-    return "Animal{" +
-        "name='" + name + '\'' +
-        ", type=" + type +
-        ", race=" + race +
-        ", color=" + color +
-        ", isVacinated=" + isVacinated +
-        ", size=" + size +
-        ", listedFor=" + listedFor +
-        ", description='" + description + '\'' +
-        '}';
-  }
+    public String getDescription() {
+        return description;
+    }
 }
+

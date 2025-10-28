@@ -1,7 +1,5 @@
 package AnimalCareCentre;
 
-import javafx.scene.image.Image;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -38,16 +36,16 @@ public class ACCManager {
    * @param search
    * @return
    */
-  public List<Animal> searchAnimalByKeyword(String search) {
+  public List<ShelterAnimal> searchAnimalByKeyword(String search) {
     Session session = sessionFactory.openSession();
-    Query<Animal> query = session.createQuery(
+    Query<ShelterAnimal> query = session.createQuery(
         "FROM Animal WHERE race LIKE :search " +
             "OR CAST(type AS string) LIKE :search " +
             "OR CAST(size AS string) LIKE :search " +
             "OR CAST(color AS string) LIKE :search",
-        Animal.class);
+        ShelterAnimal.class);
     query.setParameter("search", "%" + search + "%");
-    List<Animal> results = query.getResultList();
+    List<ShelterAnimal> results = query.getResultList();
     session.close(); // Don't forget to close the session!
     return results;
   }
@@ -59,10 +57,10 @@ public class ACCManager {
    * @param search
    * @return
    */
-  public List<Animal> searchAnimalByParameter(String parameter, String search) {
+  public List<ShelterAnimal> searchAnimalByParameter(String parameter, String search) {
     Session session = sessionFactory.openSession();
-    Query<Animal> query = session.createQuery(
-        "From Animal WHERE " + parameter + " =:search", Animal.class);
+    Query<ShelterAnimal> query = session.createQuery(
+        "From Animal WHERE " + parameter + " =:search", ShelterAnimal.class);
     query.setParameter("search", search);
     return query.getResultList();
   }
@@ -140,7 +138,7 @@ public class ACCManager {
       String description, AdoptionType adoptionType) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    Animal animal = new Animal(name, type, race, color, false, size, adoptionType, description);
+    ShelterAnimal animal = new ShelterAnimal(name, type, race, color, false, size, adoptionType, description);
     session.persist(animal);
     session.getTransaction().commit();
   }
