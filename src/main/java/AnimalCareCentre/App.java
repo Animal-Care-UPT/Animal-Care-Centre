@@ -542,7 +542,6 @@ public class App extends Application {
                     }
 
                     case 0 -> {
-                        sc.close();
                         System.out.println("Exiting terminal menu...");
                         javafx.application.Platform.runLater(() -> showMainMenu());
                     }
