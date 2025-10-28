@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.VBox;
 
+import javafx.scene.image.Image;
 import java.time.LocalDate;
 
 import AnimalCareCentre.enums.*;
@@ -330,6 +331,7 @@ public class App extends Application {
       loggedAcc = null;
       showMainMenu();
     });
+
   }
 
   public void showAnimal(ShelterAnimal animal) {
@@ -347,118 +349,68 @@ public class App extends Application {
     }
   }
 
-  public void searchAnimalMenu() {
 
-    try {
-      int opt;
-      System.out.println("\n=== SEARCH ANIMAL ===");
-      System.out.println("1 - Search by Keyword");
-      System.out.println("2 - Search by Type");
-      System.out.println("3 - Search by Color");
-      System.out.println("0 - Return");
+    /**
+     * This method allows to search for animals
+     */
+    public void searchAnimalMenu() {
+        System.out.println("\n=== SEARCH ANIMAL ===");
 
-      opt = sc.nextInt();
-      sc.nextLine();
-      switch (opt) {
-        case 1 -> {
-          System.out.println("What would you like to search?");
-          String search = sc.nextLine();
-          List<ShelterAnimal> animals = manager.searchAnimalByKeyword(search);
-          if (animals == null || animals.isEmpty()) {
-            System.out.println("\n\n\nNo matches! Returning...");
-            searchAnimalMenu();
-          } else {
-            interactList(animals);
-            int ani = sc.nextInt();
-            sc.nextLine();
-            ShelterAnimal choice = animals.get(ani - 1);
-            showAnimal(choice);
-            searchAnimalMenu();
-          }
-        }
+        String[] options = { "Search by Keyword", "Search by Type", "Search by Color", "Return" };
+        int opt = (int) chooseOption(options, "Search Option");
 
-        case 2 -> {
-          AnimalType[] types = AnimalType.values();
-          int typeOption;
-          while (true) {
-            try {
-              System.out.println("Select Type: ");
-              for (int i = 0; i < types.length; i++) {
-                System.out.println((i + 1) + "- " + types[i]);
-              }
-              typeOption = sc.nextInt();
-              sc.nextLine();
-              if (typeOption <= 0 || typeOption > types.length) {
-                System.out.println("Invalid Option! Please Try again!");
-              } else {
-                break;
-              }
-            } catch (Exception e) {
-              System.out.println("Please enter a valid option!");
+        switch (opt) {
+            case 1 -> { // Search by Keyword
+                System.out.println("What would you like to search?");
+                String search = sc.nextLine();
+                List<ShelterAnimal> animals = manager.searchAnimalByKeyword(search);
+
+                if (animals == null || animals.isEmpty()) {
+                    System.out.println("\nNo matches! Returning...");
+                } else {
+                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+                    showAnimal(choice);
+                }
+                searchAnimalMenu();
             }
-          }
 
-          List<ShelterAnimal> animals = manager.searchAnimalByParameter("type", types[typeOption - 1]);
-          if (animals == null || animals.isEmpty()) {
-            System.out.println("\n\n\nNo matches! Returning...");
-            searchAnimalMenu();
-          } else {
-            interactList(animals);
-            int ani = sc.nextInt();
-            sc.nextLine();
-            ShelterAnimal choice = animals.get(ani - 1);
-            showAnimal(choice);
-            searchAnimalMenu();
-          }
-        }
+            case 2 -> { // Search by Type
+                AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
+                List<ShelterAnimal> animals = manager.searchAnimalByParameter("type", chosenType.toString());
 
-        case 3 -> {
-          AnimalColor[] colors = AnimalColor.values();
-          AnimalColor color;
-          while (true) {
-            System.out.println("Select Color:");
-            for (int i = 0; i < colors.length; i++) {
-              System.out.println((i + 1) + ". " + colors[i]);
+                if (animals == null || animals.isEmpty()) {
+                    System.out.println("\nNo matches! Returning...");
+                } else {
+                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+                    showAnimal(choice);
+                }
+                searchAnimalMenu();
             }
-            int colorOption = sc.nextInt();
-            sc.nextLine();
-            if (colorOption >= 1 && colorOption <= colors.length) {
-              color = colors[colorOption - 1];
-              break;
+
+            case 3 -> { // Search by Color
+                AnimalColor chosenColor = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
+                List<ShelterAnimal> animals = manager.searchAnimalByParameter("color", chosenColor.toString());
+
+                if (animals == null || animals.isEmpty()) {
+                    System.out.println("\nNo matches! Returning...");
+                } else {
+                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+                    showAnimal(choice);
+                }
+                searchAnimalMenu();
             }
-            System.out.println("Invalid option, please try again.");
-          }
-          List<ShelterAnimal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(), color.toString());
-          if (animals == null || animals.isEmpty()) {
-            System.out.println("\n\n\nNo matches! Returning...");
-            searchAnimalMenu();
-          } else {
-            interactList(animals);
-            int ani = sc.nextInt();
-            sc.nextLine();
-            ShelterAnimal choice = animals.get(ani - 1);
-            showAnimal(choice);
-            searchAnimalMenu();
-          }
 
+            case 4 -> { // Return
+                userHomepage();
+            }
         }
-
-        case 0 -> {
-          System.out.println("Returning...");
-          userHomepage();
-        }
-      }
-    } catch (InputMismatchException e) {
-      System.out.println();
     }
-  }
 
   /**
    * This method shows user's homepage
    */
   private void userHomepage() {
     showTerminalScreen();
-
 
     try {
 
