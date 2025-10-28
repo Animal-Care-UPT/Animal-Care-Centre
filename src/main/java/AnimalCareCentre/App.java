@@ -332,7 +332,7 @@ public class App extends Application {
     });
   }
 
-  public void showAnimal(Animal animal) {
+  public void showAnimal(ShelterAnimal animal) {
     System.out.println(animal.toString());
     System.out.println("Menu: ");
     System.out.println("1 - Sponsor Animal");
@@ -344,14 +344,6 @@ public class App extends Application {
         sc.nextLine();
         User user = (User) loggedAcc;
       manager.createSponsorship(user, animal, amount);
-    }
-  }
-
-  public void interactList(List<Animal> animals) {
-    int i = 1;
-    for (Animal a : animals) {
-      System.out.print(i + ":" + a);
-      i++;
     }
   }
 
@@ -371,7 +363,7 @@ public class App extends Application {
         case 1 -> {
           System.out.println("What would you like to search?");
           String search = sc.nextLine();
-          List<Animal> animals = manager.searchAnimalByKeyword(search);
+          List<ShelterAnimal> animals = manager.searchAnimalByKeyword(search);
           if (animals == null || animals.isEmpty()) {
             System.out.println("\n\n\nNo matches! Returning...");
             searchAnimalMenu();
@@ -379,7 +371,7 @@ public class App extends Application {
             interactList(animals);
             int ani = sc.nextInt();
             sc.nextLine();
-            Animal choice = animals.get(ani - 1);
+            ShelterAnimal choice = animals.get(ani - 1);
             showAnimal(choice);
             searchAnimalMenu();
           }
@@ -406,7 +398,7 @@ public class App extends Application {
             }
           }
 
-          List<Animal> animals = manager.searchAnimalByParameter("type", types[typeOption - 1]);
+          List<ShelterAnimal> animals = manager.searchAnimalByParameter("type", types[typeOption - 1]);
           if (animals == null || animals.isEmpty()) {
             System.out.println("\n\n\nNo matches! Returning...");
             searchAnimalMenu();
@@ -414,7 +406,7 @@ public class App extends Application {
             interactList(animals);
             int ani = sc.nextInt();
             sc.nextLine();
-            Animal choice = animals.get(ani - 1);
+            ShelterAnimal choice = animals.get(ani - 1);
             showAnimal(choice);
             searchAnimalMenu();
           }
@@ -436,7 +428,7 @@ public class App extends Application {
             }
             System.out.println("Invalid option, please try again.");
           }
-          List<Animal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(), color.toString());
+          List<ShelterAnimal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(), color.toString());
           if (animals == null || animals.isEmpty()) {
             System.out.println("\n\n\nNo matches! Returning...");
             searchAnimalMenu();
@@ -444,7 +436,7 @@ public class App extends Application {
             interactList(animals);
             int ani = sc.nextInt();
             sc.nextLine();
-            Animal choice = animals.get(ani - 1);
+            ShelterAnimal choice = animals.get(ani - 1);
             showAnimal(choice);
             searchAnimalMenu();
           }

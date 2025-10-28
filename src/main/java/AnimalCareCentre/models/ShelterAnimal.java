@@ -15,7 +15,6 @@ import jakarta.persistence.*;
 
 public class ShelterAnimal extends Animal {
 
-
   private boolean isVacinated;
 
   @Enumerated(EnumType.STRING)
@@ -48,6 +47,9 @@ public class ShelterAnimal extends Animal {
       super();
   }
 
+  public void addSponsor(Sponsorship sponsor) {
+    sponsors.add(sponsor);
+  }
 
     // The different getter from the class
   public String getName() {
@@ -95,7 +97,7 @@ public class ShelterAnimal extends Animal {
     isVacinated = vacinated;
   }
 
-  public void setListetFor(AdoptionType listedFor) {
+  public void setListedFor(AdoptionType listedFor) {
     this.listedFor = listedFor;
   }
 
