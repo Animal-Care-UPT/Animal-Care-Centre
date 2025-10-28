@@ -331,7 +331,6 @@ public class App extends Application {
       loggedAcc = null;
       showMainMenu();
     });
-
   }
 
   public void showAnimal(Animal animal) {
