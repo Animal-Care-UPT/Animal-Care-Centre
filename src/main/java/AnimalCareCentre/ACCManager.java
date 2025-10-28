@@ -67,7 +67,7 @@ public class ACCManager {
    * @param search
    * @return
    */
-  public List<ShelterAnimal> searchAnimalByParameter(String parameter, String search) {
+  public List<ShelterAnimal> searchAnimalByParameter(String parameter, Object search) {
     Session session = sessionFactory.openSession();
     Query<ShelterAnimal> query = session.createQuery(
         "From ShelterAnimal WHERE " + parameter + " =:search", ShelterAnimal.class);
