@@ -450,13 +450,12 @@ public class App extends Application {
         showTerminalScreen();
 
         new Thread(() -> {
-            int option;
-            do {
+            try {
                 System.out.println("=== SHELTER MENU ===");
                 System.out.println("1. Register Animal");
                 System.out.println("0. Logout");
                 System.out.print("Option: ");
-                option = sc.nextInt();
+                int option = sc.nextInt();
                 sc.nextLine();
 
                 switch (option) {
@@ -492,7 +491,6 @@ public class App extends Application {
                             System.out.println("Invalid option, please try again.");
                         }
 
-
                         // Size
                         AnimalSize size = (AnimalSize) chooseOption(AnimalSize.values(), "Size");
 
@@ -511,19 +509,26 @@ public class App extends Application {
 
                         manager.registerAnimal(name, chosenType, race, size, age, color, description, adoptionType);
                         System.out.println("\nAnimal registered successfully!\n");
+
+                        javafx.application.Platform.runLater(this::showMainMenu);
                     }
 
                     case 0 -> {
                         System.out.println("Exiting terminal menu...");
                         javafx.application.Platform.runLater(this::showMainMenu);
-                        return; // termina a thread
                     }
 
-                    default -> System.out.println("Invalid option!");
+                    default -> {
+                        System.out.println("Invalid option!");
+                        shelterHomepage();
+                    }
                 }
-            } while (option != 0);
+            } catch (InputMismatchException e) {
+                System.out.println("Please pick a valid option!");
+                sc.nextLine();
+                shelterHomepage();
+            }
         }).start();
-
     }
 
 }
