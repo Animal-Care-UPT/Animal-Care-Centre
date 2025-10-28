@@ -106,15 +106,6 @@ public class ShelterAnimal extends Animal {
   // toString from the class
   @Override
   public String toString() {
-    return "Animal{" +
-        "name='" + super.getName()+ '\'' +
-        ", type=" + super.getType()+
-        ", race=" + super.getRace()+
-        ", color=" + super.getColor()+
-        ", isVacinated=" + isVacinated +
-        ", size=" + super.getSize()+
-        ", listedFor=" + listedFor +
-        ", description='" + super.getDescription()+ '\'' +
-        '}';
+    return super.toString();
   }
 }

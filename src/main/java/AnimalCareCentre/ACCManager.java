@@ -47,7 +47,6 @@ public class ACCManager {
    * @return
    */
   public List<ShelterAnimal> searchAnimalByKeyword(String search) {
-    Session session = sessionFactory.openSession();
     Query<ShelterAnimal> query = session.createQuery(
         "FROM ShelterAnimal WHERE race LIKE :search " +
             "OR CAST(type AS string) LIKE :search " +
@@ -55,9 +54,18 @@ public class ACCManager {
             "OR CAST(color AS string) LIKE :search",
         ShelterAnimal.class);
     query.setParameter("search", "%" + search + "%");
-    List<ShelterAnimal> results = query.getResultList();
-    session.close(); // Don't forget to close the session!
-    return results;
+    return query.getResultList();
+  }
+
+  public List<Shelter> searchShelters() {
+    Query<Shelter> query = session.createQuery("FROM Shelter", Shelter.class);
+      return query.getResultList();
+  }
+
+  public List<ShelterAnimal> searchShelterAnimal(Shelter shelter) {
+    Query<ShelterAnimal> query = session.createQuery("FROM ShelterAnimal WHERE shelter_id = :shelter_id");
+    query.setParameter("shelter_id", shelter.getId());
+    return query.getResultList();
   }
 
   /**

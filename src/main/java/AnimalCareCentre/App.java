@@ -334,7 +334,7 @@ public class App extends Application {
   }
 
   public void showAnimal(ShelterAnimal animal) {
-    System.out.println(animal.toString());
+    System.out.println(animal);
     System.out.println("Menu: ");
     System.out.println("1 - Sponsor Animal");
     int opc = sc.nextInt();
@@ -422,6 +422,28 @@ public class App extends Application {
     }
   }
 
+  public void showShelter(Shelter shelter) {
+    System.out.println(shelter);
+    System.out.println("Animals: ");
+    List<ShelterAnimal> animals = manager.searchShelterAnimal(shelter);
+    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
+    if (choice == null) {
+      javafx.application.Platform.runLater(this::userHomepage);
+      return;
+    }
+    showAnimal(choice);
+  }
+
+  public void searchShelter() {
+    List<Shelter> shelters = manager.searchShelters();
+    Shelter choice = (Shelter) chooseOption(shelters.toArray(), "Shelter");
+    if (choice == null) {
+      javafx.application.Platform.runLater(this::userHomepage);
+      return;
+    }
+    showShelter(choice);
+  }
+
   /**
    * This method shows user's homepage
    */
@@ -435,6 +457,7 @@ public class App extends Application {
 
         System.out.println("=== USER MENU ===");
         System.out.println("1. Search Animal");
+        System.out.println("2. Search Shelter");
         System.out.println("0. Logout");
         System.out.print("Option: ");
         option = sc.nextInt();
@@ -443,6 +466,10 @@ public class App extends Application {
         switch (option) {
           case 1 -> {
             searchAnimalMenu();
+          }
+
+          case 2 -> {
+            searchShelter();
           }
 
           case 0 -> {
@@ -466,10 +493,12 @@ public class App extends Application {
    */
   private Object chooseOption(Object[] values, String title) {
     while (true) {
+      System.out.println("\n\n\n");
       System.out.println("Select " + title + ":");
+      System.out.println("\n");
 
       for (int i = 0; i < values.length; i++) {
-        System.out.println((i + 1) + ". " + values[i]);
+        System.out.println((i + 1) + ". " + values[i]+ "\n");
       }
 
       System.out.println("0. Back");
