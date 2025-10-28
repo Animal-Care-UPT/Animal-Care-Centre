@@ -126,15 +126,16 @@ public class ACCManager {
       sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
     } catch (Exception e) {
       StandardServiceRegistryBuilder.destroy(registry);
+      e.printStackTrace();
     }
   }
 
   // Method to register animals as a Shelter
   public void registerAnimal(String name, AnimalType type, String race, AnimalSize size, int age, AnimalColor color,
-      String description, Image image, AdoptionType adoptionType) {
+      String description, AdoptionType adoptionType) {
     Session session = sessionFactory.openSession();
     session.beginTransaction();
-    Animal animal = new Animal(name, type, race, color, false, size, adoptionType, description, image);
+    Animal animal = new Animal(name, type, race, color, false, size, adoptionType, description);
     session.persist(animal);
     session.getTransaction().commit();
   }

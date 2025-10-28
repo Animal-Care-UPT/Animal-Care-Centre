@@ -92,6 +92,8 @@ public class App extends Application {
         loggedAcc = acc;
         if (loggedAcc instanceof Shelter) {
           shelterHomepage();
+        } else if (loggedAcc instanceof User) {
+          userHomepage();
         }
       } else {
         System.out.println("Wrong credentials!");
@@ -142,9 +144,6 @@ public class App extends Application {
     });
   }
 
-  /**
-   * This method shows the create account screen
-   */
   /**
    * This method shows the create account screen
    */
@@ -335,6 +334,7 @@ public class App extends Application {
   }
 
   public void searchAnimalMenu() {
+
     while (true) {
 
       int opt;
@@ -351,10 +351,11 @@ public class App extends Application {
           System.out.println("What would you like to search?");
           String search = sc.nextLine();
           System.out.println(manager.searchAnimalByKeyword(search));
+          // later it's not going to be just a print, should have options
         }
 
         case 2 -> {
-          // didn't have to finish
+
         }
           
 
@@ -462,9 +463,7 @@ public class App extends Application {
             System.out.print("Adoption type: ");
             AdoptionType adoptionType = AdoptionType.valueOf(sc.nextLine().toUpperCase());
 
-            Image image = null; // no image in terminal
-
-            manager.registerAnimal(name, type, race, size, age, color, description, image, adoptionType);
+            manager.registerAnimal(name, type, race, size, age, color, description, adoptionType);
             System.out.println("✅ Animal registered successfully!");
 
           }

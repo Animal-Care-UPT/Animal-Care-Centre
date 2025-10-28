@@ -7,12 +7,13 @@ import AnimalCareCentre.enums.*;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import javafx.scene.image.Image;
 
 /**
  * This class describes the model of an Animal.
@@ -27,15 +28,18 @@ public class Animal {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long id;
   private String name;
+  @Enumerated(EnumType.STRING)
   private AnimalType type;
   private String race;
+  @Enumerated(EnumType.STRING)
   private AnimalColor color;
   private boolean isVacinated;
+  @Enumerated(EnumType.STRING)
   private AnimalSize size;
-  private AdoptionType listetFor;
+  @Enumerated(EnumType.STRING)
+  private AdoptionType listedFor;
   private String description;
-  private Image image;
-  List<Adoption> adoptions = new ArrayList<>();
+  // List<Adoption> adoptions = new ArrayList<>();
   @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
   List<Sponsorship> sponsors = new ArrayList<>();
 
@@ -48,21 +52,19 @@ public class Animal {
    * @param color
    * @param isVacinated
    * @param size
-   * @param listetFor
+   * @param listedFor
    * @param description
-   * @param image
    */
   public Animal(String name, AnimalType type, String race, AnimalColor color, boolean isVacinated, AnimalSize size,
-      AdoptionType listetFor, String description, Image image) {
+      AdoptionType listedFor, String description) {
     this.name = name;
     this.type = type;
     this.race = race;
     this.color = color;
     this.isVacinated = isVacinated;
     this.size = size;
-    this.listetFor = listetFor;
+    this.listedFor = listedFor;
     this.description = description;
-    this.image = image;
   }
 
   public Animal() {
@@ -94,20 +96,16 @@ public class Animal {
   }
 
   public AdoptionType getListetFor() {
-    return listetFor;
+    return listedFor;
   }
 
   public String getDescription() {
     return description;
   }
 
-  public Image getImage() {
-    return image;
-  }
-
-  public List<Adoption> getAdoptions() {
-    return adoptions;
-  }
+  // public List<Adoption> getAdoptions() {
+  //   return adoptions;
+  // }
 
   public List<Sponsorship> getSponsors() {
     return sponsors;
@@ -118,16 +116,12 @@ public class Animal {
     isVacinated = vacinated;
   }
 
-  public void setListetFor(AdoptionType listetFor) {
-    this.listetFor = listetFor;
+  public void setListetFor(AdoptionType listedFor) {
+    this.listedFor = listedFor;
   }
 
   public void setDescription(String description) {
     this.description = description;
-  }
-
-  public void setImage(Image image) {
-    this.image = image;
   }
 
   // toString from the class
@@ -140,7 +134,7 @@ public class Animal {
         ", color=" + color +
         ", isVacinated=" + isVacinated +
         ", size=" + size +
-        ", listetFor=" + listetFor +
+        ", listedFor=" + listedFor +
         ", description='" + description + '\'' +
         '}';
   }
