@@ -14,6 +14,8 @@ import AnimalCareCentre.enums.*;
 import AnimalCareCentre.views.*;
 import AnimalCareCentre.models.*;
 
+import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 import java.awt.Toolkit;
 
@@ -92,6 +94,8 @@ public class App extends Application {
         loggedAcc = acc;
         if (loggedAcc instanceof Shelter) {
           shelterHomepage();
+        } else if (loggedAcc instanceof User) {
+          userHomepage();
         }
       } else {
         System.out.println("Wrong credentials!");
@@ -142,9 +146,6 @@ public class App extends Application {
     });
   }
 
-  /**
-   * This method shows the create account screen
-   */
   /**
    * This method shows the create account screen
    */
@@ -335,35 +336,46 @@ public class App extends Application {
   }
 
   public void searchAnimalMenu() {
-    while (true) {
+
+    try {
 
       int opt;
-      opt = sc.nextInt();
-      sc.nextLine();
       System.out.println("\n=== SEARCH ANIMAL ===");
       System.out.println("1 - Search by Keyword");
       System.out.println("2 - Search by Type");
       System.out.println("3 - Search by Color");
-      System.out.println("4 - Return");
+      System.out.println("0 - Return");
 
+      opt = sc.nextInt();
+      sc.nextLine();
       switch (opt) {
         case 1 -> {
           System.out.println("What would you like to search?");
           String search = sc.nextLine();
+          List<Animal> animals = manager.searchAnimalByKeyword(search);
+          if (animals == null || animals.isEmpty()) {
+            System.out.println("\n\n\nNo matches! Returning...");
+            searchAnimalMenu();
+          } else {
           System.out.println(manager.searchAnimalByKeyword(search));
+            searchAnimalMenu();
+          // later it's not going to be just a print, should have options
+          }
         }
 
         case 2 -> {
-          // didn't have to finish
+
         }
-          
 
-        default -> {
-
+        case 0 -> {
+          userHomepage();
         }
       }
-    }
 
+    } catch (InputMismatchException e) {
+      System.out.println("Please pick a valid option!");
+      searchAnimalMenu();
+    }
   }
 
   /**
@@ -372,10 +384,11 @@ public class App extends Application {
   private void userHomepage() {
     showTerminalScreen();
 
-    new Thread(() -> {
-      int option;
+    try {
 
-      do {
+      new Thread(() -> {
+        int option;
+
         System.out.println("=== USER MENU ===");
         System.out.println("1. Search Animal");
         System.out.println("0. Logout");
@@ -395,9 +408,13 @@ public class App extends Application {
           }
           default -> System.out.println("Invalid option!");
         }
-      } while (option != 0);
-    }).start();
 
+      }).start();
+
+    } catch (InputMismatchException e) {
+      System.out.println("Please pick a valid option!");
+      userHomepage();
+    }
   }
 
   /**
@@ -462,9 +479,7 @@ public class App extends Application {
             System.out.print("Adoption type: ");
             AdoptionType adoptionType = AdoptionType.valueOf(sc.nextLine().toUpperCase());
 
-            Image image = null; // no image in terminal
-
-            manager.registerAnimal(name, type, race, size, age, color, description, image, adoptionType);
+            manager.registerAnimal(name, type, race, size, age, color, description, adoptionType);
             System.out.println("✅ Animal registered successfully!");
 
           }

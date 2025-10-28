@@ -2,6 +2,8 @@ package AnimalCareCentre.models;
 
 import AnimalCareCentre.enums.*;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,7 +30,6 @@ public class Account {
   private SecurityQuestion securityQuestion;
   private String answer;
 
-
   /**
    * Constructor for class Account.
    *
@@ -38,7 +39,8 @@ public class Account {
    * @param location
    * @param securityQuestion
    */
-  public Account(String name, String email, String password, String location, SecurityQuestion securityQuestion, String answer) {
+  public Account(String name, String email, String password, String location, SecurityQuestion securityQuestion,
+      String answer) {
     this.name = name;
     this.email = email;
     this.password = password;
@@ -47,7 +49,8 @@ public class Account {
     this.answer = answer;
   }
 
-  protected Account() {}
+  protected Account() {
+  }
 
   // getters area
   public String getName() {
