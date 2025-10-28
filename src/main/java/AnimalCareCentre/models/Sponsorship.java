@@ -88,7 +88,7 @@ public class Sponsorship {
     this.user = user;
   }
 
-  public void setAnimal(Animal animal) {
+  public void setAnimal(ShelterAnimal animal) {
     this.animal = animal;
   }
 
