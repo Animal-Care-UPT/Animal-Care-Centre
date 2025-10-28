@@ -418,16 +418,39 @@ public class App extends Application {
     }
 
     /**
+     * Method to choose an option from the enum classes
+     */
+    private Object chooseOption(Object[] values, String title) {
+        while (true) {
+            System.out.println("Select " + title + ":");
+
+            //Show the options with numbers
+            for (int i = 0; i < values.length; i++) {
+                System.out.println((i + 1) + ". " + values[i]);
+            }
+
+            System.out.print("Option: ");
+            String input = sc.nextLine();
+
+            try {
+                int option = Integer.parseInt(input);
+                if (option >= 1 && option <= values.length) {
+                    return values[option - 1];
+                }
+            } catch (NumberFormatException ignored) {}
+
+            System.out.println("Invalid option, please try again.");
+        }
+    }
+
+    /**
      * This method shows shelter's homepage
      */
     private void shelterHomepage() {
-        // To show the window with only the logout button
         showTerminalScreen();
 
-        // Shelter Menu
         new Thread(() -> {
             int option;
-
             do {
                 System.out.println("=== SHELTER MENU ===");
                 System.out.println("1. Register Animal");
@@ -437,114 +460,65 @@ public class App extends Application {
                 sc.nextLine();
 
                 switch (option) {
-                    // To allow shelters to register animals
                     case 1 -> {
                         System.out.println("\n=== REGISTER ANIMAL ===");
                         System.out.print("Name: ");
                         String name = sc.nextLine();
 
-                        //Animal Type
-                        AnimalType[] types  = AnimalType.values();
-                        AnimalType chosenType;
-                        while (true) {
-                            System.out.println("Select Type: ");
-                            for(int i = 0; i < types.length; i++) {
-                                System.out.println((i+1) + "- " + types[i]);
-                            }
-                            int typeOption = sc.nextInt();
-                            sc.nextLine();
-                            if (typeOption >= 1 && typeOption <= types.length) {
-                                chosenType = types[typeOption -1];
-                                break;
-                            }
-                            System.out.println("Invalid Option! Please Try again!");
-                        }
+                        // Type
+                        AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
 
-                        // Breeds
+                        // Breed
                         List<String> breeds = chosenType.getBreeds();
-                        String race;
+                        String race = null;
+
                         while (true) {
                             System.out.println("Select Breed:");
                             for (int i = 0; i < breeds.size(); i++) {
                                 System.out.println((i + 1) + ". " + breeds.get(i));
                             }
-                            int breedOption = sc.nextInt();
-                            sc.nextLine();
-                            if (breedOption >= 1 && breedOption <= breeds.size()) {
-                                race = breeds.get(breedOption - 1);
-                                break;
-                            }
+
+                            System.out.print("Option: ");
+                            String input = sc.nextLine();
+
+                            try {
+                                int breedOption = Integer.parseInt(input);
+                                if (breedOption >= 1 && breedOption <= breeds.size()) {
+                                    race = breeds.get(breedOption - 1);
+                                    break;
+                                }
+                            } catch (NumberFormatException ignored) {}
+
                             System.out.println("Invalid option, please try again.");
                         }
 
+
                         // Size
-                        AnimalSize[] sizes = AnimalSize.values();
-                        AnimalSize size;
-                        while (true) {
-                            System.out.println("Select Size:");
-                            for (int i = 0; i < sizes.length; i++) {
-                                System.out.println((i + 1) + ". " + sizes[i]);
-                            }
-                            int sizeOption = sc.nextInt();
-                            sc.nextLine();
-                            if (sizeOption >= 1 && sizeOption <= sizes.length) {
-                                size = sizes[sizeOption - 1];
-                                break;
-                            }
-                            System.out.println("Invalid option, please try again.");
-                        }
+                        AnimalSize size = (AnimalSize) chooseOption(AnimalSize.values(), "Size");
 
                         System.out.print("Age: ");
                         int age = sc.nextInt();
                         sc.nextLine();
 
                         // Color
-                        AnimalColor[] colors = AnimalColor.values();
-                        AnimalColor color;
-                        while (true) {
-                            System.out.println("Select Color:");
-                            for (int i = 0; i < colors.length; i++) {
-                                System.out.println((i + 1) + ". " + colors[i]);
-                            }
-                            int colorOption = sc.nextInt();
-                            sc.nextLine();
-                            if (colorOption >= 1 && colorOption <= colors.length) {
-                                color = colors[colorOption - 1];
-                                break;
-                            }
-                            System.out.println("Invalid option, please try again.");
-                        }
+                        AnimalColor color = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
 
                         System.out.print("Description: ");
                         String description = sc.nextLine();
 
-                        // Adoption type
-                        AdoptionType[] adoptions = AdoptionType.values();
-                        AdoptionType adoptionType;
-                        while (true) {
-                            System.out.println("Select Adoption Type:");
-                            for (int i = 0; i < adoptions.length; i++) {
-                                System.out.println((i + 1) + ". " + adoptions[i]);
-                            }
-                            int adoptionOption = sc.nextInt();
-                            sc.nextLine();
-                            if (adoptionOption >= 1 && adoptionOption <= adoptions.length) {
-                                adoptionType = adoptions[adoptionOption - 1];
-                                break;
-                            }
-                            System.out.println("Invalid option, please try again.");
-                        }
-
+                        // Adoption Type
+                        AdoptionType adoptionType = (AdoptionType) chooseOption(AdoptionType.values(), "Adoption Type");
 
                         manager.registerAnimal(name, chosenType, race, size, age, color, description, adoptionType);
-                        System.out.println("\n\n\nAnimal registered successfully!");
-
+                        System.out.println("\nAnimal registered successfully!\n");
                     }
 
                     case 0 -> {
                         System.out.println("Exiting terminal menu...");
-                        javafx.application.Platform.runLater(() -> showMainMenu());
+                        javafx.application.Platform.runLater(this::showMainMenu);
+                        return; // termina a thread
                     }
+
                     default -> System.out.println("Invalid option!");
                 }
             } while (option != 0);
