@@ -49,7 +49,7 @@ public class ACCManager {
   public List<ShelterAnimal> searchAnimalByKeyword(String search) {
     Session session = sessionFactory.openSession();
     Query<ShelterAnimal> query = session.createQuery(
-        "FROM Animal WHERE race LIKE :search " +
+        "FROM ShelterAnimal WHERE race LIKE :search " +
             "OR CAST(type AS string) LIKE :search " +
             "OR CAST(size AS string) LIKE :search " +
             "OR CAST(color AS string) LIKE :search",
@@ -70,7 +70,7 @@ public class ACCManager {
   public List<ShelterAnimal> searchAnimalByParameter(String parameter, String search) {
     Session session = sessionFactory.openSession();
     Query<ShelterAnimal> query = session.createQuery(
-        "From Animal WHERE " + parameter + " =:search", ShelterAnimal.class);
+        "From ShelterAnimal WHERE " + parameter + " =:search", ShelterAnimal.class);
     query.setParameter("search", search);
     return query.getResultList();
   }
@@ -150,11 +150,11 @@ public class ACCManager {
   }
 
   //Method to see the animals in each shelter
-    public List<Animal> getAnimalsByShelter(Shelter shelter){
-      Query<Animal> query = session.createQuery("FROM Animal WHERE shelter = :shelter", Animal.class);
-      query.setParameter("shelter", shelter);
-      return query.getResultList();
-    }
+   // public List<Animal> getAnimalsByShelter(Shelter shelter){
+    //  Query<Animal> query = session.createQuery("FROM Animal WHERE shelter = :shelter", Animal.class);
+    //  query.setParameter("shelter", shelter);
+     // return query.getResultList();
+  //  }
 
   public void exit() {
     session.close();
