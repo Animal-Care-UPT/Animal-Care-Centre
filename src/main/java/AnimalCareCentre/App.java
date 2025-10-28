@@ -72,39 +72,177 @@ public class App extends Application {
 
         scene.addItems(login, create, exit);
 
-    }
+        manager.createShelterAccount(name.getText(), email.getText(), password.getText(), location.getText(),
+            sec.getValue(), answer.getText(), Integer.parseInt(year.getText()),
+            Integer.parseInt(contact.getText()));
+        showMainMenu();
+      }
 
-    /**
-     * This method shows the login screen
-     */
-    public void login() {
-        ACCScene scene = new ACCScene(stage, new ACCVBox());
-        Label emailLabel = new Label("Email:");
-        TextField email = new TextField();
-        Label passLabel = new Label("Password:");
-        PasswordField password = new PasswordField();
-        Button enter = new Button("Enter");
-        Button back = new Button("Back");
-        Button changePassword = new Button("Forgot Password");
-        scene.addItems(emailLabel, email, passLabel, password, enter, back, changePassword);
+    });
 
-        enter.setOnAction(e -> {
-            Account acc = manager.login(email.getText(), password.getText());
-            if (acc != null) {
-                loggedAcc = acc;
-                if (loggedAcc instanceof Shelter) {
-                    shelterHomepage();
-                } else if (loggedAcc instanceof User) {
-                    userHomepage();
+    back.setOnAction(e -> {
+      showMainMenu();
+    });
+
+    accType.valueProperty().addListener((obs, old, selected) -> {
+      vbox.getChildren().clear();
+
+      vbox.getChildren().addAll(type, accType, nameLabel, name, emailLabel, email, passLabel, password, locationLabel,
+          location, secLabel, sec,
+          answerLabel, answer);
+
+      if (selected.equals("User")) {
+        vbox.getChildren().addAll(birthLabel, birthDate, contactLabel, contact);
+      } else if (selected.equals("Shelter")) {
+        vbox.getChildren().addAll(contactLabel, contact, foundYear, year);
+      }
+    });
+
+    scene.addItems(create, back);
+  }
+
+  /**
+   * This method shows an alert
+   */
+  public void showAlert(AlertType type, String title, String text) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(null);
+    alert.setContentText(text);
+    alert.showAndWait();
+  }
+
+  /**
+   * This method is used temporarily to change to the terminal screen
+   */
+  private void showTerminalScreen() {
+    ACCScene scene = new ACCScene(stage, new ACCVBox());
+    Button logout = new Button("Logout");
+    logout.setStyle("-fx-background-color: #333333; -fx-text-fill: white; -fx-font-size: 16px;");
+    scene.addItems(logout);
+
+    logout.setOnAction(e -> {
+      System.out.println("\n Logout efetuado!");
+      loggedAcc = null;
+      showMainMenu();
+    });
+
+  }
+  
+  public void showAnimal(Animal animal) {
+	  System.out.println(animal.toString());
+	  System.out.println("Menu: ");
+	  System.out.println("1 - Sponsor Animal");
+	  int opc = sc.nextInt();
+	  switch(opc) {
+	  case 1:
+		System.out.println("Insert the amount of money u wish to give as a sponsorship");
+		float amount = sc.nextFloat();
+		User user = (User) loggedAcc;
+		Sponsorship sponsor = new Sponsorship(user,animal,amount);
+		user.addSponsor(sponsor);
+		animal.addSponsor(sponsor);
+	  }
+  }
+  
+  public void interactList(List <Animal> animals) {
+	  int i = 1;
+	  for(Animal a : animals) {
+		  System.out.print(i + ":" + a.toString());
+		  i++;
+	  }
+  }
+
+  public void searchAnimalMenu() {
+
+    try {
+
+      int opt;
+      System.out.println("\n=== SEARCH ANIMAL ===");
+      System.out.println("1 - Search by Keyword");
+      System.out.println("2 - Search by Type");
+      System.out.println("3 - Search by Color");
+      System.out.println("0 - Return");
+
+      opt = sc.nextInt();
+      sc.nextLine();
+      switch (opt) {
+        case 1 -> {
+          System.out.println("What would you like to search?");
+          String search = sc.nextLine();
+          List<Animal> animals = manager.searchAnimalByKeyword(search);
+          if (animals == null || animals.isEmpty()) {
+            System.out.println("\n\n\nNo matches! Returning...");
+            searchAnimalMenu();
+          } else {
+        	interactList(animals);
+        	int ani = sc.nextInt();
+        	sc.nextLine();
+        	Animal choice = animals.get(ani-1);
+        	showAnimal(choice);
+            searchAnimalMenu();
+          }
+        }
+
+        case 2 -> {
+        	AnimalType[] types  = AnimalType.values();
+            AnimalType chosenType;
+            while (true) {
+                System.out.println("Select Type: ");
+                for(int i = 0; i < types.length; i++) {
+                    System.out.println((i+1) + "- " + types[i]);
                 }
-            } else {
-                System.out.println("Wrong credentials!");
+                int typeOption = sc.nextInt();
+                sc.nextLine();
+                if (typeOption >= 1 && typeOption <= types.length) {
+                    chosenType = types[typeOption -1];
+                    break;
+                }
+                System.out.println("Invalid Option! Please Try again!");
             }
-        });
-
-        back.setOnAction(e -> {
-            showMainMenu();
-        });
+            
+        	List<Animal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(), chosenType.toString());
+        	if (animals == null || animals.isEmpty()) {
+                System.out.println("\n\n\nNo matches! Returning...");
+                searchAnimalMenu();
+              } else {
+            	interactList(animals);
+            	int ani = sc.nextInt();
+            	sc.nextLine();
+            	Animal choice = animals.get(ani-1);
+            	showAnimal(choice);
+                searchAnimalMenu();
+              }
+        }
+        case 3 ->{
+        	AnimalColor[] colors = AnimalColor.values();
+            AnimalColor color;
+            while (true) {
+                System.out.println("Select Color:");
+                for (int i = 0; i < colors.length; i++) {
+                    System.out.println((i + 1) + ". " + colors[i]);
+                }
+                int colorOption = sc.nextInt();
+                sc.nextLine();
+                if (colorOption >= 1 && colorOption <= colors.length) {
+                    color = colors[colorOption - 1];
+                    break;
+                }
+                System.out.println("Invalid option, please try again.");
+            }
+            List<Animal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(),color.toString());
+        	if (animals == null || animals.isEmpty()) {
+                System.out.println("\n\n\nNo matches! Returning...");
+                searchAnimalMenu();
+              } else {
+            	interactList(animals);
+            	int ani = sc.nextInt();
+            	sc.nextLine();
+            	Animal choice = animals.get(ani-1);
+            	showAnimal(choice);
+                searchAnimalMenu();
+              }
+        }
 
         changePassword.setOnAction(e -> {
             changePassword();

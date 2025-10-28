@@ -110,6 +110,11 @@ public class Animal {
   public List<Sponsorship> getSponsors() {
     return sponsors;
   }
+  
+  public void addSponsor(Sponsorship sponsor) {
+		sponsors.add(sponsor);
+	  }
+
 
   // The different setters from the class
   public void setVacinated(boolean vacinated) {
