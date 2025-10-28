@@ -1,7 +1,5 @@
 package AnimalCareCentre;
 
-import javafx.scene.image.Image;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
@@ -33,14 +31,12 @@ public class ACCManager {
   private static SessionFactory sessionFactory;
   private static Session session;
 
-  public void createSponsorship(User user, Animal animal, float amount) {
+  public void createSponsorship(User user, ShelterAnimal animal, float amount) {
     session.beginTransaction();
     Sponsorship sponsor = new Sponsorship(user, animal, amount);
     user.addSponsor(sponsor);
     animal.addSponsor(sponsor);
     session.persist(sponsor);
-    session.merge(user);
-    session.merge(animal);
     session.getTransaction().commit();
   }
 
@@ -50,15 +46,17 @@ public class ACCManager {
    * @param search
    * @return
    */
-  public List<Animal> searchAnimalByKeyword(String search) {
-    Query<Animal> query = session.createQuery(
+  public List<ShelterAnimal> searchAnimalByKeyword(String search) {
+    Session session = sessionFactory.openSession();
+    Query<ShelterAnimal> query = session.createQuery(
         "FROM Animal WHERE race LIKE :search " +
             "OR CAST(type AS string) LIKE :search " +
             "OR CAST(size AS string) LIKE :search " +
             "OR CAST(color AS string) LIKE :search",
-        Animal.class);
+        ShelterAnimal.class);
     query.setParameter("search", "%" + search + "%");
-    List<Animal> results = query.getResultList();
+    List<ShelterAnimal> results = query.getResultList();
+    session.close(); // Don't forget to close the session!
     return results;
   }
 
@@ -69,9 +67,10 @@ public class ACCManager {
    * @param search
    * @return
    */
-  public List<Animal> searchAnimalByParameter(String parameter, Object search) {
-    Query<Animal> query = session.createQuery(
-        "From Animal WHERE " + parameter + " =:search", Animal.class);
+  public List<ShelterAnimal> searchAnimalByParameter(String parameter, String search) {
+    Session session = sessionFactory.openSession();
+    Query<ShelterAnimal> query = session.createQuery(
+        "From Animal WHERE " + parameter + " =:search", ShelterAnimal.class);
     query.setParameter("search", search);
     return query.getResultList();
   }
@@ -145,7 +144,7 @@ public class ACCManager {
   public void registerAnimal(String name, AnimalType type, String race, AnimalSize size, int age, AnimalColor color,
       String description, AdoptionType adoptionType) {
     session.beginTransaction();
-    Animal animal = new Animal(name, type, race, color, false, size, adoptionType, description);
+    ShelterAnimal animal = new ShelterAnimal(name, type, race, color, false, size, adoptionType, description);
     session.persist(animal);
     session.getTransaction().commit();
   }

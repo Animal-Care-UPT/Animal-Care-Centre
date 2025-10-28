@@ -334,7 +334,7 @@ public class App extends Application {
 
   }
 
-  public void showAnimal(Animal animal) {
+  public void showAnimal(ShelterAnimal animal) {
     System.out.println(animal.toString());
     System.out.println("Menu: ");
     System.out.println("1 - Sponsor Animal");
@@ -363,12 +363,12 @@ public class App extends Application {
             case 1 -> { // Search by Keyword
                 System.out.println("What would you like to search?");
                 String search = sc.nextLine();
-                List<Animal> animals = manager.searchAnimalByKeyword(search);
+                List<ShelterAnimal> animals = manager.searchAnimalByKeyword(search);
 
                 if (animals == null || animals.isEmpty()) {
                     System.out.println("\nNo matches! Returning...");
                 } else {
-                    Animal choice = (Animal) chooseOption(animals.toArray(), "Animal");
+                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
                     showAnimal(choice);
                 }
                 searchAnimalMenu();
@@ -376,12 +376,12 @@ public class App extends Application {
 
             case 2 -> { // Search by Type
                 AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
-                List<Animal> animals = manager.searchAnimalByParameter("type", chosenType);
+                List<ShelterAnimal> animals = manager.searchAnimalByParameter("type", chosenType.toString());
 
                 if (animals == null || animals.isEmpty()) {
                     System.out.println("\nNo matches! Returning...");
                 } else {
-                    Animal choice = (Animal) chooseOption(animals.toArray(), "Animal");
+                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
                     showAnimal(choice);
                 }
                 searchAnimalMenu();
@@ -389,12 +389,12 @@ public class App extends Application {
 
             case 3 -> { // Search by Color
                 AnimalColor chosenColor = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
-                List<Animal> animals = manager.searchAnimalByParameter("color", chosenColor);
+                List<ShelterAnimal> animals = manager.searchAnimalByParameter("color", chosenColor.toString());
 
                 if (animals == null || animals.isEmpty()) {
                     System.out.println("\nNo matches! Returning...");
                 } else {
-                    Animal choice = (Animal) chooseOption(animals.toArray(), "Animal");
+                    ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
                     showAnimal(choice);
                 }
                 searchAnimalMenu();

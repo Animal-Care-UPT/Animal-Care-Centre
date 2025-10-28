@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import AnimalCareCentre.enums.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,8 +30,9 @@ public class Adoption {
   private User user;
   @ManyToOne
   @JoinColumn(name = "animal_id")
-  private Animal animal;
+  private ShelterAnimal animal;
   private LocalDate date;
+  @Enumerated(EnumType.STRING)
   private AdoptionType type;
 
   /**
@@ -40,7 +43,9 @@ public class Adoption {
    * @param animal
    * @param type
    */
-  public Adoption(User user, Animal animal, AdoptionType type) {
+
+  public Adoption(User user, ShelterAnimal animal, AdoptionType type) {
+
     this.user = user;
     this.animal = animal;
     this.type = type;
@@ -52,7 +57,7 @@ public class Adoption {
     return user;
   }
 
-  public Animal getAnimal() {
+  public ShelterAnimal getAnimal() {
     return animal;
   }
 
