@@ -39,7 +39,8 @@ public class Animal {
   @Enumerated(EnumType.STRING)
   private AdoptionType listedFor;
   private String description;
-  // List<Adoption> adoptions = new ArrayList<>();
+  @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<Adoption> adoptions = new ArrayList<>();
   @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
   List<Sponsorship> sponsors = new ArrayList<>();
 
@@ -110,6 +111,12 @@ public class Animal {
   public List<Sponsorship> getSponsors() {
     return sponsors;
   }
+  
+  public void addSponsor(Sponsorship sponsor) {
+		sponsors.add(sponsor);
+    sponsor.setAnimal(this);
+	  }
+
 
   // The different setters from the class
   public void setVacinated(boolean vacinated) {

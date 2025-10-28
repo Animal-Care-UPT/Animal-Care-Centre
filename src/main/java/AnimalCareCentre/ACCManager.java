@@ -30,7 +30,19 @@ public class ACCManager {
     setup();
   }
 
-  public SessionFactory sessionFactory;
+  private static SessionFactory sessionFactory;
+  private static Session session;
+
+  public void createSponsorship(User user, Animal animal, float amount) {
+    session.beginTransaction();
+    Sponsorship sponsor = new Sponsorship(user, animal, amount);
+    user.addSponsor(sponsor);
+    animal.addSponsor(sponsor);
+    session.persist(sponsor);
+    session.merge(user);
+    session.merge(animal);
+    session.getTransaction().commit();
+  }
 
   /**
    * This method searches animals by a keyword
@@ -39,7 +51,6 @@ public class ACCManager {
    * @return
    */
   public List<Animal> searchAnimalByKeyword(String search) {
-    Session session = sessionFactory.openSession();
     Query<Animal> query = session.createQuery(
         "FROM Animal WHERE race LIKE :search " +
             "OR CAST(type AS string) LIKE :search " +
@@ -48,7 +59,6 @@ public class ACCManager {
         Animal.class);
     query.setParameter("search", "%" + search + "%");
     List<Animal> results = query.getResultList();
-    session.close(); // Don't forget to close the session!
     return results;
   }
 
@@ -59,8 +69,7 @@ public class ACCManager {
    * @param search
    * @return
    */
-  public List<Animal> searchAnimalByParameter(String parameter, String search) {
-    Session session = sessionFactory.openSession();
+  public List<Animal> searchAnimalByParameter(String parameter, Object search) {
     Query<Animal> query = session.createQuery(
         "From Animal WHERE " + parameter + " =:search", Animal.class);
     query.setParameter("search", search);
@@ -68,7 +77,6 @@ public class ACCManager {
   }
 
   public void changePassword(String email, String password) {
-    Session session = sessionFactory.openSession();
     session.beginTransaction();
     Query<Account> query = session.createQuery("FROM Account WHERE email =:email", Account.class);
     query.setParameter("email", email);
@@ -76,11 +84,9 @@ public class ACCManager {
     account.setPassword(password);
     session.merge(account);
     session.getTransaction().commit();
-    session.close();
   }
 
   public Account login(String email, String password) {
-    Session session = sessionFactory.openSession();
     session.beginTransaction();
     Query<Account> query = session.createQuery("FROM Account WHERE email = :email", Account.class);
     query.setParameter("email", email);
@@ -118,7 +124,6 @@ public class ACCManager {
 
   public void createShelterAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer, int foundationYear, int contact) {
-    Session session = sessionFactory.openSession();
     session.beginTransaction();
     Shelter shelter = new Shelter(name, email, password, location, securityQuestion, answer, foundationYear, contact);
     session.persist(shelter);
@@ -129,6 +134,7 @@ public class ACCManager {
     final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
     try {
       sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+      session = sessionFactory.openSession();
     } catch (Exception e) {
       StandardServiceRegistryBuilder.destroy(registry);
       e.printStackTrace();
@@ -138,7 +144,6 @@ public class ACCManager {
   // Method to register animals as a Shelter
   public void registerAnimal(String name, AnimalType type, String race, AnimalSize size, int age, AnimalColor color,
       String description, AdoptionType adoptionType) {
-    Session session = sessionFactory.openSession();
     session.beginTransaction();
     Animal animal = new Animal(name, type, race, color, false, size, adoptionType, description);
     session.persist(animal);
@@ -146,6 +151,7 @@ public class ACCManager {
   }
 
   public void exit() {
+    session.close();
     sessionFactory.close();
   }
 
@@ -167,7 +173,6 @@ public class ACCManager {
   }
 
   public boolean doesEmailExist(String email) {
-    Session session = sessionFactory.openSession();
     Query<Account> query = session.createQuery("FROM Account WHERE email = :email", Account.class);
     query.setParameter("email", email);
     Account acc = query.uniqueResult();
