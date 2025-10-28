@@ -349,119 +349,62 @@ public class App extends Application {
     }
   }
 
-  public void interactList(List<Animal> animals) {
-    int i = 1;
-    for (Animal a : animals) {
-      System.out.print(i + ":" + a);
-      i++;
+
+    /**
+     * This method allows to search for animals
+     */
+    public void searchAnimalMenu() {
+        System.out.println("\n=== SEARCH ANIMAL ===");
+
+        String[] options = { "Search by Keyword", "Search by Type", "Search by Color", "Return" };
+        int opt = (int) chooseOption(options, "Search Option");
+
+        switch (opt) {
+            case 1 -> { // Search by Keyword
+                System.out.println("What would you like to search?");
+                String search = sc.nextLine();
+                List<Animal> animals = manager.searchAnimalByKeyword(search);
+
+                if (animals == null || animals.isEmpty()) {
+                    System.out.println("\nNo matches! Returning...");
+                } else {
+                    Animal choice = (Animal) chooseOption(animals.toArray(), "Animal");
+                    showAnimal(choice);
+                }
+                searchAnimalMenu();
+            }
+
+            case 2 -> { // Search by Type
+                AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
+                List<Animal> animals = manager.searchAnimalByParameter("type", chosenType);
+
+                if (animals == null || animals.isEmpty()) {
+                    System.out.println("\nNo matches! Returning...");
+                } else {
+                    Animal choice = (Animal) chooseOption(animals.toArray(), "Animal");
+                    showAnimal(choice);
+                }
+                searchAnimalMenu();
+            }
+
+            case 3 -> { // Search by Color
+                AnimalColor chosenColor = (AnimalColor) chooseOption(AnimalColor.values(), "Color");
+                List<Animal> animals = manager.searchAnimalByParameter("color", chosenColor);
+
+                if (animals == null || animals.isEmpty()) {
+                    System.out.println("\nNo matches! Returning...");
+                } else {
+                    Animal choice = (Animal) chooseOption(animals.toArray(), "Animal");
+                    showAnimal(choice);
+                }
+                searchAnimalMenu();
+            }
+
+            case 4 -> { // Return
+                userHomepage();
+            }
+        }
     }
-  }
-
-  public void searchAnimalMenu() {
-
-    try {
-      int opt;
-      System.out.println("\n=== SEARCH ANIMAL ===");
-      System.out.println("1 - Search by Keyword");
-      System.out.println("2 - Search by Type");
-      System.out.println("3 - Search by Color");
-      System.out.println("0 - Return");
-
-      opt = sc.nextInt();
-      sc.nextLine();
-      switch (opt) {
-        case 1 -> {
-          System.out.println("What would you like to search?");
-          String search = sc.nextLine();
-          List<Animal> animals = manager.searchAnimalByKeyword(search);
-          if (animals == null || animals.isEmpty()) {
-            System.out.println("\n\n\nNo matches! Returning...");
-            searchAnimalMenu();
-          } else {
-            interactList(animals);
-            int ani = sc.nextInt();
-            sc.nextLine();
-            Animal choice = animals.get(ani - 1);
-            showAnimal(choice);
-            searchAnimalMenu();
-          }
-        }
-
-        case 2 -> {
-          AnimalType[] types = AnimalType.values();
-          int typeOption;
-          while (true) {
-            try {
-              System.out.println("Select Type: ");
-              for (int i = 0; i < types.length; i++) {
-                System.out.println((i + 1) + "- " + types[i]);
-              }
-              typeOption = sc.nextInt();
-              sc.nextLine();
-              if (typeOption <= 0 || typeOption > types.length) {
-                System.out.println("Invalid Option! Please Try again!");
-              } else {
-                break;
-              }
-            } catch (Exception e) {
-              System.out.println("Please enter a valid option!");
-            }
-          }
-
-          List<Animal> animals = manager.searchAnimalByParameter("type", types[typeOption - 1]);
-          if (animals == null || animals.isEmpty()) {
-            System.out.println("\n\n\nNo matches! Returning...");
-            searchAnimalMenu();
-          } else {
-            interactList(animals);
-            int ani = sc.nextInt();
-            sc.nextLine();
-            Animal choice = animals.get(ani - 1);
-            showAnimal(choice);
-            searchAnimalMenu();
-          }
-        }
-
-        case 3 -> {
-          AnimalColor[] colors = AnimalColor.values();
-          AnimalColor color;
-          while (true) {
-            System.out.println("Select Color:");
-            for (int i = 0; i < colors.length; i++) {
-              System.out.println((i + 1) + ". " + colors[i]);
-            }
-            int colorOption = sc.nextInt();
-            sc.nextLine();
-            if (colorOption >= 1 && colorOption <= colors.length) {
-              color = colors[colorOption - 1];
-              break;
-            }
-            System.out.println("Invalid option, please try again.");
-          }
-          List<Animal> animals = manager.searchAnimalByParameter(AnimalType.values().toString(), color.toString());
-          if (animals == null || animals.isEmpty()) {
-            System.out.println("\n\n\nNo matches! Returning...");
-            searchAnimalMenu();
-          } else {
-            interactList(animals);
-            int ani = sc.nextInt();
-            sc.nextLine();
-            Animal choice = animals.get(ani - 1);
-            showAnimal(choice);
-            searchAnimalMenu();
-          }
-
-        }
-
-        case 0 -> {
-          System.out.println("Returning...");
-          userHomepage();
-        }
-      }
-    } catch (InputMismatchException e) {
-      System.out.println();
-    }
-  }
 
   /**
    * This method shows user's homepage
