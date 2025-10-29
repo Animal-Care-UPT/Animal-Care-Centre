@@ -31,6 +31,7 @@ public class App extends Application {
   private static Stage stage;
   private static final ACCManager manager = new ACCManager();
   private static Scanner sc = new Scanner(System.in);
+  private Thread consoleThread;
   // private static Navigator nav; commenting navigator for now
 
   public void start(Stage stage) {
@@ -332,6 +333,7 @@ public class App extends Application {
       System.out.println("\n Logout efetuado!");
       loggedAcc = null;
       showMainMenu();
+      return;
     });
 
   }
@@ -366,6 +368,7 @@ public class App extends Application {
 
       case 0 -> {
         userHomepage();
+        return;
       }
     }
   }
@@ -400,6 +403,7 @@ public class App extends Application {
           showAnimal(choice);
         }
         searchAnimalMenu();
+        return;
       }
 
       case "Search by Type" -> {
@@ -419,8 +423,10 @@ public class App extends Application {
             return;
           }
           showAnimal(choice);
+          return;
         }
         searchAnimalMenu();
+        return;
       }
 
       case "Search by Color" -> {
@@ -441,6 +447,7 @@ public class App extends Application {
           showAnimal(choice);
         }
         searchAnimalMenu();
+        return;
       }
     }
   }
@@ -475,7 +482,10 @@ public class App extends Application {
 
     try {
 
-      new Thread(() -> {
+      if (consoleThread != null && consoleThread.isAlive()) {
+        consoleThread.interrupt();
+      }
+      consoleThread = new Thread(() -> {
         int option;
 
         System.out.println("=== USER MENU ===");
@@ -491,31 +501,37 @@ public class App extends Application {
         switch (option) {
           case 1 -> {
             searchAnimalMenu();
+            return;
           }
 
           case 2 -> {
             searchShelter();
+            return;
           }
 
           case 3 -> {
             System.out.println(manager.getUserAdoptions((User) loggedAcc));
             userHomepage();
+            return;
           }
-          case 4-> {
+          case 4 -> {
             lostAndFoundMenu();
+            return;
           }
 
           case 0 -> {
-            sc.close();
             System.out.println("Exiting terminal menu...");
             Platform.runLater(() -> showMainMenu());
+            return;
           }
           default -> System.out.println("Invalid option!");
         }
+      });
+      consoleThread.start();
 
-      }).start();
+    } catch (
 
-    } catch (InputMismatchException e) {
+    InputMismatchException e) {
       System.out.println("Please pick a valid option!");
       userHomepage();
     }
@@ -530,26 +546,29 @@ public class App extends Application {
     try {
       choice = sc.nextInt();
       sc.nextLine();
-    }catch (Exception e){
+    } catch (Exception e) {
       System.out.println("Invalid input");
       lostAndFoundMenu();
+      return;
     }
-    switch (choice){
+    switch (choice) {
       case 1 -> {
         manager.showLostAnimals();
         lostAndFoundMenu();
+        return;
       }
-      case 2 ->{
+      case 2 -> {
         manager.registerLostAnimal(loggedAcc);
         lostAndFoundMenu();
-
+        return;
       }
-      case 3 ->{
+      case 3 -> {
         manager.foundMyAnimal(loggedAcc);
         lostAndFoundMenu();
       }
-      case 4 ->{
+      case 4 -> {
         userHomepage();
+        return;
       }
     }
   }
@@ -591,7 +610,10 @@ public class App extends Application {
     javafx.application.Platform.runLater(() -> showTerminalScreen());
 
     try {
-      new Thread(() -> {
+      if (consoleThread != null && consoleThread.isAlive()) {
+        consoleThread.interrupt();
+      }
+      consoleThread = new Thread(() -> {
         System.out.println("=== SHELTER MENU ===");
         System.out.println("1. Register Animal");
         System.out.println("2. View My Animals");
@@ -701,6 +723,7 @@ public class App extends Application {
             }
 
             shelterHomepage();
+            return;
           }
 
           case 0 -> {
@@ -711,12 +734,16 @@ public class App extends Application {
           default -> {
             System.out.println("Invalid option!");
             shelterHomepage();
+            return;
           }
         }
 
-      }).start();
+      });
+      consoleThread.start();
 
-    } catch (InputMismatchException e) {
+    } catch (
+
+    InputMismatchException e) {
       System.out.println("Please pick a valid option!");
       sc.nextLine();
       shelterHomepage();
