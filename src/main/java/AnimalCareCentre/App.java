@@ -81,8 +81,10 @@ public class App extends Application {
     ACCScene scene = new ACCScene(stage, new ACCVBox());
     Label emailLabel = new Label("Email:");
     TextField email = new TextField();
+    email.setMaxWidth(250);
     Label passLabel = new Label("Password:");
     PasswordField password = new PasswordField();
+    password.setMaxWidth(250);
     Button enter = new Button("Enter");
     Button back = new Button("Back");
     Button changePassword = new Button("Forgot Password");
@@ -534,13 +536,16 @@ public class App extends Application {
     switch (choice){
       case 1 -> {
         manager.showLostAnimals();
+        lostAndFoundMenu();
       }
       case 2 ->{
         manager.registerLostAnimal(loggedAcc);
+        lostAndFoundMenu();
 
       }
       case 3 ->{
         manager.foundMyAnimal(loggedAcc);
+        lostAndFoundMenu();
       }
       case 4 ->{
         userHomepage();

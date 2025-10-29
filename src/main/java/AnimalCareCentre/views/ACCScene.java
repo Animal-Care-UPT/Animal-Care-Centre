@@ -3,6 +3,7 @@ package AnimalCareCentre.views;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -28,20 +29,15 @@ public class ACCScene extends Scene {
    * @param vbox
    */
   public ACCScene(Stage stage, ACCVBox vbox) {
-    super(vbox);
-
+    super(wrapInScroll(vbox));
     mainVbox = vbox;
     mainVbox.setFillWidth(true);
     mainVbox.setStyle("-fx-background-color: #FFFAF1;");
-
     this.stage = stage;
     content = new ACCVBox();
     header = new ACCHBox();
-
     createPage();
-
     stage.setScene(this);
-
   }
 
   /**
@@ -54,38 +50,31 @@ public class ACCScene extends Scene {
     ImageView left = createLeftBorder();
     ImageView right = createRightBorder();
     ACCHBox footer = new ACCHBox();
-
     header.setStyle("-fx-background-color: #69462B;");
     header.setMinHeight(60);
     header.setMaxHeight(60);
-
     Label footerLabel = new Label("Animal Care Centre - UPT");
     footerLabel.setTextFill(Color.WHITE);
     footer.setStyle("-fx-background-color: #69462B;");
     footer.setMinHeight(30);
     footer.setMaxHeight(30);
     footer.addItems(footerLabel);
-
     content.setMaxWidth(Double.MAX_VALUE);
     content.setMaxHeight(Double.MAX_VALUE);
     HBox.setHgrow(content, Priority.ALWAYS);
     VBox.setVgrow(body, Priority.ALWAYS);
-
     logo.setPreserveRatio(true);
     logo.fitWidthProperty().bind(stage.widthProperty().multiply(0.6));
     logo.fitHeightProperty().bind(stage.heightProperty().multiply(0.25));
     logo.setSmooth(true);
     logo.setCache(true);
-
     left.setPreserveRatio(true);
     right.setPreserveRatio(true);
-    left.fitWidthProperty().bind(stage.widthProperty().multiply(0.15));
-    right.fitWidthProperty().bind(stage.widthProperty().multiply(0.15));
-
+    left.setFitWidth(150);
+    right.setFitWidth(150);
     body.setAlignment(javafx.geometry.Pos.CENTER);
     body.setFillHeight(true);
     body.addItems(left, content, right);
-
     mainVbox.addItems(logo, header, body, footer);
     VBox.setVgrow(body, Priority.ALWAYS);
   }
@@ -138,4 +127,10 @@ public class ACCScene extends Scene {
     content.clear();
   }
 
+  private static ScrollPane wrapInScroll(VBox vbox) {
+    ScrollPane scroll = new ScrollPane(vbox);
+    scroll.setFitToWidth(true);
+    scroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    return scroll;
+  }
 }
