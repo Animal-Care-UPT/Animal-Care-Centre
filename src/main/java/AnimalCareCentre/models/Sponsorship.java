@@ -80,7 +80,11 @@ public class Sponsorship {
         '}';
   }
 
-  public void setId(long id) {
+    public float getAmount() {
+        return amount;
+    }
+
+    public void setId(long id) {
     this.id = id;
   }
 

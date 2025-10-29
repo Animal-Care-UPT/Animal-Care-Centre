@@ -148,21 +148,25 @@ public class ACCManager {
     }
   }
 
+  //Method to get the animals from a shelter
+    public List<ShelterAnimal> getAnimalsByShelter(Shelter shelter) {
+        session.beginTransaction();
+        Query<ShelterAnimal> query = session.createQuery("FROM ShelterAnimal WHERE shelter = :shelter", ShelterAnimal.class);
+        query.setParameter("shelter", shelter);
+        List<ShelterAnimal> animals = query.getResultList();
+        session.getTransaction().commit();
+        return animals;
+    }
+
   // Method to register animals as a Shelter
-  public void registerAnimal(String name, AnimalType type, String race, AnimalSize size, int age, AnimalColor color,
+  public void registerAnimal(Shelter shelter, String name, AnimalType type, String race, AnimalSize size, int age, AnimalColor color,
       String description, AdoptionType adoptionType) {
     session.beginTransaction();
-    ShelterAnimal animal = new ShelterAnimal(name, type, race, color, false, size, adoptionType, description);
+    ShelterAnimal animal = new ShelterAnimal(name, type, race, color, false, size, adoptionType, description, shelter);
     session.persist(animal);
     session.getTransaction().commit();
   }
 
-  //Method to see the animals in each shelter
-   // public List<Animal> getAnimalsByShelter(Shelter shelter){
-    //  Query<Animal> query = session.createQuery("FROM Animal WHERE shelter = :shelter", Animal.class);
-    //  query.setParameter("shelter", shelter);
-     // return query.getResultList();
-  //  }
 
   public void exit() {
     session.close();
