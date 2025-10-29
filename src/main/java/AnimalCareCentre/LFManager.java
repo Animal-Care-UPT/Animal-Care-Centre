@@ -1,3 +1,4 @@
+/**
 package AnimalCareCentre;
 import AnimalCareCentre.enums.AnimalColor;
 import AnimalCareCentre.enums.AnimalSize;
@@ -162,3 +163,4 @@ public class LFManager {
 
     }
 }
+*/
