@@ -262,6 +262,7 @@ public class ACCManager {
 
     for (LostAnimal animal : lostAnimals) {
       System.out.println(animalCount+": " +animal);
+      animalCount++;
 
     }
     Scanner scanner = new Scanner(System.in);
@@ -291,8 +292,11 @@ public class ACCManager {
 
     System.out.println("Insert animal name");
     animalName = in.nextLine();
+
+    in.nextLine();
     System.out.print("Type (DOG, CAT or RABBIT): ");
     String typeInput = in.nextLine();
+    in.nextLine();
     AnimalType type = AnimalType.fromString(typeInput);
     if (type == null) {
       System.out.println("Invalid type");
@@ -313,15 +317,21 @@ public class ACCManager {
 
     System.out.print("Size (SMALL, MEDIUM, LARGE): ");
     AnimalSize size = AnimalSize.valueOf(in.nextLine().toUpperCase());
+    in.nextLine();
 
     System.out.print("Color: ");
     AnimalColor color = AnimalColor.valueOf(in.nextLine().toUpperCase());
+      in.nextLine();
 
     System.out.print("Description: ");
     String description = in.nextLine();
 
+      in.nextLine();
+
+
     System.out.print("Last seen location: ");
     String location= in.nextLine();
+      in.nextLine();
 
     LostAnimal newAnimal = new LostAnimal(animalName,type,race,color,size,description,location);
     newAnimal.setLost(true);
