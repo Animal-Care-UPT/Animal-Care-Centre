@@ -251,6 +251,12 @@ public class ACCManager {
       System.out.println(animal);
     }
   }
+
+    /**
+     *
+     *
+     * @param user
+     * Adicionada correção mencionada na aula com a professora Paula Morais */
   public void foundMyAnimal(Account user){
     Query<LostAnimal> query = session.createQuery("FROM LostAnimal WHERE account =:user", LostAnimal.class);
     query.setParameter("user", user);
