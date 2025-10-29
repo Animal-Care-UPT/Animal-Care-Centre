@@ -63,13 +63,10 @@ public class User extends Account {
 	sponsorships.add(sponsor);
     sponsor.setUser(this);
   }
-  
+
   @Override
   public String toString() {
-    return "User{" +
-        super.toString() + // calls toString() from Person
-        "contact=" + contact +
-        '}';
+    return super.toString() + "\nContact: " + contact;
   }
 
 public long getId() {
