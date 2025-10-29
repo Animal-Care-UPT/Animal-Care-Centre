@@ -52,6 +52,22 @@ public class LostAnimal extends Animal{
         this.location = location;
     }
 
+    public int getContact() {
+        return contact;
+    }
+
+    public void setContact(int contact) {
+        this.contact = contact;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     public boolean isLost() {
         return isLost;
     }

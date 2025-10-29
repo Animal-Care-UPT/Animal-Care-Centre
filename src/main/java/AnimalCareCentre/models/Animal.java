@@ -82,7 +82,7 @@ abstract class Animal {
 
   @Override
   public String toString() {
-    return "Name: " + name + "\nType: " + type + "\nRace: " + race + "\nSize:" + size + "\nColor: " + color
+    return "Name: " + name + "\nType: " + type + "\nRace: " + race + "\nSize: " + size + "\nColor: " + color
         + "\nDescription: " + description;
   }
 

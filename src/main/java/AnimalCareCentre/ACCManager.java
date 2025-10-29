@@ -1,8 +1,10 @@
 package AnimalCareCentre;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.hibernate.Session;
@@ -234,7 +236,6 @@ public class ACCManager {
   }
 
   public void showLostAnimals() {
-    Session session = sessionFactory.openSession();
     Query<LostAnimal> query = session.createQuery("FROM LostAnimals", LostAnimal.class);
     query.setParameter("true", true);
     List<LostAnimal> lostAnimals = query.getResultList();
@@ -244,12 +245,90 @@ public class ACCManager {
   }
 
   public void showMyLostAnimals(Account user) {
-    Session session = sessionFactory.openSession();
     Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE user_id =:user_id", LostAnimal.class);
     query.setParameter("user_id", user.getId());
     List<LostAnimal> lostAnimals = query.getResultList();
     for (LostAnimal animal : lostAnimals) {
       System.out.println(animal);
     }
+  }
+  public void foundMyAnimal(Account user){
+    Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE user_id =:user_id", LostAnimal.class);
+    query.setParameter("user_id", user.getId());
+    List<LostAnimal> lostAnimals = query.getResultList();
+
+    int animalCount = 0;
+
+    System.out.println("Choose found animal: ");
+
+    for (LostAnimal animal : lostAnimals) {
+      System.out.println(animalCount+": " +animal);
+
+    }
+    Scanner scanner = new Scanner(System.in);
+    int choice= 0;
+    try {
+
+      choice = scanner.nextInt();
+      scanner.nextLine();
+    }catch (Exception e){
+      System.out.println("Invalid Input ");
+      foundMyAnimal(user);
+    }
+    LostAnimal foundAnimal = lostAnimals.get(choice);
+    System.out.println("Congratulations on finding your animal !");
+
+    session.beginTransaction();
+    session.remove(foundAnimal);
+    session.getTransaction().commit();
+
+  }
+  public void registerLostAnimal(Account user){
+    Scanner in = new Scanner(System.in);
+
+    Session session = sessionFactory.openSession();
+    session.beginTransaction();
+    String animalName = "";
+
+
+    System.out.println("Insert animal name");
+    animalName = in.nextLine();
+    System.out.print("Type (DOG, CAT or RABBIT): ");
+    String typeInput = in.nextLine();
+    AnimalType type = AnimalType.fromString(typeInput);
+    if (type == null) {
+      System.out.println("Invalid type");
+      return;
+    }
+
+    System.out.print("Available races for : " + type + ": ");
+    for (String race : type.getBreeds()) {
+      System.out.println(race);
+    }
+
+    System.out.print("Race: ");
+    String race = in.nextLine();
+
+    if (!type.getBreeds().contains(race)) {
+      System.out.println("Invalid race");
+    }
+
+    System.out.print("Size (SMALL, MEDIUM, LARGE): ");
+    AnimalSize size = AnimalSize.valueOf(in.nextLine().toUpperCase());
+
+    System.out.print("Color: ");
+    AnimalColor color = AnimalColor.valueOf(in.nextLine().toUpperCase());
+
+    System.out.print("Description: ");
+    String description = in.nextLine();
+
+    System.out.print("Last seen location: ");
+    String location= in.nextLine();
+
+    LostAnimal newAnimal = new LostAnimal(animalName,type,race,color,size,description,location);
+    newAnimal.setLost(true);
+    newAnimal.setAccount(user);
+    session.persist(newAnimal);
+    session.close();
   }
 }

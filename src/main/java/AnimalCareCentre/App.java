@@ -1,6 +1,7 @@
 package AnimalCareCentre;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -478,6 +479,7 @@ public class App extends Application {
         System.out.println("1. Search Animal");
         System.out.println("2. Search Shelter");
         System.out.println("3. See My Adoptions");
+        System.out.println("4 Lost and Found");
         System.out.println("0. Logout");
         System.out.print("Option: ");
         option = sc.nextInt();
@@ -496,11 +498,14 @@ public class App extends Application {
             System.out.println(manager.getUserAdoptions((User) loggedAcc));
             userHomepage();
           }
+          case 4-> {
+            lostAndFoundMenu();
+          }
 
           case 0 -> {
             sc.close();
             System.out.println("Exiting terminal menu...");
-            javafx.application.Platform.runLater(() -> showMainMenu());
+            Platform.runLater(() -> showMainMenu());
           }
           default -> System.out.println("Invalid option!");
         }
@@ -510,6 +515,36 @@ public class App extends Application {
     } catch (InputMismatchException e) {
       System.out.println("Please pick a valid option!");
       userHomepage();
+    }
+  }
+
+  private void lostAndFoundMenu() {
+    System.out.println("1: See lost animals");
+    System.out.println("2: Register lost animal");
+    System.out.println("3: Found my animal");
+    System.out.println("4: Exit");
+    int choice = 0;
+    try {
+      choice = sc.nextInt();
+      sc.nextLine();
+    }catch (Exception e){
+      System.out.println("Invalid input");
+      lostAndFoundMenu();
+    }
+    switch (choice){
+      case 1 -> {
+        manager.showLostAnimals();
+      }
+      case 2 ->{
+        manager.registerLostAnimal(loggedAcc);
+
+      }
+      case 3 ->{
+        manager.foundMyAnimal(loggedAcc);
+      }
+      case 4 ->{
+        userHomepage();
+      }
     }
   }
 
