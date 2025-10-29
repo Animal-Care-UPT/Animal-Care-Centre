@@ -379,7 +379,8 @@ public class App extends Application {
     String[] options = { "Search by Keyword", "Search by Type", "Search by Color" };
     String opt = (String) chooseOption(options, "Search Option");
     if (opt == null) {
-      userHomepage();
+      Platform.runLater(this::userHomepage);
+      return;
     }
 
     switch (opt) {
