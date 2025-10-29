@@ -337,14 +337,33 @@ public class App extends Application {
     System.out.println(animal);
     System.out.println("Menu: ");
     System.out.println("1 - Sponsor Animal");
+    System.out.println("2 - Adopt Animal");
+    System.out.println("3 - Foster Animal");
+    System.out.println("0 - Back");
     int opc = sc.nextInt();
+    sc.nextLine();
     switch (opc) {
-      case 1:
-        System.out.println("Insert the amount of money u wish to give as a sponsorship");
+      case 1 -> {
+        System.out.println("Insert the amount of money you wish to give as a sponsorship");
         float amount = sc.nextFloat();
         sc.nextLine();
         User user = (User) loggedAcc;
         manager.createSponsorship(user, animal, amount);
+      }
+
+      case 2 -> {
+        manager.adoptAnimal((User) loggedAcc, animal, AdoptionType.FOR_ADOPTION);
+        System.out.println("Congratulationssss!!!!! You just adopted " + animal.getName());
+      }
+
+      case 3 -> {
+        manager.adoptAnimal((User) loggedAcc, animal, AdoptionType.FOR_FOSTER);
+        System.out.println("Congratulationssss!!!!! You just fostered" + animal.getName());
+      }
+
+      case 0 -> {
+        userHomepage();
+      }
     }
   }
 
@@ -425,7 +444,7 @@ public class App extends Application {
   public void showShelter(Shelter shelter) {
     System.out.println(shelter);
     System.out.println("Animals: ");
-    List<ShelterAnimal> animals = manager.searchShelterAnimal(shelter);
+    List<ShelterAnimal> animals = manager.getAvailableAnimalsByShelter(shelter);
     ShelterAnimal choice = (ShelterAnimal) chooseOption(animals.toArray(), "Animal");
     if (choice == null) {
       javafx.application.Platform.runLater(this::userHomepage);
@@ -444,11 +463,11 @@ public class App extends Application {
     showShelter(choice);
   }
 
-    /**
+  /**
    * This method shows user's homepage
    */
   private void userHomepage() {
-    showTerminalScreen();
+    javafx.application.Platform.runLater(() -> showTerminalScreen());
 
     try {
 
@@ -458,6 +477,7 @@ public class App extends Application {
         System.out.println("=== USER MENU ===");
         System.out.println("1. Search Animal");
         System.out.println("2. Search Shelter");
+        System.out.println("3. See My Adoptions");
         System.out.println("0. Logout");
         System.out.print("Option: ");
         option = sc.nextInt();
@@ -470,6 +490,11 @@ public class App extends Application {
 
           case 2 -> {
             searchShelter();
+          }
+
+          case 3 -> {
+            System.out.println(manager.getUserAdoptions((User) loggedAcc));
+            userHomepage();
           }
 
           case 0 -> {
@@ -498,7 +523,7 @@ public class App extends Application {
       System.out.println("\n");
 
       for (int i = 0; i < values.length; i++) {
-        System.out.println((i + 1) + ". " + values[i]+ "\n");
+        System.out.println((i + 1) + ". " + values[i] + "\n");
       }
 
       System.out.println("0. Back");
@@ -519,34 +544,33 @@ public class App extends Application {
   }
 
   /**
-     * This method shows shelter's homepage
-     */
-    private void shelterHomepage() {
-        showTerminalScreen();
+   * This method shows shelter's homepage
+   */
+  private void shelterHomepage() {
+    javafx.application.Platform.runLater(() -> showTerminalScreen());
 
-            try {
-                System.out.println("=== SHELTER MENU ===");
-                System.out.println("1. Register Animal");
-                System.out.println("2. View My Animals");
-                System.out.println("0. Logout");
-                System.out.print("Option: ");
-                int option = sc.nextInt();
-                sc.nextLine();
+    try {
+      new Thread(() -> {
+        System.out.println("=== SHELTER MENU ===");
+        System.out.println("1. Register Animal");
+        System.out.println("2. View My Animals");
+        System.out.println("0. Logout");
+        System.out.print("Option: ");
+        int option = sc.nextInt();
+        sc.nextLine();
 
-                switch (option) {
-                    case 1 -> {
-                        System.out.println("\n=== REGISTER ANIMAL ===");
-                        System.out.print("Name: ");
-                        String name = sc.nextLine();
+        switch (option) {
+          case 1 -> {
+            System.out.println("\n=== REGISTER ANIMAL ===");
+            System.out.print("Name: ");
+            String name = sc.nextLine();
 
-       
-
-                      // Type
-                       AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
-                        if (chosenType == null) {
-                        javafx.application.Platform.runLater(this::shelterHomepage);
-                        return;
-                    }
+            // Type
+            AnimalType chosenType = (AnimalType) chooseOption(AnimalType.values(), "Type");
+            if (chosenType == null) {
+              javafx.application.Platform.runLater(this::shelterHomepage);
+              return;
+            }
 
             // Breed
             List<String> breeds = chosenType.getBreeds();
@@ -604,35 +628,39 @@ public class App extends Application {
               return;
             }
 
-            manager.registerAnimal((Shelter) loggedAcc, name, chosenType, race, size, age, color, description, adoptionType);
-                        System.out.println("\nAnimal registered successfully!\n");
+            manager.registerAnimal((Shelter) loggedAcc, name, chosenType, race, size, age, color, description,
+                adoptionType);
+            System.out.println("\nAnimal registered successfully!\n");
 
             javafx.application.Platform.runLater(this::shelterHomepage);
           }
-      
-      case 2 -> {
-                        List<ShelterAnimal> animals = manager.getAnimalsByShelter((Shelter) loggedAcc);
 
-                        if (animals.isEmpty()) {
-                            System.out.println("You have no registered animals.");
-                        } else {
-                            for (ShelterAnimal a : animals) {
-                                System.out.println("\n" + a.toString());
-                                System.out.println("Sponsors:");
-                                if (a.getSponsors().isEmpty()) {
-                                    System.out.println("  No sponsors yet.");
-                                } else {
-                                    for (Sponsorship s : a.getSponsors()) {
-                                        System.out.println("  - " + s.getUser().getName() + " donated " + s.getAmount() + "€");
-                                    }
-                                }
+          case 2 -> {
+            List<ShelterAnimal> animals = manager.getAnimalsByShelter((Shelter) loggedAcc);
 
-                            }
-                        }
+            if (animals.isEmpty()) {
+              System.out.println("You have no registered animals.");
+            } else {
+              for (ShelterAnimal a : animals) {
+                System.out.println("\n" + a.toString());
+                System.out.println("Sponsors:");
+                if (a.getSponsors().isEmpty()) {
+                  System.out.println("  No sponsors yet.");
+                } else {
+                  for (Sponsorship s : a.getSponsors()) {
+                    System.out.println(s);
+                  }
+                }
+                System.out.println("Listed for:");
+                System.out.println(a.getListedFor());
+                if (!a.getAdoptions().isEmpty()) {
+                  System.out.println(a.getAdoptions());
+                }
+              }
+            }
 
-                        shelterHomepage();
-                    }
-
+            shelterHomepage();
+          }
 
           case 0 -> {
             System.out.println("Exiting terminal menu...");
@@ -644,11 +672,14 @@ public class App extends Application {
             shelterHomepage();
           }
         }
-      } catch (InputMismatchException e) {
-        System.out.println("Please pick a valid option!");
-        sc.nextLine();
-        shelterHomepage();
-      }
+
+      }).start();
+
+    } catch (InputMismatchException e) {
+      System.out.println("Please pick a valid option!");
+      sc.nextLine();
+      shelterHomepage();
+    }
   }
 
 }

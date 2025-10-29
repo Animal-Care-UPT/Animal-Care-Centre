@@ -74,10 +74,7 @@ public class Sponsorship {
 
   @Override
   public String toString() {
-    return "Sponsorship{" +
-        "user=" + user +
-        ", animal=" + animal +
-        '}';
+    return "\nUser: " + user + "\nStart date: " + startDate + "\nAmount: " + amount;
   }
 
     public float getAmount() {

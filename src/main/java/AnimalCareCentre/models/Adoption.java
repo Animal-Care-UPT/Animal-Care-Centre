@@ -39,11 +39,9 @@ public class Adoption {
    * Constructor of class Adoption.
    *
    * @param user
-   * @param shelter
    * @param animal
    * @param type
    */
-
   public Adoption(User user, ShelterAnimal animal, AdoptionType type) {
 
     this.user = user;
@@ -51,6 +49,8 @@ public class Adoption {
     this.type = type;
     date = LocalDate.now();
   }
+
+  public Adoption() {}
 
   // Getters area
   public User getUser() {
@@ -69,14 +69,8 @@ public class Adoption {
     return type;
   }
 
-  // ToString from the class
   @Override
   public String toString() {
-    return "Adoption{" +
-        "user=" + user +
-        ", animal=" + animal +
-        ", date=" + date +
-        ", type=" + type +
-        '}';
+    return "\nAdoption Date: " + date + "\nType: " + type + "\nUser: " + user + "\nDog Name: " + animal.getName();
   }
 }

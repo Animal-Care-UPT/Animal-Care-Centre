@@ -15,17 +15,17 @@ import jakarta.persistence.*;
 
 public class ShelterAnimal extends Animal {
 
-    @ManyToOne
-    @JoinColumn(name = "shelter_id")
-    private Shelter shelter;
+  @ManyToOne
+  @JoinColumn(name = "shelter_id")
+  private Shelter shelter;
 
   private boolean isVacinated;
 
   @Enumerated(EnumType.STRING)
   private AdoptionType listedFor;
 
-
-  // List<Adoption> adoptions = new ArrayList<>();
+  @OneToMany(mappedBy = "animal")
+  List<Adoption> adoptions = new ArrayList<>();
   @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
   List<Sponsorship> sponsors = new ArrayList<>();
 
@@ -41,23 +41,24 @@ public class ShelterAnimal extends Animal {
    * @param listedFor
    * @param description
    */
-  public ShelterAnimal(String name, AnimalType type, String race, AnimalColor color, boolean isVacinated, AnimalSize size,
-                       AdoptionType listedFor, String description, Shelter shelter) {
-      super(name,type,race,size,color,description);
+  public ShelterAnimal(String name, AnimalType type, String race, AnimalColor color, boolean isVacinated,
+      AnimalSize size,
+      AdoptionType listedFor, String description, Shelter shelter) {
+    super(name, type, race, size, color, description);
     this.isVacinated = isVacinated;
     this.listedFor = listedFor;
     this.shelter = shelter;
   }
 
   public ShelterAnimal() {
-      super();
+    super();
   }
 
   public void addSponsor(Sponsorship sponsor) {
     sponsors.add(sponsor);
   }
 
-    // The different getter from the class
+  // The different getter from the class
   public String getName() {
     return super.getName();
   }
@@ -82,7 +83,7 @@ public class ShelterAnimal extends Animal {
     return super.getSize();
   }
 
-  public AdoptionType getListetFor() {
+  public AdoptionType getListedFor() {
     return listedFor;
   }
 
@@ -90,14 +91,20 @@ public class ShelterAnimal extends Animal {
     return super.getDescription();
   }
 
-  public Shelter getShelter() { return shelter; }
+  public Shelter getShelter() {
+    return shelter;
+  }
 
   // public List<Adoption> getAdoptions() {
-  //   return adoptions;
+  // return adoptions;
   // }
 
   public List<Sponsorship> getSponsors() {
     return sponsors;
+  }
+
+  public List<Adoption> getAdoptions() {
+    return adoptions;
   }
 
   // The different setters from the class
@@ -108,7 +115,6 @@ public class ShelterAnimal extends Animal {
   public void setListedFor(AdoptionType listedFor) {
     this.listedFor = listedFor;
   }
-
 
   // toString from the class
   @Override

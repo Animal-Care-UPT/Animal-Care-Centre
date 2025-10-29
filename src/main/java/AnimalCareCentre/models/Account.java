@@ -6,9 +6,8 @@ import java.util.List;
 
 import AnimalCareCentre.enums.*;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,6 +26,7 @@ import jakarta.persistence.Table;
 public class Account {
 
   @Id
+  @Column(name = "account_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   protected long id;
   private String name;
@@ -35,7 +35,7 @@ public class Account {
   private String location;
   private SecurityQuestion securityQuestion;
   private String answer;
-  @OneToMany(mappedBy = "Account", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
   private List <LostAnimal> lostAnimals = new ArrayList <>();
   /**
    * Constructor for class Account.

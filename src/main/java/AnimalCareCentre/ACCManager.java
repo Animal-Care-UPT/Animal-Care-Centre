@@ -31,13 +31,27 @@ public class ACCManager {
   private static SessionFactory sessionFactory;
   private static Session session;
 
+  public void adoptAnimal(User user, ShelterAnimal animal, AdoptionType type) {
+    session.beginTransaction();
+    Adoption adopt = new Adoption(user, animal, type);
+    animal.setListedFor(AdoptionType.NOT_AVAILABLE);
+    session.merge(animal);
+    session.persist(adopt);
+    session.getTransaction().commit();
+  }
+
   public void createSponsorship(User user, ShelterAnimal animal, float amount) {
     session.beginTransaction();
     Sponsorship sponsor = new Sponsorship(user, animal, amount);
-    user.addSponsor(sponsor);
-    animal.addSponsor(sponsor);
     session.persist(sponsor);
     session.getTransaction().commit();
+  }
+
+  public List<Adoption> getUserAdoptions(User user) {
+    session.beginTransaction();
+    Query<Adoption> query = session.createQuery("FROM Adoption WHERE user = :user");
+    query.setParameter("user", user);
+    return query.getResultList();
   }
 
   /**
@@ -48,23 +62,18 @@ public class ACCManager {
    */
   public List<ShelterAnimal> searchAnimalByKeyword(String search) {
     Query<ShelterAnimal> query = session.createQuery(
-        "FROM ShelterAnimal WHERE race LIKE :search " +
+        "FROM ShelterAnimal WHERE listedFor != :status AND race LIKE :search " +
             "OR CAST(type AS string) LIKE :search " +
             "OR CAST(size AS string) LIKE :search " +
             "OR CAST(color AS string) LIKE :search",
         ShelterAnimal.class);
     query.setParameter("search", "%" + search + "%");
+    query.setParameter("status", AdoptionType.NOT_AVAILABLE);
     return query.getResultList();
   }
 
   public List<Shelter> searchShelters() {
     Query<Shelter> query = session.createQuery("FROM Shelter", Shelter.class);
-      return query.getResultList();
-  }
-
-  public List<ShelterAnimal> searchShelterAnimal(Shelter shelter) {
-    Query<ShelterAnimal> query = session.createQuery("FROM ShelterAnimal WHERE shelter_id = :shelter_id");
-    query.setParameter("shelter_id", shelter.getId());
     return query.getResultList();
   }
 
@@ -78,8 +87,9 @@ public class ACCManager {
   public List<ShelterAnimal> searchAnimalByParameter(String parameter, Object search) {
     Session session = sessionFactory.openSession();
     Query<ShelterAnimal> query = session.createQuery(
-        "From ShelterAnimal WHERE " + parameter + " =:search", ShelterAnimal.class);
+        "From ShelterAnimal WHERE " + parameter + " =:search AND listedFor != :status", ShelterAnimal.class);
     query.setParameter("search", search);
+    query.setParameter("status", AdoptionType.NOT_AVAILABLE);
     return query.getResultList();
   }
 
@@ -148,25 +158,38 @@ public class ACCManager {
     }
   }
 
-  //Method to get the animals from a shelter
-    public List<ShelterAnimal> getAnimalsByShelter(Shelter shelter) {
-        session.beginTransaction();
-        Query<ShelterAnimal> query = session.createQuery("FROM ShelterAnimal WHERE shelter = :shelter", ShelterAnimal.class);
-        query.setParameter("shelter", shelter);
-        List<ShelterAnimal> animals = query.getResultList();
-        session.getTransaction().commit();
-        return animals;
-    }
+  public List<ShelterAnimal> getAvailableAnimalsByShelter(Shelter shelter) {
+    session.beginTransaction();
+    Query<ShelterAnimal> query = session.createQuery(
+        "FROM ShelterAnimal WHERE shelter = :shelter AND listedFor != :status",
+        ShelterAnimal.class);
+    query.setParameter("shelter", shelter);
+    query.setParameter("status", AdoptionType.NOT_AVAILABLE);
+    List<ShelterAnimal> animals = query.getResultList();
+    session.getTransaction().commit();
+    return animals;
+  }
+
+  // Method to get the animals from a shelter
+  public List<ShelterAnimal> getAnimalsByShelter(Shelter shelter) {
+    session.beginTransaction();
+    Query<ShelterAnimal> query = session.createQuery("FROM ShelterAnimal WHERE shelter = :shelter",
+        ShelterAnimal.class);
+    query.setParameter("shelter", shelter);
+    List<ShelterAnimal> animals = query.getResultList();
+    session.getTransaction().commit();
+    return animals;
+  }
 
   // Method to register animals as a Shelter
-  public void registerAnimal(Shelter shelter, String name, AnimalType type, String race, AnimalSize size, int age, AnimalColor color,
+  public void registerAnimal(Shelter shelter, String name, AnimalType type, String race, AnimalSize size, int age,
+      AnimalColor color,
       String description, AdoptionType adoptionType) {
     session.beginTransaction();
     ShelterAnimal animal = new ShelterAnimal(name, type, race, color, false, size, adoptionType, description, shelter);
     session.persist(animal);
     session.getTransaction().commit();
   }
-
 
   public void exit() {
     session.close();
@@ -209,24 +232,24 @@ public class ACCManager {
     }
     return true;
   }
-  
+
   public void showLostAnimals() {
-      Session session = sessionFactory.openSession();
-      Query<LostAnimal> query = session.createQuery("FROM LostAnimals",LostAnimal.class);
-      query.setParameter("true",true);
-      List<LostAnimal> lostAnimals = query.getResultList();
-      for (LostAnimal animal : lostAnimals){
-          System.out.println(animal);
-      }
+    Session session = sessionFactory.openSession();
+    Query<LostAnimal> query = session.createQuery("FROM LostAnimals", LostAnimal.class);
+    query.setParameter("true", true);
+    List<LostAnimal> lostAnimals = query.getResultList();
+    for (LostAnimal animal : lostAnimals) {
+      System.out.println(animal);
+    }
   }
-  
+
   public void showMyLostAnimals(Account user) {
-	  Session session = sessionFactory.openSession();
-	  Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE user_id =:user_id",LostAnimal.class);
-      query.setParameter("user_id",user.getId());
-      List<LostAnimal> lostAnimals = query.getResultList();
-      for (LostAnimal animal : lostAnimals){
-          System.out.println(animal);
-      }
+    Session session = sessionFactory.openSession();
+    Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE user_id =:user_id", LostAnimal.class);
+    query.setParameter("user_id", user.getId());
+    List<LostAnimal> lostAnimals = query.getResultList();
+    for (LostAnimal animal : lostAnimals) {
+      System.out.println(animal);
+    }
   }
 }
