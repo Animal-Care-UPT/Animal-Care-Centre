@@ -50,7 +50,6 @@ public class ACCManager {
   }
 
   public List<Adoption> getUserAdoptions(User user) {
-    session.beginTransaction();
     Query<Adoption> query = session.createQuery("FROM Adoption WHERE user = :user");
     query.setParameter("user", user);
     return query.getResultList();
@@ -64,10 +63,11 @@ public class ACCManager {
    */
   public List<ShelterAnimal> searchAnimalByKeyword(String search) {
     Query<ShelterAnimal> query = session.createQuery(
-        "FROM ShelterAnimal WHERE listedFor != :status AND race LIKE :search " +
-            "OR CAST(type AS string) LIKE :search " +
-            "OR CAST(size AS string) LIKE :search " +
-            "OR CAST(color AS string) LIKE :search",
+        "FROM ShelterAnimal WHERE listedFor != :status AND (" +
+            "name LIKE :search OR race LIKE :search OR " +
+            "CAST(type AS string) LIKE :search OR " +
+            "CAST(size AS string) LIKE :search OR " +
+            "CAST(color AS string) LIKE :search)",
         ShelterAnimal.class);
     query.setParameter("search", "%" + search + "%");
     query.setParameter("status", AdoptionType.NOT_AVAILABLE);
@@ -87,7 +87,6 @@ public class ACCManager {
    * @return
    */
   public List<ShelterAnimal> searchAnimalByParameter(String parameter, Object search) {
-    Session session = sessionFactory.openSession();
     Query<ShelterAnimal> query = session.createQuery(
         "From ShelterAnimal WHERE " + parameter + " =:search AND listedFor != :status", ShelterAnimal.class);
     query.setParameter("search", search);
@@ -125,7 +124,6 @@ public class ACCManager {
 
   public void createUserAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer, LocalDate birthDate, int contact) {
-    Session session = sessionFactory.openSession();
     session.beginTransaction();
     User user = new User(name, email, password, location, securityQuestion, answer, birthDate, contact);
     session.persist(user);
@@ -134,7 +132,6 @@ public class ACCManager {
 
   public void createAdminAccount(String name, String email, String password, String location,
       SecurityQuestion securityQuestion, String answer) {
-    Session session = sessionFactory.openSession();
     session.beginTransaction();
     Account admin = new Account(name, email, password, location, securityQuestion, answer);
     session.persist(admin);
@@ -252,97 +249,131 @@ public class ACCManager {
     }
   }
 
-    /**
-     *
-     *
-     * @param user
-     * Adicionada correção mencionada na aula com a professora Paula Morais */
-  public void foundMyAnimal(Account user){
-    Query<LostAnimal> query = session.createQuery("FROM LostAnimal WHERE account =:user", LostAnimal.class);
+  /**
+   * Marks a user's lost animal as found.
+   */
+  public void foundMyAnimal(Account user) {
+    session.beginTransaction();
+
+    Query<LostAnimal> query = session.createQuery("FROM LostAnimal WHERE account = :user", LostAnimal.class);
     query.setParameter("user", user);
     List<LostAnimal> lostAnimals = query.getResultList();
 
-    int animalCount = 0;
-
-    System.out.println("Choose found animal: ");
-
-    for (LostAnimal animal : lostAnimals) {
-      System.out.println(animalCount+": " +animal);
-      animalCount++;
-
-    }
-    Scanner scanner = new Scanner(System.in);
-    int choice= 0;
-    try {
-
-      choice = scanner.nextInt();
-      scanner.nextLine();
-    }catch (Exception e){
-      System.out.println("Invalid Input ");
-      foundMyAnimal(user);
-    }
-    LostAnimal foundAnimal = lostAnimals.get(choice);
-    System.out.println("Congratulations on finding your animal !");
-
-    session.remove(foundAnimal);
-    session.getTransaction().commit();
-
-  }
-  public void registerLostAnimal(Account user){
-    Scanner in = new Scanner(System.in);
-
-    Session session = sessionFactory.openSession();
-    session.beginTransaction();
-    String animalName = "";
-
-
-    System.out.println("Insert animal name");
-    animalName = in.nextLine();
-
-    in.nextLine();
-    System.out.print("Type (DOG, CAT or RABBIT): ");
-    String typeInput = in.nextLine();
-    in.nextLine();
-    AnimalType type = AnimalType.fromString(typeInput);
-    if (type == null) {
-      System.out.println("Invalid type");
+    if (lostAnimals.isEmpty()) {
+      System.out.println("You have no registered lost animals.");
+      session.getTransaction().rollback();
       return;
     }
 
-    System.out.print("Available races for : " + type + ": ");
+    System.out.println("Choose found animal (or -1 to cancel):");
+    for (int i = 0; i < lostAnimals.size(); i++) {
+      System.out.println(i + ": " + lostAnimals.get(i));
+    }
+
+    Scanner scanner = new Scanner(System.in);
+    int choice;
+
+    try {
+      choice = scanner.nextInt();
+      scanner.nextLine();
+    } catch (Exception e) {
+      System.out.println("Invalid input.");
+      session.getTransaction().rollback();
+      foundMyAnimal(user);
+      return;
+    }
+
+    if (choice == -1) {
+      System.out.println("Cancelled. Returning...");
+      session.getTransaction().rollback();
+      return;
+    }
+
+    if (choice < 0 || choice >= lostAnimals.size()) {
+      System.out.println("Invalid index.");
+      session.getTransaction().rollback();
+      foundMyAnimal(user);
+      return;
+    }
+
+    LostAnimal foundAnimal = lostAnimals.get(choice);
+    System.out.println("Congratulations on finding your animal!");
+
+    // 🟢 Safe remove — make sure it's attached to the session
+    session.remove(foundAnimal);
+    session.getTransaction().commit();
+  }
+
+  /**
+   * Registers a new lost animal.
+   */
+  public void registerLostAnimal(Account user) {
+    Scanner in = new Scanner(System.in);
+
+    session.beginTransaction();
+
+    System.out.println("Insert animal name:");
+    String animalName = in.nextLine();
+
+    System.out.print("Type (DOG, CAT or RABBIT): ");
+    String typeInput = in.nextLine().trim().toUpperCase();
+    AnimalType type = AnimalType.fromString(typeInput);
+    if (type == null) {
+      System.out.println("Invalid type.");
+      session.getTransaction().rollback();
+      registerLostAnimal(user);
+      return;
+    }
+
+    System.out.println("Available races for " + type + ":");
     for (String race : type.getBreeds()) {
-      System.out.println(race);
+      System.out.println(" - " + race);
     }
 
     System.out.print("Race: ");
-    String race = in.nextLine();
-
+    String race = in.nextLine().trim();
     if (!type.getBreeds().contains(race)) {
-      System.out.println("Invalid race");
+      System.out.println("Invalid race.");
+      session.getTransaction().rollback();
+      registerLostAnimal(user);
+      return;
     }
 
     System.out.print("Size (SMALL, MEDIUM, LARGE): ");
-    AnimalSize size = AnimalSize.valueOf(in.nextLine().toUpperCase());
-    in.nextLine();
+    AnimalSize size;
+    try {
+      size = AnimalSize.valueOf(in.nextLine().trim().toUpperCase());
+    } catch (IllegalArgumentException e) {
+      System.out.println("Invalid size.");
+      session.getTransaction().rollback();
+      registerLostAnimal(user);
+      return;
+    }
 
     System.out.print("Color: ");
-    AnimalColor color = AnimalColor.valueOf(in.nextLine().toUpperCase());
-      in.nextLine();
+    AnimalColor color;
+    try {
+      color = AnimalColor.valueOf(in.nextLine().trim().toUpperCase());
+    } catch (IllegalArgumentException e) {
+      System.out.println("Invalid color.");
+      session.getTransaction().rollback();
+      registerLostAnimal(user);
+      return;
+    }
 
     System.out.print("Description: ");
     String description = in.nextLine();
 
-      in.nextLine();
-
-
     System.out.print("Last seen location: ");
-    String location= in.nextLine();
-      in.nextLine();
+    String location = in.nextLine();
 
-    LostAnimal newAnimal = new LostAnimal(animalName,type,race,color,size,description,location);
+    LostAnimal newAnimal = new LostAnimal(animalName, type, race, color, size, description, location);
     newAnimal.setLost(true);
     newAnimal.setAccount(user);
+
     session.persist(newAnimal);
-    session.close();
+    session.getTransaction().commit();
+
+    System.out.println("Lost animal registered successfully!");
   }
 }
