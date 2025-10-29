@@ -236,8 +236,7 @@ public class ACCManager {
   }
 
   public void showLostAnimals() {
-    Query<LostAnimal> query = session.createQuery("FROM LostAnimals", LostAnimal.class);
-    query.setParameter("true", true);
+    Query<LostAnimal> query = session.createQuery("FROM LostAnimal", LostAnimal.class);
     List<LostAnimal> lostAnimals = query.getResultList();
     for (LostAnimal animal : lostAnimals) {
       System.out.println(animal);
@@ -245,16 +244,16 @@ public class ACCManager {
   }
 
   public void showMyLostAnimals(Account user) {
-    Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE user_id =:user_id", LostAnimal.class);
-    query.setParameter("user_id", user.getId());
+    Query<LostAnimal> query = session.createQuery("FROM LostAnimal WHERE account =:user", LostAnimal.class);
+    query.setParameter("user", user);
     List<LostAnimal> lostAnimals = query.getResultList();
     for (LostAnimal animal : lostAnimals) {
       System.out.println(animal);
     }
   }
   public void foundMyAnimal(Account user){
-    Query<LostAnimal> query = session.createQuery("FROM LostAnimals WHERE user_id =:user_id", LostAnimal.class);
-    query.setParameter("user_id", user.getId());
+    Query<LostAnimal> query = session.createQuery("FROM LostAnimal WHERE account =:user", LostAnimal.class);
+    query.setParameter("user", user);
     List<LostAnimal> lostAnimals = query.getResultList();
 
     int animalCount = 0;
@@ -278,7 +277,6 @@ public class ACCManager {
     LostAnimal foundAnimal = lostAnimals.get(choice);
     System.out.println("Congratulations on finding your animal !");
 
-    session.beginTransaction();
     session.remove(foundAnimal);
     session.getTransaction().commit();
 

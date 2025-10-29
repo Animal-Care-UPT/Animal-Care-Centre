@@ -32,8 +32,7 @@ public class ACCScene extends Scene {
     super(wrapInScroll(vbox));
     mainVbox = vbox;
     mainVbox.setFillWidth(true);
-    mainVbox.setStyle("-fx-background-color: 
-#FFFAF1;");
+    mainVbox.setStyle("-fx-background-color: #FFFAF1;");
     this.stage = stage;
     content = new ACCVBox();
     header = new ACCHBox();
@@ -51,14 +50,12 @@ public class ACCScene extends Scene {
     ImageView left = createLeftBorder();
     ImageView right = createRightBorder();
     ACCHBox footer = new ACCHBox();
-    header.setStyle("-fx-background-color: 
-#69462B;");
+    header.setStyle("-fx-background-color: #69462B;");
     header.setMinHeight(60);
     header.setMaxHeight(60);
     Label footerLabel = new Label("Animal Care Centre - UPT");
     footerLabel.setTextFill(Color.WHITE);
-    footer.setStyle("-fx-background-color: 
-#69462B;");
+    footer.setStyle("-fx-background-color: #69462B;");
     footer.setMinHeight(30);
     footer.setMaxHeight(30);
     footer.addItems(footerLabel);

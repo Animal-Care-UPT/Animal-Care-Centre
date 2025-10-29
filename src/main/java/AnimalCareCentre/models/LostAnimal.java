@@ -7,73 +7,67 @@ import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-public class LostAnimal extends Animal{
+public class LostAnimal extends Animal {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private long id;
 
-    String location;
+  String location;
 
-    boolean isLost;
+  boolean isLost;
 
-    int contact;
-    
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
+  int contact;
 
-    @Override
-    public String toString() {
-        return "LostAnimal" +
-                "name" + super.getName() +
-                "type" + super.getType() +
-                "race" + super.getRace() +
-                "size" + super.getSize() +
-                "color" + super.getColor() +
-                " location='" + location +
-                "description " + super.getDescription() + '\n';
-    }
+  @ManyToOne
+  @JoinColumn(name = "account_id")
+  private Account account;
 
-    public LostAnimal() {
-    }
+  @Override
+  public String toString() {
+    return "LostAnimal{location=" + location + ", Name=" + getName() + ", Type="
+        + getType() + ", Race=" + getRace() + ", Size=" + getSize() + ", Color=" + getColor() + "}";
+  }
 
-    public LostAnimal(String name, AnimalType type, String race, AnimalColor color, AnimalSize size, String description, String location) {
-        super(name, type, race, size,  color,  description );
-        this.location = location;
-        this.contact = contact;
-    }
+  public LostAnimal() {
+  }
 
-    public String getLocation() {
-        return location;
-    }
+  public LostAnimal(String name, AnimalType type, String race, AnimalColor color, AnimalSize size, String description,
+      String location) {
+    super(name, type, race, size, color, description);
+    this.location = location;
+    this.contact = contact;
+  }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+  public String getLocation() {
+    return location;
+  }
 
-    public int getContact() {
-        return contact;
-    }
+  public void setLocation(String location) {
+    this.location = location;
+  }
 
-    public void setContact(int contact) {
-        this.contact = contact;
-    }
+  public int getContact() {
+    return contact;
+  }
 
-    public Account getAccount() {
-        return account;
-    }
+  public void setContact(int contact) {
+    this.contact = contact;
+  }
 
-    public void setAccount(Account account) {
-        this.account = account;
-    }
+  public Account getAccount() {
+    return account;
+  }
 
-    public boolean isLost() {
-        return isLost;
-    }
+  public void setAccount(Account account) {
+    this.account = account;
+  }
 
-    public void setLost(boolean lost) {
-        isLost = lost;
-    }
+  public boolean isLost() {
+    return isLost;
+  }
+
+  public void setLost(boolean lost) {
+    isLost = lost;
+  }
 }
-

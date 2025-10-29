@@ -22,9 +22,6 @@ import jakarta.persistence.Table;
 @Table(name ="Users")
 public class User extends Account {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
   private int contact;
   private LocalDate birthDate;
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

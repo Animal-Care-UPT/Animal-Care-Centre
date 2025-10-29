@@ -536,13 +536,16 @@ public class App extends Application {
     switch (choice){
       case 1 -> {
         manager.showLostAnimals();
+        lostAndFoundMenu();
       }
       case 2 ->{
         manager.registerLostAnimal(loggedAcc);
+        lostAndFoundMenu();
 
       }
       case 3 ->{
         manager.foundMyAnimal(loggedAcc);
+        lostAndFoundMenu();
       }
       case 4 ->{
         userHomepage();
